@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "Yamada Colors",
+    "description": ""
+  },
+  "not-found": {
+    "title": "404: 見つかりません",
+    "description": "ページが見つかりません",
+    "heading": "404 | ページが見つかりません",
+    "message": "存在しないページにぶち当たってしまった…悲しいですね。😢",
+    "back-to-app": "アプリにもどる"
+  },
+  "component": {
+    "footer": {
+      "description": "このアプリケーションは、`Hirotomo Yamada`と`愉快な仲間たち`によって開発されました。"
+    }
+  }
+}

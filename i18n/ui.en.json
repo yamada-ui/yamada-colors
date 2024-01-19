@@ -1,0 +1,18 @@
+{
+  "app": {
+    "title": "Yamada Colors",
+    "description": ""
+  },
+  "not-found": {
+    "title": "404: Not found",
+    "description": "Page not found",
+    "heading": "404 | Page Not Found",
+    "message": "You just hit a route that doesn't exist... the sadness.😢",
+    "back-to-app": "Back to App"
+  },
+  "component": {
+    "footer": {
+      "description": "Built by `Hirotomo Yamada` and `these awesome people`"
+    }
+  }
+}

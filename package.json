@@ -1,24 +1,53 @@
 {
   "name": "yamada-colors",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "dev": "next dev",
     "build": "next build",
+    "build:profile": "next build --profile",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check --cache .",
+    "format:write": "prettier --write --cache .",
+    "quality": "pnpm format:check && pnpm lint && pnpm typecheck",
+    "clean": "rimraf .next",
+    "clean:all": "rimraf .next node_modules"
   },
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.1.0"
+    "@vercel/analytics": "^1.1.2",
+    "@vercel/speed-insights": "^1.0.1",
+    "@yamada-ui/react": "1.2.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "next": "14.0.3",
+    "next-seo": "^6.4.0"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.1.0"
+    "typescript": "5.3.2",
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@yamada-ui/cli": "1.0.1",
+    "eslint": "^8.53.0",
+    "eslint-config-next": "14.0.3",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "@octokit/rest": "^20.0.2",
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
+    "tsx": "^4.1.1",
+    "unified": "^10.1.2"
   }
 }

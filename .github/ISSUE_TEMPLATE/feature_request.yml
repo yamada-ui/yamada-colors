@@ -1,0 +1,33 @@
+name: "Feature Request"
+description: "Request a feature or enhancement"
+labels: ["enhancement"]
+body:
+  - type: "markdown"
+    attributes:
+      value: |
+        Thank you for submitting a feature request! 😎
+
+        If you have an idea for a new feature topic, notice something is not working as intended, or feel there is an error with the current functionality, you are in the right place!
+  - type: "input"
+    id: "subject"
+    attributes:
+      label: "Subject"
+      description: "What is the subject of this feature?"
+      placeholder: "Contrast"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "Description"
+      description: "What should be added or changed about the feature's subject?"
+      placeholder: "Please add a feature that helps understand color contrast."
+    validations:
+      required: true
+  - type: dropdown
+    id: "participate"
+    attributes:
+      label: "Are you willing to participate in the development of this feature and create a pull request?"
+      options:
+        - "Yes"
+        - "No"

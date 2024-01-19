@@ -1,0 +1,33 @@
+name: "Feature Request (日本語)"
+description: "新しい機能のリクエストや改善を提案します"
+labels: ["enhancement"]
+body:
+  - type: "markdown"
+    attributes:
+      value: |
+        機能のリクエストを作成していただきありがとうございます！ 😎
+
+        新しい機能のトピックについてのアイデアがある、何かが適切に機能されていないと気づいた、または現在の機能に何か誤りがあると感じた場合は、ここが正解です！
+  - type: "input"
+    id: "subject"
+    attributes:
+      label: "主題"
+      description: "この機能の主題は何ですか？"
+      placeholder: "コントラスト"
+    validations:
+      required: true
+  - type: "textarea"
+    id: "description"
+    attributes:
+      label: "説明"
+      description: "主題の機能に何を追加、または変更するべきですか？"
+      placeholder: "色のコントラストが分かる機能を追加してください。"
+    validations:
+      required: true
+  - type: dropdown
+    id: participate
+    attributes:
+      label: この機能の作成に参加し、プルリクエストを作成する志はありますか？
+      options:
+        - "はい"
+        - "いいえ"

@@ -1,7 +1,7 @@
 export const SNS = {
   GITHUB: {
     HIROTOMO_YAMADA: "https://github.com/hirotomoyamada",
-    YAMADA_UI: "https://github.com/hirotomoyamada/yamada-ui",
+    YAMADA_COLORS: "https://github.com/hirotomoyamada/yamada-colors",
   },
   TWITTER: {
     HIROTOMO_YAMADA: "https://twitter.com/hirotomoyamada",

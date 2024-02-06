@@ -77,13 +77,6 @@ export const Header = memo(
           ref={mergeRefs(ref, headerRef)}
           as="header"
           w="full"
-          bg={isScroll ? ["whiteAlpha.500", "blackAlpha.200"] : undefined}
-          backdropFilter="auto"
-          backdropSaturate="180%"
-          backdropBlur="10px"
-          shadow={isScroll ? ["base", "dark-sm"] : undefined}
-          transitionProperty="common"
-          transitionDuration="slower"
           position="sticky"
           top="0"
           left="0"
@@ -91,27 +84,40 @@ export const Header = memo(
           zIndex="guldo"
           {...rest}
         >
-          <HStack w="full" maxW="9xl" py="3" px={{ base: "lg", md: "md" }}>
-            <Box
-              as={Link}
-              href="/"
-              aria-label="Yamada UI"
-              _hover={{ opacity: 0.7 }}
-              transitionProperty="opacity"
+          <Center w="full" maxW="9xl" px={{ base: "lg", lg: "0" }}>
+            <HStack
+              w="full"
+              py="3"
+              px={{ base: "lg", lg: "md" }}
+              bg={["blackAlpha.50", "whiteAlpha.100"]}
+              backdropFilter="auto"
+              backdropSaturate="180%"
+              backdropBlur="10px"
+              transitionProperty="common"
               transitionDuration="slower"
-              _focus={{ outline: "none" }}
-              _focusVisible={{ boxShadow: "outline" }}
-              rounded="md"
+              roundedBottom="xl"
             >
-              <Text as="span" fontSize="xl" fontWeight="semibold">
-                Yamada Colors
-              </Text>
-            </Box>
+              <Box
+                as={Link}
+                href="/"
+                aria-label="Yamada UI"
+                _hover={{ opacity: 0.7 }}
+                transitionProperty="opacity"
+                transitionDuration="slower"
+                _focus={{ outline: "none" }}
+                _focusVisible={{ boxShadow: "outline" }}
+                rounded="md"
+              >
+                <Text as="span" fontSize="xl" fontWeight="semibold">
+                  Yamada Colors
+                </Text>
+              </Box>
 
-            <Spacer />
+              <Spacer />
 
-            <ButtonGroup {...{ isOpen, onOpen }} />
-          </HStack>
+              <ButtonGroup {...{ isOpen, onOpen }} />
+            </HStack>
+          </Center>
         </Center>
 
         <MobileMenu isOpen={isOpen} onClose={onClose} />
@@ -414,6 +420,7 @@ const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
       onClose={onClose}
       withCloseButton={false}
       isFullHeight
+      roundedLeft="xl"
     >
       <DrawerHeader
         justifyContent="flex-end"

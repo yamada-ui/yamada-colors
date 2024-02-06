@@ -1,6 +1,22 @@
 {
   "app": {
-    "title": "Yamada Colors",
+    "title": "探す",
+    "description": ""
+  },
+  "palettes": {
+    "title": "マイパレット",
+    "description": ""
+  },
+  "generators": {
+    "title": "ジェネレーター",
+    "description": ""
+  },
+  "contrast-checker": {
+    "title": "コントラストチェッカー",
+    "description": ""
+  },
+  "history": {
+    "title": "ヒストリー",
     "description": ""
   },
   "not-found": {

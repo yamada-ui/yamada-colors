@@ -1,6 +1,22 @@
 {
   "app": {
-    "title": "Yamada Colors",
+    "title": "Explore",
+    "description": ""
+  },
+  "palettes": {
+    "title": "My Paletters",
+    "description": ""
+  },
+  "generators": {
+    "title": "Generators",
+    "description": ""
+  },
+  "contrast-checker": {
+    "title": "Contrast Checker",
+    "description": ""
+  },
+  "history": {
+    "title": "History",
     "description": ""
   },
   "not-found": {

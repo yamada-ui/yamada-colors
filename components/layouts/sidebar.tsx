@@ -1,13 +1,5 @@
 import type { StackProps } from "@yamada-ui/react"
-import {
-  HStack,
-  Ripple,
-  Text,
-  VStack,
-  forwardRef,
-  handlerAll,
-  useRipple,
-} from "@yamada-ui/react"
+import { HStack, Text, VStack, forwardRef } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import type { ReactNode } from "react"
@@ -19,10 +11,13 @@ import {
   Contrast,
   History,
 } from "components/media-and-icons"
+import { useI18n } from "contexts/i18n-context"
 export type SidebarProps = StackProps
 
 export const Sidebar = memo(
   forwardRef<SidebarProps, "aside">(({ ...rest }, ref) => {
+    const { t } = useI18n()
+
     return (
       <VStack
         ref={ref}
@@ -31,27 +26,26 @@ export const Sidebar = memo(
         rounded="xl"
         position="sticky"
         top="6rem"
-        w="xs"
-        minH="md"
+        w="17rem"
         maxH="calc(100dvh - 8rem)"
         p="md"
         gap="sm"
         {...rest}
       >
         <Button href="/" icon={<Compass boxSize="1.2em" />}>
-          Explore
+          {t("app.title")}
         </Button>
         <Button href="/palettes" icon={<ColorPalette boxSize="1.2em" />}>
-          My Paletters
+          {t("palettes.title")}
         </Button>
-        <Button href="/generator" icon={<Brush boxSize="1.2em" />}>
-          Generators
+        <Button href="/generators" icon={<Brush boxSize="1.2em" />}>
+          {t("generators.title")}
         </Button>
         <Button href="/contrast-checker" icon={<Contrast boxSize="1.2em" />}>
-          Contrast Checker
+          {t("contrast-checker.title")}
         </Button>
         <Button href="/history" icon={<History boxSize="1.2em" />}>
-          History
+          {t("history.title")}
         </Button>
       </VStack>
     )
@@ -66,10 +60,10 @@ export type ButtonProps = StackProps & {
 export const Button = memo(
   forwardRef<ButtonProps, "aside">(
     ({ icon = null, href, children, ...rest }, ref) => {
-      const { ripples, onPointerDown, onClear } = useRipple()
       const router = useRouter()
       const { asPath } = router
-      const isSelected = asPath.startsWith(href)
+      const isSelected =
+        href === "/" ? asPath === href : asPath.startsWith(href)
 
       return (
         <HStack
@@ -80,7 +74,7 @@ export const Button = memo(
           color={!isSelected ? "muted" : undefined}
           rounded="md"
           w="full"
-          h="10"
+          h="12"
           px="md"
           gap="sm"
           transitionProperty="common"
@@ -89,15 +83,10 @@ export const Button = memo(
             color: !isSelected ? ["black", "white"] : undefined,
           }}
           {...rest}
-          overflow="hidden"
-          position="relative"
-          onPointerDown={handlerAll(rest.onPointerDown, onPointerDown)}
         >
           {icon}
 
           <Text as="span">{children}</Text>
-
-          <Ripple isDisabled={isSelected} ripples={ripples} onClear={onClear} />
         </HStack>
       )
     },

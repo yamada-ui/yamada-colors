@@ -27,7 +27,12 @@ body:
   - type: dropdown
     id: participate
     attributes:
-      label: この機能の作成に参加し、プルリクエストを作成する志はありますか？
+      label: この機能の作成に参加し、プルリクエストを作成しますか？
       options:
         - "はい"
         - "いいえ"
+  - type: markdown
+    attributes:
+      value: |
+        このイシューは、アサインされてから2週間経過すると自動的にアサインがクリアされます。
+        アサインがクリアされると、他の方が作業する可能性があります。

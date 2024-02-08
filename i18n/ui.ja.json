@@ -19,6 +19,10 @@
     "title": "ヒストリー",
     "description": ""
   },
+  "categories": {
+    "title": "カテゴリー",
+    "description": ""
+  },
   "not-found": {
     "title": "404: 見つかりません",
     "description": "ページが見つかりません",

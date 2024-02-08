@@ -19,6 +19,10 @@
     "title": "History",
     "description": ""
   },
+  "categories": {
+    "title": "Categories",
+    "description": ""
+  },
   "not-found": {
     "title": "404: Not found",
     "description": "Page not found",

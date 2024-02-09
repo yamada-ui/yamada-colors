@@ -1,1 +1,3 @@
-export const components = {}
+import { Link } from "./link"
+
+export const components = { Link }

@@ -1,3 +1,4 @@
+import type { StackProps } from "@yamada-ui/react"
 import { Center, HStack, VStack } from "@yamada-ui/react"
 import { type FC, type PropsWithChildren } from "react"
 import { Footer, Header, Sidebar } from "components/layouts"
@@ -9,13 +10,14 @@ type AppLayoutOptions = {
   hasSidebar?: boolean
 }
 
-export type AppLayoutProps = PropsWithChildren & AppLayoutOptions
+export type AppLayoutProps = PropsWithChildren & StackProps & AppLayoutOptions
 
 export const AppLayout: FC<AppLayoutProps> = ({
   title,
   description,
   hasSidebar = true,
   children,
+  ...rest
 }) => {
   return (
     <>
@@ -23,7 +25,7 @@ export const AppLayout: FC<AppLayoutProps> = ({
 
       <Header />
 
-      <Center as="main">
+      <Center>
         <HStack
           alignItems="flex-start"
           w="full"
@@ -37,10 +39,12 @@ export const AppLayout: FC<AppLayoutProps> = ({
           ) : null}
 
           <VStack
+            as="main"
             flex="1"
             minW="0"
             gap="0"
             px={hasSidebar ? { base: "lg", md: "md" } : undefined}
+            {...rest}
           >
             {children}
           </VStack>

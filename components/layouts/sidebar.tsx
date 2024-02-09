@@ -77,10 +77,14 @@ export const Button = memo(
           h="12"
           px="md"
           gap="sm"
+          outline="none"
           transitionProperty="common"
           transitionDuration="slower"
           _hover={{
             color: !isSelected ? ["black", "white"] : undefined,
+          }}
+          _focusVisible={{
+            boxShadow: "outline",
           }}
           {...rest}
         >

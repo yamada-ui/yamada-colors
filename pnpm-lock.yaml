@@ -23,6 +23,9 @@ dependencies:
   '@yamada-ui/react':
     specifier: 1.2.4
     version: 1.2.4(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.2.48)(framer-motion@11.0.3)(react-dom@18.2.0)(react@18.2.0)
+  color2k:
+    specifier: ^2.0.3
+    version: 2.0.3
   next:
     specifier: 14.0.3
     version: 14.0.3(react-dom@18.2.0)(react@18.2.0)

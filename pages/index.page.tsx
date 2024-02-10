@@ -1,4 +1,3 @@
-import { defaultTheme } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -6,10 +5,9 @@ import type {
 } from "next"
 import { Category, categories } from "components/data-display"
 import { useI18n } from "contexts/i18n-context"
+import { getRandomColors } from "functions/get-random-colors"
 import { AppLayout } from "layouts/app-layout"
-import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
-import randomColor from "utils/random-color"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -52,12 +50,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     .slice(0, 8)
 
   const computedCategories = omittedCategories.map((category) => {
-    let hue = defaultTheme.colors[category][500]
-
-    if (category === "gray") hue = "monochrome"
-
-    const hexes = randomColor({ count: 10, luminosity: "bright", hue })
-    const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+    const colors = getRandomColors({ category })
 
     return { category, colors }
   })

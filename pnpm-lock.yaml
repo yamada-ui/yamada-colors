@@ -26,6 +26,9 @@ dependencies:
   color2k:
     specifier: ^2.0.3
     version: 2.0.3
+  nearest-color:
+    specifier: ^0.4.4
+    version: 0.4.4
   next:
     specifier: 14.0.3
     version: 14.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -43,6 +46,9 @@ devDependencies:
   '@octokit/rest':
     specifier: ^20.0.2
     version: 20.0.2
+  '@types/nearest-color':
+    specifier: ^0.4.1
+    version: 0.4.1
   '@types/node':
     specifier: ^20.9.0
     version: 20.11.5
@@ -1581,6 +1587,10 @@ packages:
   /@types/minimist@1.2.5:
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==, tarball: https://registry.npmjs.org/@types/minimist/-/minimist-1.2.5.tgz}
     dev: false
+
+  /@types/nearest-color@0.4.1:
+    resolution: {integrity: sha512-nxe9cdPrS0Gh3FRxDSHyB6Ep3OCCKqqBAYTj0EyT21aInkNESV9Vm0IS+ibeqkycSjadlAHmworjBgqz266S3w==, tarball: https://registry.npmjs.org/@types/nearest-color/-/nearest-color-0.4.1.tgz}
+    dev: true
 
   /@types/node@20.11.5:
     resolution: {integrity: sha512-g557vgQjUUfN76MZAN/dt1z3dzcUsimuysco0KeluHgrPdJXkP/XdAURgyO2W9fZWHRtRBiVKzKn8vyOAwlG+w==, tarball: https://registry.npmjs.org/@types/node/-/node-20.11.5.tgz}
@@ -6023,6 +6033,10 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==, tarball: https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz}
     dev: true
+
+  /nearest-color@0.4.4:
+    resolution: {integrity: sha512-orhcaIORC10tf41Ld2wwlcC+FaAavHG87JHWB3eHH5p7v2k9Tzym2XNEZzLAm5YJwGv6Q38WWc7SOb+Qfu/4NQ==, tarball: https://registry.npmjs.org/nearest-color/-/nearest-color-0.4.4.tgz}
+    dev: false
 
   /next-seo@6.4.0(next@14.0.3)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-XQFxkOL2hw0YE+P100HbI3EAvcludlHPxuzMgaIjKb7kPK0CvjGvLFjd9hszZFEDc5oiQkGFA8+cuWcnip7eYA==, tarball: https://registry.npmjs.org/next-seo/-/next-seo-6.4.0.tgz}

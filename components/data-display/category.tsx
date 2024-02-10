@@ -112,7 +112,8 @@ type CategoryGridProps = GridProps & {
 
 const CategoryGrid: FC<CategoryGridProps> = memo(
   ({ size = "md", colors, ...rest }) => {
-    const count = useBreakpointValue({ base: 9, md: 10 })
+    const mdCount = useBreakpointValue({ base: 8, lg: 6, md: 8 })
+    const smCount = useBreakpointValue({ base: 9, md: 10 })
 
     if (size === "md") {
       return (
@@ -120,13 +121,13 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
           templateColumns={{
             base: "repeat(4, 1fr)",
             xl: "repeat(2, 1fr)",
-            lg: "repeat(4, 1fr)",
+            lg: "repeat(3, 1fr)",
             md: "repeat(2, 1fr)",
           }}
           gap="md"
           {...rest}
         >
-          {colors.slice(0, 8).map(({ name, hex }, index) => (
+          {colors.slice(0, mdCount).map(({ name, hex }, index) => (
             <GridItem
               key={`${hex}-${index}`}
               as={Link}
@@ -162,7 +163,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
           gap="md"
           {...rest}
         >
-          {colors.slice(0, count).map(({ name, hex }, index) => (
+          {colors.slice(0, smCount).map(({ name, hex }, index) => (
             <GridItem
               key={`${hex}-${index}`}
               as={Link}

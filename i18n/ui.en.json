@@ -31,6 +31,10 @@
     "back-to-app": "Back to App"
   },
   "component": {
+    "category": {
+      "label": "CATEGORY",
+      "more": "See All"
+    },
     "footer": {
       "description": "Built by `Hirotomo Yamada` and `these awesome people`"
     }

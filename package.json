@@ -22,6 +22,7 @@
     "@commitlint/config-conventional": "^18.5.0",
     "@vercel/analytics": "^1.1.2",
     "@vercel/speed-insights": "^1.0.1",
+    "@yamada-ui/carousel": "^1.0.13",
     "@yamada-ui/react": "1.2.4",
     "next": "14.0.3",
     "next-seo": "^6.4.0",

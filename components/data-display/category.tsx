@@ -137,11 +137,15 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
                 <Motion
                   bg={hex}
                   color={isLight(hex) ? "black" : "white"}
-                  p={{ base: "normal", lg: "md", md: "normal" }}
+                  p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
                   rounded="xl"
                   whileHover={{ scale: 0.95 }}
                 >
-                  <VStack boxSize="full" justifyContent="flex-end" gap="xs">
+                  <VStack
+                    boxSize="full"
+                    justifyContent="flex-end"
+                    gap={{ base: "xs", sm: "0" }}
+                  >
                     <Text as="span" fontWeight="medium" lineClamp={1}>
                       {name}
                     </Text>
@@ -176,7 +180,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
                 >
                   <Box boxSize={{ base: "12" }} bg={hex} rounded="xl" />
 
-                  <VStack gap="xs">
+                  <VStack gap={{ base: "xs", sm: "0" }}>
                     <Text as="span" fontWeight="medium" lineClamp={1}>
                       {name}
                     </Text>
@@ -210,6 +214,7 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
         slideSize={{
           base: size === "md" ? "33.3%" : "25%",
           md: size === "md" ? "50%" : "33.3%",
+          sm: size === "md" ? "100%" : "50%",
         }}
         align="start"
         withIndicators={false}
@@ -225,11 +230,15 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
               <Motion
                 bg={hex}
                 color={isLight(hex) ? "black" : "white"}
-                p={{ base: "normal", lg: "md", md: "normal" }}
+                p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
                 rounded="xl"
                 whileHover={{ scale: 0.95 }}
               >
-                <VStack boxSize="full" justifyContent="flex-end" gap="xs">
+                <VStack
+                  boxSize="full"
+                  justifyContent="flex-end"
+                  gap={{ base: "xs", sm: "0" }}
+                >
                   {size === "md" ? (
                     <Text as="span" fontWeight="medium" lineClamp={1}>
                       {name}

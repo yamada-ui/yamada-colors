@@ -96,6 +96,7 @@ export const Header = memo(
               transitionProperty="common"
               transitionDuration="slower"
               roundedBottom="xl"
+              shadow={isScroll ? ["base", "dark-sm"] : undefined}
             >
               <Box
                 as={Link}

@@ -1,4 +1,4 @@
-interface RandomColorOptionsSingle {
+export type RandomColorOptionsSingle = {
   hue?: number | string
   luminosity?: "bright" | "light" | "dark" | "random"
   seed?: number | string
@@ -6,7 +6,7 @@ interface RandomColorOptionsSingle {
   alpha?: number
 }
 
-interface RandomColorOptionsMultiple extends RandomColorOptionsSingle {
+export type RandomColorOptionsMultiple = RandomColorOptionsSingle & {
   count: number
 }
 

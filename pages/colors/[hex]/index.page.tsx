@@ -6,6 +6,7 @@ import type {
 } from "next"
 import { Data } from "./data"
 import { Header } from "./header"
+import { useHistory } from "./use-history"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
 import { toCielab, toCielch, toCmyk, toHsl, toHsv, toRgb } from "utils/color"
@@ -16,7 +17,8 @@ type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 export type ColorData = PageProps["data"]
 
-const Page: NextPage<PageProps> = ({ hex, name, data }) => {
+const Page: NextPage<PageProps> = ({ cookies, hex, name, data }) => {
+  useHistory({ cookies, hex })
   const { t } = useI18n()
 
   return (

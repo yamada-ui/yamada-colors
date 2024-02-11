@@ -24,6 +24,7 @@
     "@vercel/speed-insights": "^1.0.1",
     "@yamada-ui/carousel": "^1.0.13",
     "@yamada-ui/react": "1.2.4",
+    "color-convert": "^2.0.1",
     "color2k": "^2.0.3",
     "nearest-color": "^0.4.4",
     "next": "14.0.3",

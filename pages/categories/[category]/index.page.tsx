@@ -21,9 +21,9 @@ import { NextLinkButton } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
 import { getRandomColors } from "functions/get-random-colors"
 import { AppLayout } from "layouts/app-layout"
-import { toCamelCase } from "utils/assertion"
 import { isLight } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
+import { toCamelCase } from "utils/string"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 

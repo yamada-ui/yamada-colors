@@ -6,11 +6,12 @@ export type UseHistoryProps = { cookies: string; hex: string }
 
 export const useHistory = ({ cookies, hex }: UseHistoryProps) => {
   useEffect(() => {
-    const history = getCookie(cookies, CONSTANT.STORAGE.HISTORY, "[]")
+    const history: string[] = getCookie(cookies, CONSTANT.STORAGE.HISTORY, "[]")
 
     history.unshift(hex)
 
-    const computedHistory = Array.from(new Set(history))
+    const omittedHistory = history.slice(0, 100)
+    const computedHistory = Array.from(new Set(omittedHistory))
 
     setCookie(CONSTANT.STORAGE.HISTORY, JSON.stringify(computedHistory))
   }, [cookies, hex])

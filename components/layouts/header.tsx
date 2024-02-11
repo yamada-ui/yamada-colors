@@ -1,16 +1,17 @@
 import type {
   BoxProps,
   CenterProps,
+  ColorPickerProps,
   DrawerProps,
   IconButtonProps,
   MenuProps,
-  PopoverProps,
   UseDisclosureReturn,
 } from "@yamada-ui/react"
 import {
   Box,
   Center,
   CloseButton,
+  ColorPicker,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -21,16 +22,13 @@ import {
   MenuList,
   MenuOptionGroup,
   MenuOptionItem,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Ripple,
   Spacer,
   Text,
   VStack,
   forwardRef,
   mergeRefs,
+  noop,
   useBreakpoint,
   useBreakpointValue,
   useColorMode,
@@ -38,17 +36,16 @@ import {
   useMotionValueEvent,
   useRipple,
   useScroll,
-  useTheme,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import type { FC } from "react"
 import { memo, useEffect, useRef, useState } from "react"
 import {
-  ColorPalette,
   Discord,
   Github,
   Hamburger,
+  MagnifyingGlass,
   Moon,
   Sun,
   Translate,
@@ -89,6 +86,7 @@ export const Header = memo(
               w="full"
               py="3"
               px={{ base: "lg", lg: "md" }}
+              gap={{ base: "md", sm: "sm" }}
               bg={["blackAlpha.50", "whiteAlpha.100"]}
               backdropFilter="auto"
               backdropSaturate="180%"
@@ -116,6 +114,8 @@ export const Header = memo(
 
               <Spacer />
 
+              <Search isScroll={isScroll} />
+
               <ButtonGroup {...{ isOpen, onOpen }} />
             </HStack>
           </Center>
@@ -127,6 +127,50 @@ export const Header = memo(
   }),
 )
 
+type SearchProps = ColorPickerProps & { isScroll: boolean }
+
+const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
+  return (
+    <>
+      <ColorPicker
+        maxW={{ base: "sm", md: "xs" }}
+        matchWidth
+        colorSelectorSize="md"
+        display={{ base: "block", sm: "none" }}
+        // TODO: Remove once updated
+        swatchProps={{ zIndex: 2 }}
+        borderColor="transparent"
+        _hover={{}}
+        bg={
+          isScroll
+            ? ["whiteAlpha.600", "blackAlpha.500"]
+            : ["whiteAlpha.900", "blackAlpha.700"]
+        }
+        rounded="full"
+        backdropFilter="auto"
+        backdropSaturate="180%"
+        backdropBlur="10px"
+        transitionProperty="common"
+        transitionDuration="slower"
+        eyeDropperProps={{ rounded: "full" }}
+        {...rest}
+      />
+
+      <IconButton
+        variant="ghost"
+        isRounded
+        aria-label="Open navigation menu"
+        display={{ base: "none", sm: "inline-flex" }}
+        color="muted"
+        onClick={noop}
+        icon={<MagnifyingGlass />}
+      />
+    </>
+  )
+})
+
+Search.displayName = "Search"
+
 type ButtonGroupProps = Partial<UseDisclosureReturn> & { isMobile?: boolean }
 
 const ButtonGroup: FC<ButtonGroupProps> = memo(
@@ -136,6 +180,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
         <NextLinkIconButton
           href={CONSTANT.SNS.DISCORD}
           isExternal
+          isRounded
           aria-label="GitHub repository"
           variant="ghost"
           display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
@@ -146,15 +191,12 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
         <NextLinkIconButton
           href={CONSTANT.SNS.GITHUB.YAMADA_COLORS}
           isExternal
+          isRounded
           aria-label="Discord server"
           variant="ghost"
           display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
           color="muted"
           icon={<Github />}
-        />
-
-        <ThemeSchemeButton
-          display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
         />
 
         {CONSTANT.I18N.LOCALES.length > 1 ? (
@@ -166,11 +208,14 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
           />
         ) : null}
 
-        <ColorModeButton />
+        <ColorModeButton
+          display={{ base: "inline-flex", sm: !isMobile ? "none" : undefined }}
+        />
 
         {!isOpen ? (
           <IconButton
             variant="ghost"
+            isRounded
             aria-label="Open navigation menu"
             display={{ base: "none", lg: "inline-flex" }}
             color="muted"
@@ -180,6 +225,8 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
         ) : (
           <CloseButton
             size="lg"
+            // TODO: Remove once updated
+            rounded="full"
             aria-label="Close navigation menu"
             display={{ base: "none", lg: "inline-flex" }}
             color="muted"
@@ -223,6 +270,7 @@ const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
       <MenuButton
         as={IconButton}
         aria-label="Open language switching menu"
+        isRounded
         variant="ghost"
         color="muted"
         icon={<Translate />}
@@ -279,6 +327,7 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
         <MenuButton
           as={IconButton}
           aria-label="Open color mode switching menu"
+          isRounded
           variant="ghost"
           color="muted"
           icon={colorMode === "dark" ? <Sun /> : <Moon />}
@@ -308,60 +357,6 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
 )
 
 ColorModeButton.displayName = "ColorModeButton"
-
-type ThemeSchemeButtonProps = IconButtonProps & {
-  popoverProps?: PopoverProps
-}
-
-const ThemeSchemeButton: FC<ThemeSchemeButtonProps> = memo(
-  ({ popoverProps, ...rest }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const { theme, changeThemeScheme } = useTheme()
-    const { colorSchemes = [] } = theme
-
-    return (
-      <Popover
-        {...popoverProps}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-        placement="bottom"
-        closeOnButton={false}
-        restoreFocus={false}
-      >
-        <PopoverTrigger>
-          <IconButton
-            aria-label="Open color mode switching menu"
-            variant="ghost"
-            color="muted"
-            icon={<ColorPalette />}
-            {...rest}
-          />
-        </PopoverTrigger>
-
-        <PopoverContent>
-          <PopoverBody
-            display="grid"
-            gridTemplateColumns={{ base: "repeat(4, 1fr)" }}
-          >
-            {colorSchemes.map((colorScheme: string) => (
-              <ColorButton
-                key={colorScheme}
-                colorScheme={colorScheme}
-                onClick={() => {
-                  changeThemeScheme(colorScheme)
-                  onClose()
-                }}
-              />
-            ))}
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    )
-  },
-)
-
-ThemeSchemeButton.displayName = "ThemeSchemeButton"
 
 type ColorButtonProps = BoxProps & {
   colorScheme: string

@@ -138,7 +138,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
                   bg={hex}
                   color={isLight(hex) ? "black" : "white"}
                   p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
-                  rounded="xl"
+                  rounded="2xl"
                   whileHover={{ scale: 0.95 }}
                 >
                   <VStack
@@ -173,12 +173,12 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
               as={Link}
               href={`/colors/${hex.replace("#", "")}`}
             >
-              <Motion rounded="xl" whileHover={{ scale: 0.95 }}>
+              <Motion rounded="2xl" whileHover={{ scale: 0.95 }}>
                 <Grid
                   templateColumns={{ base: "auto 1fr" }}
                   gap={{ base: "md" }}
                 >
-                  <Box boxSize={{ base: "12" }} bg={hex} rounded="xl" />
+                  <Box boxSize={{ base: "12" }} bg={hex} rounded="2xl" />
 
                   <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
                     <Text as="span" fontWeight="medium" lineClamp={1}>
@@ -231,7 +231,7 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
                 bg={hex}
                 color={isLight(hex) ? "black" : "white"}
                 p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
-                rounded="xl"
+                rounded="2xl"
                 whileHover={{ scale: 0.95 }}
               >
                 <VStack

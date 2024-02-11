@@ -7,7 +7,7 @@ export const Header: FC<HeaderProps> = ({ hex, name }) => {
   return (
     <HStack>
       <Grid templateColumns={{ base: "auto 1fr" }} gap={{ base: "md" }}>
-        <Box boxSize={{ base: "20" }} bg={hex} rounded="xl" />
+        <Box boxSize={{ base: "20" }} bg={hex} rounded="2xl" />
 
         <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
           <Text as="h1" fontSize="4xl" fontWeight="semibold">

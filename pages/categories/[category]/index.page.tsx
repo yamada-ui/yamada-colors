@@ -92,7 +92,7 @@ const Page: NextPage<PageProps> = ({
                 bg={hex}
                 color={isLight(hex) ? "black" : "white"}
                 p={{ base: "normal", lg: "md", md: "normal" }}
-                rounded="xl"
+                rounded="2xl"
                 whileHover={{ scale: 0.95 }}
               >
                 <VStack boxSize="full" justifyContent="flex-end" gap="xs">

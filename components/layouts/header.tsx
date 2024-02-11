@@ -93,7 +93,7 @@ export const Header = memo(
               backdropBlur="10px"
               transitionProperty="common"
               transitionDuration="slower"
-              roundedBottom="xl"
+              roundedBottom="2xl"
               shadow={isScroll ? ["base", "dark-sm"] : undefined}
             >
               <Box

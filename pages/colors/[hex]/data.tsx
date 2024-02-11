@@ -42,7 +42,7 @@ export const Data: FC<DataProps> = ({
       <Center
         w="full"
         h="xs"
-        rounded="xl"
+        rounded="2xl"
         flexDirection="column"
         gap="xs"
         bg={hex}

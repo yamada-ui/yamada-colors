@@ -49,6 +49,9 @@ devDependencies:
   '@octokit/rest':
     specifier: ^20.0.2
     version: 20.0.2
+  '@types/color-convert':
+    specifier: ^2.0.3
+    version: 2.0.3
   '@types/nearest-color':
     specifier: ^0.4.1
     version: 0.4.1
@@ -1566,6 +1569,16 @@ packages:
     dependencies:
       tslib: 2.6.2
     dev: false
+
+  /@types/color-convert@2.0.3:
+    resolution: {integrity: sha512-2Q6wzrNiuEvYxVQqhh7sXM2mhIhvZR/Paq4FdsQkOMgWsCIkKvSGj8Le1/XalulrmgOzPMqNa0ix+ePY4hTrfg==, tarball: https://registry.npmjs.org/@types/color-convert/-/color-convert-2.0.3.tgz}
+    dependencies:
+      '@types/color-name': 1.1.3
+    dev: true
+
+  /@types/color-name@1.1.3:
+    resolution: {integrity: sha512-87W6MJCKZYDhLAx/J1ikW8niMvmGRyY+rpUxWpL1cO7F8Uu5CHuQoFv+R0/L5pgNdW4jTyda42kv60uwVIPjLw==, tarball: https://registry.npmjs.org/@types/color-name/-/color-name-1.1.3.tgz}
+    dev: true
 
   /@types/cookie@0.5.4:
     resolution: {integrity: sha512-7z/eR6O859gyWIAjuvBWFzNURmf2oPBmJlfVWkwehU5nzIyjwBsTh7WMmEEV4JFnHuQ3ex4oyTvfKzcyJVDBNA==, tarball: https://registry.npmjs.org/@types/cookie/-/cookie-0.5.4.tgz}

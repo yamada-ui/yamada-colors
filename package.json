@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "^20.0.2",
+    "@types/color-convert": "^2.0.3",
     "@types/nearest-color": "^0.4.1",
     "@types/node": "^20.9.0",
     "@types/react": "^18.2.37",

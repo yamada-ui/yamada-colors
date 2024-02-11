@@ -25,7 +25,6 @@ import {
   Ripple,
   Spacer,
   Text,
-  VStack,
   forwardRef,
   mergeRefs,
   noop,
@@ -50,7 +49,7 @@ import {
   Sun,
   Translate,
 } from "components/media-and-icons"
-import { NextLinkIconButton } from "components/navigation"
+import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 
@@ -427,39 +426,8 @@ const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
         <ButtonGroup isMobile {...{ isOpen, onClose }} />
       </DrawerHeader>
 
-      <DrawerBody position="relative" my="sm">
-        <VStack
-          as="nav"
-          overflowY="scroll"
-          overscrollBehavior="contain"
-        ></VStack>
-
-        <Box
-          position="absolute"
-          top="0"
-          left="0"
-          right="0"
-          zIndex="kurillin"
-          w="full"
-          h="3"
-          bgGradient={[
-            "linear(to-t, rgba(255, 255, 255, 0), white)",
-            "linear(to-t, rgba(0, 0, 0, 0), black)",
-          ]}
-        />
-        <Box
-          position="absolute"
-          bottom="0"
-          left="0"
-          right="0"
-          zIndex="kurillin"
-          w="full"
-          h="3"
-          bgGradient={[
-            "linear(to-b, rgba(255, 255, 255, 0), white)",
-            "linear(to-b, rgba(0, 0, 0, 0), black)",
-          ]}
-        />
+      <DrawerBody my="md">
+        <Tree />
       </DrawerBody>
     </Drawer>
   )

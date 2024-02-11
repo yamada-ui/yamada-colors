@@ -180,7 +180,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
                 >
                   <Box boxSize={{ base: "12" }} bg={hex} rounded="xl" />
 
-                  <VStack gap={{ base: "xs", sm: "0" }}>
+                  <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
                     <Text as="span" fontWeight="medium" lineClamp={1}>
                       {name}
                     </Text>

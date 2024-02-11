@@ -27,7 +27,7 @@ export const Data: FC<DataProps> = ({
   return (
     <>
       <ScrollArea type="never">
-        <HStack divider={<Divider />} h="46px">
+        <HStack divider={<Divider />} h={{ base: "46px", sm: "42px" }}>
           <StackItem label="name" value={name} />
           <StackItem label="hex" value={hex} />
           <StackItem label="rgb" value={rgb} />
@@ -41,14 +41,14 @@ export const Data: FC<DataProps> = ({
 
       <Center
         w="full"
-        h="xs"
+        h={{ base: "xs", sm: "2xs" }}
         rounded="2xl"
         flexDirection="column"
-        gap="xs"
+        gap={{ base: "xs", sm: "0" }}
         bg={hex}
       >
         <Text
-          fontSize="2xl"
+          fontSize={{ base: "2xl", sm: "xl" }}
           fontWeight="semibold"
           color={isLight(hex) ? "black" : "white"}
         >
@@ -56,7 +56,7 @@ export const Data: FC<DataProps> = ({
         </Text>
 
         <Text
-          fontSize="lg"
+          fontSize={{ base: "lg", sm: "md" }}
           color={isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700"}
         >
           {hex}
@@ -73,7 +73,7 @@ type StackItemProps = StackProps & {
 
 const StackItem: FC<StackItemProps> = ({ label, value }) => {
   return (
-    <VStack w="auto" alignItems="center" px="md" gap="xs">
+    <VStack w="auto" alignItems="center" px="md" gap={{ base: "xs", sm: "0" }}>
       <Text fontSize="xs" color="muted" textTransform="uppercase">
         {label}
       </Text>

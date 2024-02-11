@@ -1,5 +1,6 @@
 import type { StackProps } from "@yamada-ui/react"
 import {
+  Box,
   Center,
   Divider,
   HStack,
@@ -10,6 +11,7 @@ import {
 } from "@yamada-ui/react"
 import type { FC } from "react"
 import type { ColorData } from "./index.page"
+import { ScrollShadow } from "components/data-display"
 import { isLight } from "utils/color"
 
 export type DataProps = ColorData & {}
@@ -26,18 +28,22 @@ export const Data: FC<DataProps> = ({
 }) => {
   return (
     <>
-      <ScrollArea type="never">
-        <HStack divider={<Divider />} h={{ base: "46px", sm: "42px" }}>
-          <StackItem label="name" value={name} />
-          <StackItem label="hex" value={hex} />
-          <StackItem label="rgb" value={rgb} />
-          <StackItem label="hsl" value={hsl} />
-          <StackItem label="hsv" value={hsv} />
-          <StackItem label="cmyk" value={cmyk} />
-          <StackItem label="cielab" value={cielab} />
-          <StackItem label="cielch" value={cielch} />
-        </HStack>
-      </ScrollArea>
+      <Box position="relative">
+        <ScrollArea type="never">
+          <HStack divider={<Divider />} h={{ base: "46px", sm: "42px" }}>
+            <StackItem label="name" value={name} />
+            <StackItem label="hex" value={hex} />
+            <StackItem label="rgb" value={rgb} />
+            <StackItem label="hsl" value={hsl} />
+            <StackItem label="hsv" value={hsv} />
+            <StackItem label="cmyk" value={cmyk} />
+            <StackItem label="cielab" value={cielab} />
+            <StackItem label="cielch" value={cielch} />
+          </HStack>
+        </ScrollArea>
+
+        <ScrollShadow />
+      </Box>
 
       <Center
         w="full"

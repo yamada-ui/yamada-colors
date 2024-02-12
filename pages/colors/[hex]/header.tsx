@@ -1,4 +1,12 @@
-import { Box, Grid, HStack, Spacer, Text, VStack } from "@yamada-ui/react"
+import {
+  Box,
+  Grid,
+  HStack,
+  Heading,
+  Spacer,
+  Text,
+  VStack,
+} from "@yamada-ui/react"
 import type { FC } from "react"
 
 export type HeaderProps = Color
@@ -10,13 +18,7 @@ export const Header: FC<HeaderProps> = ({ hex, name }) => {
         <Box boxSize={{ base: "20", sm: "16" }} bg={hex} rounded="2xl" />
 
         <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
-          <Text
-            as="h1"
-            fontSize={{ base: "4xl", sm: "2xl" }}
-            fontWeight="semibold"
-          >
-            {name}
-          </Text>
+          <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>
 
           <Text as="h2" color="muted">
             {hex}

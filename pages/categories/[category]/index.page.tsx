@@ -1,5 +1,6 @@
 import {
   AspectRatio,
+  Box,
   Center,
   Grid,
   GridItem,
@@ -32,14 +33,13 @@ const Page: NextPage<PageProps> = ({
   categories,
   colors: defaultColors,
 }) => {
-  const [colors, setColors] =
-    useState<{ hex: string; name: string }[]>(defaultColors)
+  const [colors, setColors] = useState<Colors>(defaultColors)
   const { t } = useI18n()
 
   const onViewportEnter = useCallback(async () => {
     const queries = new URLSearchParams({ count: "120" })
     const res = await fetch(`/api/categories/${currentCategory}?${queries}`)
-    const data: { colors: { hex: string; name: string }[] } = await res.json()
+    const data: { colors: Colors } = await res.json()
     const { colors } = data
 
     setColors((prev) => [...prev, ...colors])
@@ -54,25 +54,29 @@ const Page: NextPage<PageProps> = ({
       title={toCamelCase(currentCategory)}
       description={t("categories.description")}
     >
-      <Wrap gap="sm" mb="lg">
-        {categories.map((category) => {
-          const isCurrent = category === currentCategory
+      <Box as="nav">
+        <Wrap as="ul" gap="sm" mb="lg">
+          {categories.map((category) => {
+            const isCurrent = category === currentCategory
 
-          return (
-            <NextLinkButton
-              key={category}
-              href={`/categories/${category}`}
-              rounded="full"
-              variant={isCurrent ? "solid" : "outline"}
-              colorScheme={category}
-            >
-              {toCamelCase(category)}
-            </NextLinkButton>
-          )
-        })}
-      </Wrap>
+            return (
+              <Box key={category} as="li">
+                <NextLinkButton
+                  href={`/categories/${category}`}
+                  rounded="full"
+                  variant={isCurrent ? "solid" : "outline"}
+                  colorScheme={category}
+                >
+                  {toCamelCase(category)}
+                </NextLinkButton>
+              </Box>
+            )
+          })}
+        </Wrap>
+      </Box>
 
       <Grid
+        as="ul"
         templateColumns={{
           base: "repeat(4, 1fr)",
           xl: "repeat(2, 1fr)",
@@ -82,12 +86,8 @@ const Page: NextPage<PageProps> = ({
         gap="md"
       >
         {colors.map(({ name, hex }, index) => (
-          <GridItem
-            key={`${hex}-${index}`}
-            as={Link}
-            href={`/colors/${hex.replace("#", "")}`}
-          >
-            <AspectRatio>
+          <GridItem key={`${hex}-${index}`} as="li">
+            <AspectRatio as={Link} href={`/colors/${hex.replace("#", "")}`}>
               <Motion
                 bg={hex}
                 color={isLight(hex) ? "black" : "white"}

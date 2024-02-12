@@ -1,11 +1,11 @@
 import { Box, Grid, HStack, Spacer, Text, VStack } from "@yamada-ui/react"
 import type { FC } from "react"
 
-export type HeaderProps = { hex: string; name: string }
+export type HeaderProps = Color
 
 export const Header: FC<HeaderProps> = ({ hex, name }) => {
   return (
-    <HStack>
+    <HStack as="section">
       <Grid templateColumns={{ base: "auto 1fr" }} gap={{ base: "md" }}>
         <Box boxSize={{ base: "20", sm: "16" }} bg={hex} rounded="2xl" />
 

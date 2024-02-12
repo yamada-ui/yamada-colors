@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { getRandomColors } from "functions/get-random-colors"
 
 type ResponseData = {
-  colors: { hex: string; name: string }[]
+  colors: Colors
 }
 
 const handler = (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {

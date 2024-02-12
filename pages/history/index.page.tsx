@@ -31,6 +31,7 @@ const Page: NextPage<PageProps> = ({ history }) => {
       description={t("history.description")}
     >
       <Grid
+        as="ul"
         templateColumns={{
           base: "repeat(4, 1fr)",
           xl: "repeat(2, 1fr)",
@@ -40,12 +41,8 @@ const Page: NextPage<PageProps> = ({ history }) => {
         gap="md"
       >
         {history.map(({ hex, name }, index) => (
-          <GridItem
-            key={`${hex}-${index}`}
-            as={Link}
-            href={`/colors/${hex.replace("#", "")}`}
-          >
-            <AspectRatio>
+          <GridItem key={`${hex}-${index}`} as="li">
+            <AspectRatio as={Link} href={`/colors/${hex.replace("#", "")}`}>
               <Motion
                 bg={hex}
                 color={isLight(hex) ? "black" : "white"}

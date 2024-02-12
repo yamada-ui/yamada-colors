@@ -47,9 +47,11 @@ export const categories = [
   "orange",
 ] as const
 
+export type Categories = (typeof categories)[number] | StringLiteral
+
 export type CategoryProps = StackProps & {
-  category: (typeof categories)[number] | StringLiteral
-  colors: { hex: string; name: string }[]
+  category: Categories
+  colors: Colors
   type?: CategoryType
   size?: CategorySize
 }
@@ -107,7 +109,7 @@ CategoryTitle.displayName = "CategoryTitle"
 
 type CategoryGridProps = GridProps & {
   size?: CategorySize
-  colors: { hex: string; name: string }[]
+  colors: Colors
 }
 
 const CategoryGrid: FC<CategoryGridProps> = memo(
@@ -118,6 +120,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
     if (size === "md") {
       return (
         <Grid
+          as="ul"
           templateColumns={{
             base: "repeat(4, 1fr)",
             xl: "repeat(2, 1fr)",
@@ -128,12 +131,8 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
           {...rest}
         >
           {colors.slice(0, mdCount).map(({ name, hex }, index) => (
-            <GridItem
-              key={`${hex}-${index}`}
-              as={Link}
-              href={`/colors/${hex.replace("#", "")}`}
-            >
-              <AspectRatio>
+            <GridItem key={`${hex}-${index}`} as="li">
+              <AspectRatio as={Link} href={`/colors/${hex.replace("#", "")}`}>
                 <Motion
                   bg={hex}
                   color={isLight(hex) ? "black" : "white"}
@@ -163,18 +162,17 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
     } else {
       return (
         <Grid
+          as="ul"
           templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
           gap="md"
           {...rest}
         >
           {colors.slice(0, smCount).map(({ name, hex }, index) => (
-            <GridItem
-              key={`${hex}-${index}`}
-              as={Link}
-              href={`/colors/${hex.replace("#", "")}`}
-            >
+            <GridItem key={`${hex}-${index}`} as="li">
               <Motion rounded="2xl" whileHover={{ scale: 0.95 }}>
                 <Grid
+                  as={Link}
+                  href={`/colors/${hex.replace("#", "")}`}
                   templateColumns={{ base: "auto 1fr" }}
                   gap={{ base: "md" }}
                 >
@@ -203,14 +201,14 @@ CategoryGrid.displayName = "CategoryGrid"
 
 type CategoryCarouselProps = CarouselProps & {
   size?: CategorySize
-  colors: { hex: string; name: string }[]
+  colors: Colors
 }
 
 const CategoryCarousel: FC<CategoryCarouselProps> = memo(
   ({ size = "md", colors, ...rest }) => {
     return (
       <Carousel
-        innerProps={{ h: "auto" }}
+        innerProps={{ as: "ul", h: "auto" }}
         slideSize={{
           base: size === "md" ? "33.3%" : "25%",
           md: size === "md" ? "50%" : "33.3%",
@@ -221,12 +219,8 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
         {...rest}
       >
         {colors.map(({ name, hex }, index) => (
-          <CarouselSlide
-            key={`${hex}-${index}`}
-            as={Link}
-            href={`/colors/${hex.replace("#", "")}`}
-          >
-            <AspectRatio>
+          <CarouselSlide key={`${hex}-${index}`} as="li">
+            <AspectRatio as={Link} href={`/colors/${hex.replace("#", "")}`}>
               <Motion
                 bg={hex}
                 color={isLight(hex) ? "black" : "white"}

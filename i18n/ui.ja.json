@@ -23,6 +23,39 @@
     "title": "カテゴリー",
     "description": ""
   },
+  "colors": {
+    "description": "",
+    "shades": {
+      "title": "シェード",
+      "description": ":label + #000000",
+      "more": "See All"
+    },
+    "tints": {
+      "title": "ティント",
+      "description": ":label + #ffffff",
+      "more": "See All"
+    },
+    "gray": {
+      "title": "グレー",
+      "description": ":label の色相上のグレースケール",
+      "more": "See All"
+    },
+    "complementary": {
+      "title": "捕色",
+      "description": "色相が 180° 離れた色",
+      "more": "See All"
+    },
+    "alternative": {
+      "title": "代替",
+      "description": ":label の代替",
+      "more": "See All"
+    },
+    "hue": {
+      "title": "色相",
+      "description": "色相が互いに 36° 離れた色",
+      "more": "See All"
+    }
+  },
   "not-found": {
     "title": "404: 見つかりません",
     "description": "ページが見つかりません",

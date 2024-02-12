@@ -23,6 +23,39 @@
     "title": "Categories",
     "description": ""
   },
+  "colors": {
+    "description": "",
+    "shade": {
+      "title": "Shade",
+      "description": ":label + #000000",
+      "more": "See All"
+    },
+    "tint": {
+      "title": "Tint",
+      "description": ":label + #ffffff",
+      "more": "See All"
+    },
+    "gray": {
+      "title": "Gray",
+      "description": "Grayscale on the hue of :label",
+      "more": "See All"
+    },
+    "complementary": {
+      "title": "Complementary",
+      "description": "180° apart from the hue",
+      "more": "See All"
+    },
+    "alternative": {
+      "title": "Alternative",
+      "description": "Alternatives to :label",
+      "more": "See All"
+    },
+    "hue": {
+      "title": "Heu",
+      "description": "36° apart from each",
+      "more": "See All"
+    }
+  },
   "not-found": {
     "title": "404: Not found",
     "description": "Page not found",

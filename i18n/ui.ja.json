@@ -25,12 +25,12 @@
   },
   "colors": {
     "description": "",
-    "shades": {
+    "shade": {
       "title": "シェード",
       "description": ":label + #000000",
       "more": "See All"
     },
-    "tints": {
+    "tint": {
       "title": "ティント",
       "description": ":label + #ffffff",
       "more": "See All"

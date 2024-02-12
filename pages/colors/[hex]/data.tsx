@@ -36,7 +36,7 @@ export const Data: FC<DataProps> = ({
             h={{ base: "46px", sm: "42px" }}
           >
             <StackItem label="name" value={name} />
-            <StackItem label="hex" value={hex} />
+            <StackItem label="hex" value={hex.replace("#", "")} />
             <StackItem label="rgb" value={rgb} />
             <StackItem label="hsl" value={hsl} />
             <StackItem label="hsv" value={hsv} />

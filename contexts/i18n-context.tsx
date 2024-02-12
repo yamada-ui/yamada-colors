@@ -13,7 +13,7 @@ import {
   useCallback,
   Fragment,
 } from "react"
-import type { PropsWithChildren, FC } from "react"
+import type { PropsWithChildren, FC, ReactNode } from "react"
 import { CONSTANT } from "constant"
 import UI_EN from "i18n/ui.en.json"
 import UI_JA from "i18n/ui.ja.json"
@@ -25,11 +25,15 @@ const uiData = { ja: UI_JA, en: UI_EN }
 
 type I18nContext = {
   locale: Locale
-  t: (path: Path<UIData>) => string
+  t: (
+    path: Path<UIData>,
+    replaceValue?: string | Record<string, string>,
+    pattern?: string,
+  ) => string
   tc: (
     path: Path<UIData>,
-    callback?: (str: string, index: number) => JSX.Element,
-  ) => string | JSX.Element[]
+    callback?: (str: string, index: number) => ReactNode,
+  ) => ReactNode
   changeLocale: (locale: Locale & StringLiteral) => void
 }
 
@@ -53,14 +57,34 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
   )
 
   const t = useCallback(
-    (path: Path<UIData>) => get<string>(uiData[locale], path, ""),
+    (
+      path: Path<UIData>,
+      replaceValue?: string | Record<string, string>,
+      pattern: string = "label",
+    ) => {
+      let value = get<string>(uiData[locale], path, "")
+
+      if (!replaceValue) return value
+
+      if (isString(replaceValue)) {
+        value = value.replace(new RegExp(`:${pattern}`, "g"), replaceValue)
+      } else {
+        value = Object.entries(replaceValue).reduce(
+          (prev, [pattern, value]) =>
+            prev.replace(new RegExp(`:${pattern}`, "g"), value),
+          value,
+        )
+      }
+
+      return value
+    },
     [locale],
   )
 
   const tc = useCallback(
     (
       path: Path<UIData>,
-      callback?: (str: string, index: number) => JSX.Element,
+      callback?: (str: string, index: number) => ReactNode,
     ) => {
       const strOrArray = get<string | string[]>(uiData[locale], path, "")
 
@@ -93,7 +117,7 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
 
 const renderElement = (
   str: string,
-  callback?: (str: string, index: number) => JSX.Element,
+  callback?: (str: string, index: number) => ReactNode,
 ) => {
   const array = str.split(/(`[^`]+`)/)
 
@@ -105,7 +129,9 @@ const renderElement = (
         </Fragment>
       )
     } else {
-      return <Fragment key={index}>{str}</Fragment>
+      return (
+        <Fragment key={index}>{callback ? callback(str, index) : str}</Fragment>
+      )
     }
   })
 }

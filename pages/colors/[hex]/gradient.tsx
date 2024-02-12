@@ -16,12 +16,14 @@ export type GradientProps = {
   hex: string
   shadeColors: Colors
   tintColors: Colors
+  grayScaleColors: Colors
 }
 
 export const Gradient: FC<GradientProps> = ({
   hex,
   shadeColors,
   tintColors,
+  grayScaleColors,
 }) => {
   const { t } = useI18n()
 
@@ -46,7 +48,7 @@ export const Gradient: FC<GradientProps> = ({
         description={t("colors.gray.description", hex)}
         more={t("colors.gray.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=gray`}
-        colors={[]}
+        colors={grayScaleColors}
       />
     </Grid>
   )

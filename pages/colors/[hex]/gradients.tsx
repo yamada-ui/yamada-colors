@@ -12,14 +12,14 @@ import type { FC, ReactNode } from "react"
 import { NextLink } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
 
-export type GradientProps = {
+export type GradientsProps = {
   hex: string
   shadeColors: Colors
   tintColors: Colors
   toneColors: Colors
 }
 
-export const Gradient: FC<GradientProps> = ({
+export const Gradients: FC<GradientsProps> = ({
   hex,
   shadeColors,
   tintColors,
@@ -67,6 +67,7 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
     <GridItem as="section" display="flex" flexDirection="column" gap="md">
       <VStack gap={{ base: "xs", sm: "0" }}>
         <Heading fontSize={{ base: "lg" }}>{title}</Heading>
+
         <Text color="muted" fontSize="sm">
           {description}
         </Text>

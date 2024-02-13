@@ -5,8 +5,9 @@ import type {
   NextPage,
 } from "next"
 import { Data } from "./data"
-import { Gradient } from "./gradient"
+import { Gradients } from "./gradients"
 import { Header } from "./header"
+import { Others } from "./others"
 import { useHistory } from "./use-history"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
@@ -20,6 +21,12 @@ import {
   toHsl,
   toHsv,
   toRgb,
+  hue,
+  complementary,
+  alternative,
+  triadic,
+  square,
+  splitComplementary,
 } from "utils/color"
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
@@ -36,6 +43,12 @@ const Page: NextPage<PageProps> = ({
   shadeColors,
   tintColors,
   toneColors,
+  complementaryColors,
+  hueColors,
+  alternativeColors,
+  triadicColors,
+  squareColors,
+  splitComplementaryColors,
 }) => {
   useHistory({ cookies, hex })
   const { t } = useI18n()
@@ -44,7 +57,18 @@ const Page: NextPage<PageProps> = ({
     <AppLayout title={hex} description={t("colors.description")} gap="lg">
       <Header {...{ hex, name }} />
       <Data {...data} />
-      <Gradient {...{ hex, shadeColors, tintColors, toneColors }} />
+      <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
+      <Others
+        {...{
+          hex,
+          complementaryColors,
+          hueColors,
+          alternativeColors,
+          triadicColors,
+          squareColors,
+          splitComplementaryColors,
+        }}
+      />
     </AppLayout>
   )
 }
@@ -103,6 +127,12 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     const shadeColors = getShadeColors(hex)
     const tintColors = getTintColors(hex)
     const toneColors = getToneColors(hex)
+    const complementaryColors = complementary(hex)
+    const hueColors = hue(hex)
+    const alternativeColors = alternative(hex)
+    const triadicColors = triadic(hex)
+    const squareColors = square(hex)
+    const splitComplementaryColors = splitComplementary(hex)
 
     const props = {
       cookies,
@@ -112,6 +142,12 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
       shadeColors,
       tintColors,
       toneColors,
+      complementaryColors,
+      hueColors,
+      alternativeColors,
+      triadicColors,
+      squareColors,
+      splitComplementaryColors,
     }
 
     return { props }

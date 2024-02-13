@@ -23,11 +23,7 @@ export const darken = (hex: string) => {
   const x = l / 10
 
   for (let i = 0; i < 10; i++) {
-    const ll = l - x * i
-
-    const hex = `#${convert.hsl.hex([h, s, ll]).toLowerCase()}`
-
-    hexes.push(hex)
+    hexes.push(`#${convert.hsl.hex([h, s, l - x * i]).toLowerCase()}`)
   }
 
   return hexes
@@ -39,11 +35,7 @@ export const lighten = (hex: string) => {
   const x = (100 - l) / 10
 
   for (let i = 0; i < 10; i++) {
-    const ll = l + x * i
-
-    const hex = `#${convert.hsl.hex([h, s, ll]).toLowerCase()}`
-
-    hexes.push(hex)
+    hexes.push(`#${convert.hsl.hex([h, s, l + x * i]).toLowerCase()}`)
   }
 
   return hexes
@@ -52,13 +44,81 @@ export const lighten = (hex: string) => {
 export const tone = (hex: string) => {
   const [h, s] = toHsl(hex)
 
-  const hexes: string[] = tones.map((l) => {
-    l = 100 - l
-
-    const hex = `#${convert.hsl.hex([h, s, l]).toLowerCase()}`
-
-    return hex
-  })
+  const hexes: string[] = tones.map(
+    (l) => `#${convert.hsl.hex([h, s, 100 - l]).toLowerCase()}`,
+  )
 
   return hexes
+}
+
+export const complementary = (hex: string) => {
+  let [h, s, l] = toHsl(hex)
+
+  return [
+    `#${convert.hsl.hex([h, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 180, s, l]).toLowerCase()}`,
+  ]
+}
+
+export const alternative = (
+  hex: string,
+  count: number = 10,
+  slice: number = 60,
+) => {
+  let [h, s, l] = toHsl(hex)
+  const hexes = []
+
+  const x = 360 / slice
+
+  for (h = (h - ((x * count) >> 1) + 720) % 360; count--; ) {
+    h = (h + x) % 360
+
+    hexes.push(`#${convert.hsl.hex([h, s, l]).toLowerCase()}`)
+  }
+
+  return hexes
+}
+
+export const hue = (hex: string) => {
+  let [h, s, l] = toHsl(hex)
+  const hexes: string[] = []
+
+  for (let i = 0; i < 10; i++) {
+    const hex = `#${convert.hsl.hex([h + 36 * i, s, l]).toLowerCase()}`
+
+    hexes.push(hex)
+  }
+
+  return hexes
+}
+
+export const triadic = (hex: string) => {
+  let [h, s, l] = toHsl(hex)
+
+  return [
+    `#${convert.hsl.hex([h, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 120, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 240, s, l]).toLowerCase()}`,
+  ]
+}
+
+export const square = (hex: string) => {
+  let [h, s, l] = toHsl(hex)
+
+  return [
+    `#${convert.hsl.hex([h, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 90, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 180, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 270, s, l]).toLowerCase()}`,
+  ]
+}
+
+export const splitComplementary = (hex: string) => {
+  let [h, s, l] = toHsl(hex)
+
+  return [
+    `#${convert.hsl.hex([h, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h + 150, s, l]).toLowerCase()}`,
+    `#${convert.hsl.hex([h - 150, s, l]).toLowerCase()}`,
+  ]
 }

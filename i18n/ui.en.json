@@ -42,8 +42,7 @@
     },
     "complementary": {
       "title": "Complementary",
-      "description": "180° apart from the hue",
-      "more": "See All"
+      "description": "180° apart from the hue"
     },
     "alternative": {
       "title": "Alternative",

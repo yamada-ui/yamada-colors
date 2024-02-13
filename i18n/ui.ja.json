@@ -42,8 +42,7 @@
     },
     "complementary": {
       "title": "捕色",
-      "description": "色相が 180° 離れた色",
-      "more": "See All"
+      "description": "色相が 180° 離れた色"
     },
     "alternative": {
       "title": "代替",

@@ -25,19 +25,19 @@
   },
   "colors": {
     "description": "",
-    "shade": {
+    "shades": {
       "title": "シェード",
       "description": ":label + #000000",
       "more": "See All"
     },
-    "tint": {
+    "tints": {
       "title": "ティント",
       "description": ":label + #ffffff",
       "more": "See All"
     },
-    "gray": {
-      "title": "グレー",
-      "description": ":label の色相上のグレースケール",
+    "tones": {
+      "title": "トーン",
+      "description": ":label のトーン",
       "more": "See All"
     },
     "complementary": {

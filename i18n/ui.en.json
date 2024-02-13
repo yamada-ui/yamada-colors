@@ -25,19 +25,19 @@
   },
   "colors": {
     "description": "",
-    "shade": {
-      "title": "Shade",
+    "shades": {
+      "title": "Shades",
       "description": ":label + #000000",
       "more": "See All"
     },
-    "tint": {
-      "title": "Tint",
+    "tints": {
+      "title": "Tints",
       "description": ":label + #ffffff",
       "more": "See All"
     },
-    "gray": {
-      "title": "Gray",
-      "description": "Grayscale on the hue of :label",
+    "tones": {
+      "title": "Tones",
+      "description": "Tones of :label",
       "more": "See All"
     },
     "complementary": {
@@ -51,7 +51,7 @@
       "more": "See All"
     },
     "hue": {
-      "title": "Heu",
+      "title": "Hue",
       "description": "36° apart from each",
       "more": "See All"
     }

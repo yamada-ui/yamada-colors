@@ -28,17 +28,24 @@
     "shades": {
       "title": "シェード",
       "description": ":label + #000000",
-      "more": "See All"
+      "more": "すべて見る"
     },
     "tints": {
       "title": "ティント",
       "description": ":label + #ffffff",
-      "more": "See All"
+      "more": "すべて見る"
     },
     "tones": {
       "title": "トーン",
       "description": ":label のトーン",
-      "more": "See All"
+      "more": "すべて見る"
+    },
+    "color-blindness": {
+      "title": "色覚シミュレーション"
+    },
+    "contrast": {
+      "title": "コントラスト",
+      "more": "コントラストチェッカーを見る"
     },
     "complementary": {
       "title": "捕色",
@@ -47,12 +54,12 @@
     "alternative": {
       "title": "代替",
       "description": ":label の代替",
-      "more": "See All"
+      "more": "ジェネレーターで見る"
     },
     "hues": {
       "title": "色相",
       "description": "色相が互いに 36° 離れた色",
-      "more": "See All"
+      "more": "ジェネレーターで見る"
     },
     "triadic": {
       "title": "トリアディック",

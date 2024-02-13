@@ -40,6 +40,13 @@
       "description": "Tones of :label",
       "more": "See All"
     },
+    "color-blindness": {
+      "title": "Color Blindness"
+    },
+    "contrast": {
+      "title": "Contrast",
+      "more": "See Contrast Checker"
+    },
     "complementary": {
       "title": "Complementary",
       "description": "180° apart from the hue"
@@ -47,12 +54,12 @@
     "alternative": {
       "title": "Alternative",
       "description": "Alternatives to :label",
-      "more": "See All"
+      "more": "See on Generator"
     },
     "hues": {
       "title": "Hues",
       "description": "36° apart from each",
-      "more": "See All"
+      "more": "See on Generator"
     },
     "triadic": {
       "title": "Triadic",

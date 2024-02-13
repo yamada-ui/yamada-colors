@@ -143,7 +143,7 @@ const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
         bg={
           isScroll
             ? ["whiteAlpha.600", "blackAlpha.500"]
-            : ["whiteAlpha.900", "blackAlpha.700"]
+            : ["whiteAlpha.900", "blackAlpha.600"]
         }
         rounded="full"
         backdropFilter="auto"

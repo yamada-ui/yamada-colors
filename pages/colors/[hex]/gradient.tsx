@@ -16,39 +16,39 @@ export type GradientProps = {
   hex: string
   shadeColors: Colors
   tintColors: Colors
-  grayScaleColors: Colors
+  toneColors: Colors
 }
 
 export const Gradient: FC<GradientProps> = ({
   hex,
   shadeColors,
   tintColors,
-  grayScaleColors,
+  toneColors,
 }) => {
   const { t } = useI18n()
 
   return (
     <Grid templateColumns={{ base: "repeat(3, 1fr)" }}>
       <List
-        title={t("colors.shade.title")}
-        description={t("colors.shade.description", hex)}
-        more={t("colors.shade.more")}
-        href={`/generators?hex=${hex.replace("#", "")}&tab=shade`}
+        title={t("colors.shades.title")}
+        description={t("colors.shades.description", hex)}
+        more={t("colors.shades.more")}
+        href={`/generators?hex=${hex.replace("#", "")}&tab=shades`}
         colors={shadeColors}
       />
       <List
-        title={t("colors.tint.title")}
-        description={t("colors.tint.description", hex)}
-        more={t("colors.tint.more")}
-        href={`/generators?hex=${hex.replace("#", "")}&tab=tint`}
+        title={t("colors.tints.title")}
+        description={t("colors.tints.description", hex)}
+        more={t("colors.tints.more")}
+        href={`/generators?hex=${hex.replace("#", "")}&tab=tints`}
         colors={tintColors}
       />
       <List
-        title={t("colors.gray.title")}
-        description={t("colors.gray.description", hex)}
-        more={t("colors.gray.more")}
-        href={`/generators?hex=${hex.replace("#", "")}&tab=gray`}
-        colors={grayScaleColors}
+        title={t("colors.tones.title")}
+        description={t("colors.tones.description", hex)}
+        more={t("colors.tones.more")}
+        href={`/generators?hex=${hex.replace("#", "")}&tab=tones`}
+        colors={toneColors}
       />
     </Grid>
   )
@@ -74,7 +74,7 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
 
       <Box as="nav">
         <VStack as="ul">
-          {colors.slice(1, 5).map(({ name, hex }, index) => (
+          {colors.slice(0, 4).map(({ name, hex }, index) => (
             <Motion
               key={`${hex}-${index}`}
               as="li"

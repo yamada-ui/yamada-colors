@@ -1,5 +1,4 @@
 import {
-  AspectRatio,
   Box,
   Grid,
   GridItem,
@@ -7,6 +6,7 @@ import {
   Motion,
   Text,
   VStack,
+  Wrap,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import type { FC, ReactNode } from "react"
@@ -94,27 +94,19 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
       </VStack>
 
       <Box as="nav">
-        <Grid
-          as="ul"
-          gap={{ base: "sm" }}
-          templateColumns={{ base: "repeat(8, 1fr)" }}
-        >
+        <Wrap as="ul" gap={{ base: "sm" }}>
           {colors.map((hex, index) => (
             <Motion
               key={`${hex}-${index}`}
               as="li"
               whileHover={{ scale: 0.95 }}
             >
-              <AspectRatio
-                as={Link}
-                href={`/colors/${hex.replace("#", "")}`}
-                ratio={1}
-              >
-                <Box boxSize="full" bg={hex} rounded="md" />
-              </AspectRatio>
+              <Link href={`/colors/${hex.replace("#", "")}`}>
+                <Box boxSize={{ base: "8" }} bg={hex} rounded="lg" />
+              </Link>
             </Motion>
           ))}
-        </Grid>
+        </Wrap>
       </Box>
 
       {more && href ? (

@@ -10,7 +10,17 @@ import { Header } from "./header"
 import { useHistory } from "./use-history"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
-import { toCielab, toCielch, toCmyk, toHsl, toHsv, toRgb } from "utils/color"
+import {
+  darken,
+  tone,
+  lighten,
+  toCielab,
+  toCielch,
+  toCmyk,
+  toHsl,
+  toHsv,
+  toRgb,
+} from "utils/color"
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 
@@ -25,6 +35,7 @@ const Page: NextPage<PageProps> = ({
   data,
   shadeColors,
   tintColors,
+  toneColors,
 }) => {
   useHistory({ cookies, hex })
   const { t } = useI18n()
@@ -33,7 +44,7 @@ const Page: NextPage<PageProps> = ({
     <AppLayout title={hex} description={t("colors.description")} gap="lg">
       <Header {...{ hex, name }} />
       <Data {...data} />
-      <Gradient {...{ hex, shadeColors, tintColors }} />
+      <Gradient {...{ hex, shadeColors, tintColors, toneColors }} />
     </AppLayout>
   )
 }
@@ -52,30 +63,26 @@ const getColorData = (hex: string) => {
   return { name, hex, rgb, hsl, hsv, cmyk, cielab, cielch }
 }
 
-const getShadeColors = (targetHex: string) => {
-  const colors: Colors = []
+const getShadeColors = (hex: string) => {
+  const hexes = darken(hex)
 
-  for (let i = 0; i < 10; i++) {
-    const amount = (10 - i) / 10
-    const hex = c.toHex(c.darken(targetHex, amount))
-    const name = getColorName(hex)
-
-    colors.push({ hex, name })
-  }
+  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
 
   return colors
 }
 
-const getTintColors = (targetHex: string) => {
-  const colors: Colors = []
+const getTintColors = (hex: string) => {
+  const hexes = lighten(hex)
 
-  for (let i = 0; i < 10; i++) {
-    const amount = (10 - i) / 10
-    const hex = c.toHex(c.lighten(targetHex, amount))
-    const name = getColorName(hex)
+  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
 
-    colors.push({ hex, name })
-  }
+  return colors
+}
+
+const getToneColors = (hex: string) => {
+  const hexes = tone(hex)
+
+  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
 
   return colors
 }
@@ -95,8 +102,17 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 
     const shadeColors = getShadeColors(hex)
     const tintColors = getTintColors(hex)
+    const toneColors = getToneColors(hex)
 
-    const props = { cookies, name, hex, data, shadeColors, tintColors }
+    const props = {
+      cookies,
+      name,
+      hex,
+      data,
+      shadeColors,
+      tintColors,
+      toneColors,
+    }
 
     return { props }
   } catch {

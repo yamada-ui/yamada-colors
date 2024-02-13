@@ -49,10 +49,22 @@
       "description": ":label の代替",
       "more": "See All"
     },
-    "hue": {
+    "hues": {
       "title": "色相",
       "description": "色相が互いに 36° 離れた色",
       "more": "See All"
+    },
+    "triadic": {
+      "title": "トリアディック",
+      "description": "色相が互いに 120° 離れた色"
+    },
+    "square": {
+      "title": "スクエア",
+      "description": "色相が互いに 90° 離れた色"
+    },
+    "split-complementary": {
+      "title": "分離補色",
+      "description": "色相が +150° と -150° 離れた色"
     }
   },
   "not-found": {

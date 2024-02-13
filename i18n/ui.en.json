@@ -49,10 +49,22 @@
       "description": "Alternatives to :label",
       "more": "See All"
     },
-    "hue": {
-      "title": "Hue",
+    "hues": {
+      "title": "Hues",
       "description": "36° apart from each",
       "more": "See All"
+    },
+    "triadic": {
+      "title": "Triadic",
+      "description": "120° apart from each"
+    },
+    "square": {
+      "title": "Square",
+      "description": "90° apart from each"
+    },
+    "split-complementary": {
+      "title": "Split Complementary",
+      "description": "+150° and -150° apart from the hue"
     }
   },
   "not-found": {

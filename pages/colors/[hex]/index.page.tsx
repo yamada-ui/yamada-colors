@@ -4,6 +4,7 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
+import { A11y } from "./a18y"
 import { Data } from "./data"
 import { Gradients } from "./gradients"
 import { Header } from "./header"
@@ -27,6 +28,8 @@ import {
   triadic,
   square,
   splitComplementary,
+  readability,
+  isReadable,
 } from "utils/color"
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
@@ -49,6 +52,7 @@ const Page: NextPage<PageProps> = ({
   triadicColors,
   squareColors,
   splitComplementaryColors,
+  contrast,
 }) => {
   useHistory({ cookies, hex })
   const { t } = useI18n()
@@ -58,6 +62,7 @@ const Page: NextPage<PageProps> = ({
       <Header {...{ hex, name }} />
       <Data {...data} />
       <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
+      <A11y {...{ hex, contrast }} />
       <Others
         {...{
           hex,
@@ -111,6 +116,22 @@ const getToneColors = (hex: string) => {
   return colors
 }
 
+const getContrast = (hex: string) => {
+  const white = {
+    score: readability(hex, "#fbfbfb"),
+    small: isReadable(hex, "#fbfbfb", { level: "AA", size: "small" }),
+    large: isReadable(hex, "#fbfbfb", { level: "AA", size: "large" }),
+  }
+
+  const black = {
+    score: readability(hex, "#141414"),
+    small: isReadable(hex, "#141414", { level: "AA", size: "small" }),
+    large: isReadable(hex, "#141414", { level: "AA", size: "large" }),
+  }
+
+  return { white, black }
+}
+
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
     props: { cookies },
@@ -133,6 +154,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     const triadicColors = triadic(hex)
     const squareColors = square(hex)
     const splitComplementaryColors = splitComplementary(hex)
+    const contrast = getContrast(hex)
 
     const props = {
       cookies,
@@ -148,6 +170,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
       triadicColors,
       squareColors,
       splitComplementaryColors,
+      contrast,
     }
 
     return { props }

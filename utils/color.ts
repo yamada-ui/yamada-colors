@@ -122,3 +122,73 @@ export const splitComplementary = (hex: string) => {
     `#${convert.hsl.hex([h - 150, s, l]).toLowerCase()}`,
   ]
 }
+
+export const readability = (hex1: string, hex2: string) => {
+  return color.getContrast(hex1, hex2)
+}
+
+type WcagOptions = {
+  level: "AA" | "AAA"
+  size: "small" | "large"
+}
+
+export const isReadable = (
+  hex1: string,
+  hex2: string,
+  { level, size }: WcagOptions = { level: "AA", size: "small" },
+) => {
+  const score = readability(hex1, hex2)
+
+  switch (level + size) {
+    case "AAsmall":
+    case "AAAlarge":
+      return score >= 4.5
+
+    case "AAlarge":
+      return score >= 3
+
+    case "AAAsmall":
+      return score >= 7
+
+    default:
+      return false
+  }
+}
+
+export const mostReadable = (
+  hex: string,
+  hexes: [string, ...string[]],
+  {
+    level,
+    size,
+    includeFallbackColors,
+  }: { includeFallbackColors?: boolean } & WcagOptions = {
+    level: "AA",
+    size: "small",
+  },
+): string => {
+  let result: string
+  let bestScore = 0
+  let score = 0
+
+  for (var i = 0; i < hexes.length; i++) {
+    score = readability(hex, hexes[i])
+    if (score > bestScore) {
+      bestScore = score
+
+      result = hexes[i]
+    }
+  }
+
+  if (isReadable(hex, result, { level, size }) || !includeFallbackColors) {
+    return result
+  } else {
+    includeFallbackColors = false
+
+    return mostReadable(hex, ["#fff", "#000"], {
+      level,
+      size,
+      includeFallbackColors,
+    })
+  }
+}

@@ -1,3 +1,4 @@
+import blinder from "color-blind"
 import convert from "color-convert"
 import * as color from "color2k"
 
@@ -192,3 +193,11 @@ export const mostReadable = (
     })
   }
 }
+
+export const blindness = (hex: string) => ({
+  original: hex,
+  protanopia: blinder.protanopia(hex),
+  deuteranopia: blinder.deuteranopia(hex),
+  tritanopia: blinder.tritanopia(hex),
+  achromatopsia: blinder.achromatopsia(hex),
+})

@@ -41,7 +41,12 @@
       "more": "See All"
     },
     "color-blindness": {
-      "title": "Color Blindness"
+      "title": "Color Blindness",
+      "original": "Original",
+      "protanopia": "Protanopia",
+      "deuteranopia": "Deuteranopia",
+      "tritanopia": "Tritanopia",
+      "achromatopsia": "Achromatopsia"
     },
     "contrast": {
       "title": "Contrast",

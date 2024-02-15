@@ -41,7 +41,12 @@
       "more": "すべて見る"
     },
     "color-blindness": {
-      "title": "色覚シミュレーション"
+      "title": "色覚シミュレーション",
+      "original": "オリジナル",
+      "protanopia": "1型色覚",
+      "deuteranopia": "2型色覚",
+      "tritanopia": "3型色覚",
+      "achromatopsia": "全色盲"
     },
     "contrast": {
       "title": "コントラスト",

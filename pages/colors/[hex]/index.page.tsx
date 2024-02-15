@@ -1,10 +1,11 @@
+import { defaultTheme } from "@yamada-ui/react"
 import * as c from "color2k"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import { A11y } from "./a18y"
+import { A11y } from "./a11y"
 import { Data } from "./data"
 import { Gradients } from "./gradients"
 import { Header } from "./header"
@@ -30,6 +31,7 @@ import {
   splitComplementary,
   readability,
   isReadable,
+  blindness,
 } from "utils/color"
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
@@ -52,6 +54,7 @@ const Page: NextPage<PageProps> = ({
   triadicColors,
   squareColors,
   splitComplementaryColors,
+  blind,
   contrast,
 }) => {
   useHistory({ cookies, hex })
@@ -62,7 +65,7 @@ const Page: NextPage<PageProps> = ({
       <Header {...{ hex, name }} />
       <Data {...data} />
       <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
-      <A11y {...{ hex, contrast }} />
+      <A11y {...{ hex, blind, contrast }} />
       <Others
         {...{
           hex,
@@ -117,19 +120,20 @@ const getToneColors = (hex: string) => {
 }
 
 const getContrast = (hex: string) => {
-  const white = {
-    score: readability(hex, "#fbfbfb"),
-    small: isReadable(hex, "#fbfbfb", { level: "AA", size: "small" }),
-    large: isReadable(hex, "#fbfbfb", { level: "AA", size: "large" }),
-  }
+  const { white, black } = defaultTheme.colors
 
-  const black = {
-    score: readability(hex, "#141414"),
-    small: isReadable(hex, "#141414", { level: "AA", size: "small" }),
-    large: isReadable(hex, "#141414", { level: "AA", size: "large" }),
+  return {
+    white: {
+      score: readability(hex, white),
+      small: isReadable(hex, white, { level: "AA", size: "small" }),
+      large: isReadable(hex, white, { level: "AA", size: "large" }),
+    },
+    black: {
+      score: readability(hex, black),
+      small: isReadable(hex, black, { level: "AA", size: "small" }),
+      large: isReadable(hex, black, { level: "AA", size: "large" }),
+    },
   }
-
-  return { white, black }
 }
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
@@ -154,6 +158,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     const triadicColors = triadic(hex)
     const squareColors = square(hex)
     const splitComplementaryColors = splitComplementary(hex)
+    const blind = blindness(hex)
     const contrast = getContrast(hex)
 
     const props = {
@@ -170,6 +175,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
       triadicColors,
       squareColors,
       splitComplementaryColors,
+      blind,
       contrast,
     }
 

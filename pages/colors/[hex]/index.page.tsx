@@ -61,7 +61,11 @@ const Page: NextPage<PageProps> = ({
   const { t } = useI18n()
 
   return (
-    <AppLayout title={hex} description={t("colors.description")} gap="lg">
+    <AppLayout
+      title={hex}
+      description={t("colors.description")}
+      gap={{ base: "lg", sm: "normal" }}
+    >
       <Header {...{ hex, name }} />
       <Data {...data} />
       <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />

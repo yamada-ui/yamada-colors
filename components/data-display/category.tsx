@@ -174,7 +174,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
                   as={Link}
                   href={`/colors/${hex.replace("#", "")}`}
                   templateColumns={{ base: "auto 1fr" }}
-                  gap={{ base: "md" }}
+                  gap={{ base: "md", sm: "sm" }}
                 >
                   <Box boxSize={{ base: "12" }} bg={hex} rounded="2xl" />
 

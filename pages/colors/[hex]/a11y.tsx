@@ -97,8 +97,8 @@ const Blindness: FC<BlindnessProps> = ({
 
   return (
     <Grid
-      h="xs"
-      templateColumns={{ base: "repeat(5, 1fr)" }}
+      h={{ base: "xs", sm: "auto" }}
+      templateColumns={{ base: "repeat(5, 1fr)", sm: "repeat(1, 1fr)" }}
       rounded="2xl"
       overflow="hidden"
     >
@@ -133,7 +133,8 @@ const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
     <GridItem
       as={Center}
       minW="0"
-      p="md"
+      py={{ base: "md", sm: "md" }}
+      px="md"
       bg={hex}
       _hover={{
         "& > span": {
@@ -144,6 +145,7 @@ const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
     >
       <Text
         as="span"
+        fontSize={{ base: "md", sm: "sm" }}
         color="transparent"
         transitionProperty="common"
         transitionDuration="slower"
@@ -168,43 +170,67 @@ const Contrast: FC<ContrastProps> = ({ hex, type, data }) => {
   return (
     <VStack
       rounded="2xl"
-      p="lg"
+      p={{ base: "lg", sm: "md" }}
       borderWidth="1px"
       gap="sm"
       bg={type}
       color={color}
     >
       <HStack gap="sm">
-        <Box boxSize={{ base: "8" }} bg={hex} rounded="lg" />
+        <Box
+          boxSize={{ base: "6", sm: "4" }}
+          bg={hex}
+          rounded={{ base: "lg", sm: "base" }}
+        />
 
-        <Text color={muted}>{hex}</Text>
+        <Text color={muted} fontSize={{ base: "md", sm: "sm" }}>
+          {hex}
+        </Text>
       </HStack>
 
       <Wrap alignItems="center" gap="md">
-        <Text fontSize="6xl" fontWeight="bold">
+        <Text fontSize={{ base: "6xl", sm: "5xl" }} fontWeight="bold">
           {data.score.toFixed(1)}
         </Text>
 
         <Spacer />
 
-        <Grid templateColumns="auto auto auto" alignItems="center" gap="sm">
-          <Text minW="10ch" color={muted} fontSize="md" fontWeight="semibold">
+        <Grid
+          templateColumns="auto auto auto"
+          alignItems="center"
+          gapX="sm"
+          gapY={{ base: "sm", sm: "xs" }}
+        >
+          <Text
+            minW="10ch"
+            color={muted}
+            fontSize={{ base: "md", sm: "sm" }}
+            fontWeight="semibold"
+          >
             Large Text
           </Text>
 
           {data.large ? <Pass color="success" /> : <Fail color="danger" />}
 
-          <Text fontSize="md" fontWeight="semibold">
+          <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
             {data.large ? "Pass" : "Fail"}
           </Text>
 
-          <Text color={muted} fontSize="md" fontWeight="semibold">
+          <Text
+            color={muted}
+            fontSize={{ base: "md", sm: "sm" }}
+            fontWeight="semibold"
+          >
             Small Text
           </Text>
 
           {data.small ? <Pass color="success" /> : <Fail color="danger" />}
 
-          <Text minW="4ch" fontSize="md" fontWeight="semibold">
+          <Text
+            minW="4ch"
+            fontSize={{ base: "md", sm: "sm" }}
+            fontWeight="semibold"
+          >
             {data.small ? "Pass" : "Fail"}
           </Text>
         </Grid>

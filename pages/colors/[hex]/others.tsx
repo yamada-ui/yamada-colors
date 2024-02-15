@@ -35,7 +35,11 @@ export const Others: FC<OthersProps> = ({
   const { t } = useI18n()
 
   return (
-    <Grid templateColumns={{ base: "repeat(3, 1fr)" }} gapX="md" gapY="lg">
+    <Grid
+      templateColumns={{ base: "repeat(3, 1fr)", sm: "repeat(1, 1fr)" }}
+      gapX="md"
+      gapY="lg"
+    >
       <List
         title={t("colors.complementary.title")}
         description={t("colors.complementary.description", hex)}

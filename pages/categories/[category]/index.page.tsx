@@ -55,7 +55,7 @@ const Page: NextPage<PageProps> = ({
       description={t("categories.description")}
     >
       <Box as="nav">
-        <Wrap as="ul" gap="sm" mb="lg">
+        <Wrap as="ul" gap="sm" mb={{ base: "lg", sm: "normal" }}>
           {categories.map((category) => {
             const isCurrent = category === currentCategory
 

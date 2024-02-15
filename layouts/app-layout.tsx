@@ -31,7 +31,7 @@ export const AppLayout: FC<AppLayoutProps> = ({
           w="full"
           maxW="9xl"
           gap="0"
-          py={{ base: "lg", md: "normal" }}
+          py={{ base: "lg", sm: "normal" }}
           px={{ base: "lg", md: "md" }}
         >
           {hasSidebar ? (

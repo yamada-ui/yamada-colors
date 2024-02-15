@@ -18,7 +18,7 @@ const Page: NextPage<PageProps> = ({ categories }) => {
     <AppLayout
       title={t("app.title")}
       description={t("app.description")}
-      gap="lg"
+      gap={{ base: "lg", sm: "normal" }}
     >
       {categories.map(({ category, colors }, index) => {
         const type = index % 4 === 2 || index % 4 === 3 ? "carousel" : "grid"

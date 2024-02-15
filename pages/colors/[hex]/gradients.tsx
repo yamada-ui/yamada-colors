@@ -28,7 +28,11 @@ export const Gradients: FC<GradientsProps> = ({
   const { t } = useI18n()
 
   return (
-    <Grid templateColumns={{ base: "repeat(3, 1fr)" }} gapX="md" gapY="lg">
+    <Grid
+      templateColumns={{ base: "repeat(3, 1fr)", sm: "repeat(1, 1fr)" }}
+      gapX="md"
+      gapY="normal"
+    >
       <List
         title={t("colors.shades.title")}
         description={t("colors.shades.description", hex)}
@@ -86,7 +90,7 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
                 as={Link}
                 href={`/colors/${hex.replace("#", "")}`}
                 templateColumns={{ base: "auto 1fr" }}
-                gap={{ base: "md" }}
+                gap={{ base: "md", sm: "sm" }}
               >
                 <Box boxSize={{ base: "12" }} bg={hex} rounded="2xl" />
 

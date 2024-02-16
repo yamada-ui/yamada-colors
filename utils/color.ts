@@ -67,7 +67,7 @@ export const alternative = (
   slice: number = 60,
 ) => {
   let [h, s, l] = toHsl(hex)
-  const hexes = []
+  const hexes: string[] = []
 
   const x = 360 / slice
 

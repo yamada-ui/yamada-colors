@@ -46,9 +46,9 @@ export const Others: FC<OthersProps> = ({
         colors={complementaryColors}
       />
       <List
-        title={t("colors.alternative.title")}
-        description={t("colors.alternative.description", hex)}
-        more={t("colors.alternative.more")}
+        title={t("colors.alternatives.title")}
+        description={t("colors.alternatives.description", hex)}
+        more={t("colors.alternatives.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=alternative`}
         colors={alternativeColors}
       />

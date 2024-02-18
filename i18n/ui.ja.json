@@ -9,7 +9,12 @@
   },
   "generators": {
     "title": "ジェネレーター",
-    "description": ""
+    "description": "",
+    "shades": "シェード",
+    "tints": "ティント",
+    "tones": "トーン",
+    "alternatives": "代替",
+    "hues": "色相"
   },
   "contrast-checker": {
     "title": "コントラストチェッカー",
@@ -56,7 +61,7 @@
       "title": "捕色",
       "description": "色相が 180° 離れた色"
     },
-    "alternative": {
+    "alternatives": {
       "title": "代替",
       "description": ":label の代替",
       "more": "ジェネレーターで見る"

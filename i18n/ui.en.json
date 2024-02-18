@@ -9,7 +9,12 @@
   },
   "generators": {
     "title": "Generators",
-    "description": ""
+    "description": "",
+    "shades": "Shades",
+    "tints": "Tints",
+    "tones": "Tones",
+    "alternatives": "Alternatives",
+    "hues": "Hues"
   },
   "contrast-checker": {
     "title": "Contrast Checker",
@@ -56,8 +61,8 @@
       "title": "Complementary",
       "description": "180° apart from the hue"
     },
-    "alternative": {
-      "title": "Alternative",
+    "alternatives": {
+      "title": "Alternatives",
       "description": "Alternatives to :label",
       "more": "See on Generator"
     },

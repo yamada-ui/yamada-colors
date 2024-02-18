@@ -26,12 +26,12 @@ const uiData = { ja: UI_JA, en: UI_EN }
 type I18nContext = {
   locale: Locale
   t: (
-    path: Path<UIData>,
+    path: Path<UIData> | StringLiteral,
     replaceValue?: string | Record<string, string>,
     pattern?: string,
   ) => string
   tc: (
-    path: Path<UIData>,
+    path: Path<UIData> | StringLiteral,
     callback?: (str: string, index: number) => ReactNode,
   ) => ReactNode
   changeLocale: (locale: Locale & StringLiteral) => void
@@ -60,7 +60,7 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
 
   const t = useCallback(
     (
-      path: Path<UIData>,
+      path: Path<UIData> | StringLiteral,
       replaceValue?: string | Record<string, string>,
       pattern: string = "label",
     ) => {
@@ -85,7 +85,7 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
 
   const tc = useCallback(
     (
-      path: Path<UIData>,
+      path: Path<UIData> | StringLiteral,
       callback?: (str: string, index: number) => ReactNode,
     ) => {
       const strOrArray = get<string | string[]>(uiData[locale], path, "")

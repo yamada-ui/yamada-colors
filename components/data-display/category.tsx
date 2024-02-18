@@ -9,7 +9,6 @@ import {
   Text,
   VStack,
   forwardRef,
-  useBreakpointValue,
 } from "@yamada-ui/react"
 import type { FC, PropsWithChildren } from "react"
 import { memo } from "react"
@@ -110,9 +109,6 @@ type CategoryGridProps = GridProps & {
 
 const CategoryGrid: FC<CategoryGridProps> = memo(
   ({ size = "md", colors, ...rest }) => {
-    const mdCount = useBreakpointValue({ base: 8, lg: 6, md: 8 })
-    const smCount = useBreakpointValue({ base: 9, md: 10 })
-
     if (size === "md") {
       return (
         <Grid
@@ -126,8 +122,16 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
           gap="md"
           {...rest}
         >
-          {colors.slice(0, mdCount).map(({ name, hex }, index) => (
-            <GridItem key={`${hex}-${index}`} as="li">
+          {colors.map(({ name, hex }, index) => (
+            <GridItem
+              key={`${hex}-${index}`}
+              as="li"
+              display={{
+                base: index < 8 ? "block" : "none",
+                lg: index < 6 ? "block" : "none",
+                md: index < 8 ? "block" : "none",
+              }}
+            >
               <ColorCard hex={hex} name={name} />
             </GridItem>
           ))}
@@ -141,8 +145,15 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
           gap="md"
           {...rest}
         >
-          {colors.slice(0, smCount).map(({ name, hex }, index) => (
-            <GridItem key={`${hex}-${index}`} as="li">
+          {colors.map(({ name, hex }, index) => (
+            <GridItem
+              key={`${hex}-${index}`}
+              as="li"
+              display={{
+                base: index < 9 ? "block" : "none",
+                md: "block",
+              }}
+            >
               <ColorCard size="md" hex={hex} name={name} />
             </GridItem>
           ))}

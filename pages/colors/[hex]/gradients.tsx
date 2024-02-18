@@ -91,6 +91,9 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
                 href={`/colors/${hex.replace("#", "")}`}
                 templateColumns={{ base: "auto 1fr" }}
                 gap={{ base: "md", sm: "sm" }}
+                outline={0}
+                _focusVisible={{ boxShadow: "outline" }}
+                rounded="2xl"
               >
                 <Box boxSize={{ base: "12" }} bg={hex} rounded="2xl" />
 
@@ -110,7 +113,13 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
       </Box>
 
       {more && href ? (
-        <NextLink href={href} variant="muted" fontSize="sm" whiteSpace="nowrap">
+        <NextLink
+          href={href}
+          variant="muted"
+          fontSize="sm"
+          whiteSpace="nowrap"
+          alignSelf="flex-start"
+        >
           {more}
         </NextLink>
       ) : null}

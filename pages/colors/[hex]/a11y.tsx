@@ -62,6 +62,7 @@ export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
           variant="muted"
           fontSize="sm"
           whiteSpace="nowrap"
+          alignSelf="flex-start"
         >
           {t("colors.contrast.more")}
         </NextLink>

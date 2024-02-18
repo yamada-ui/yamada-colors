@@ -36,9 +36,8 @@ export const Others: FC<OthersProps> = ({
 
   return (
     <Grid
-      templateColumns={{ base: "repeat(3, 1fr)", sm: "repeat(1, 1fr)" }}
-      gapX="md"
-      gapY="lg"
+      templateColumns={{ base: "repeat(3, 1fr)", sm: "1fr" }}
+      gap={{ base: "md", sm: "normal" }}
     >
       <List
         title={t("colors.complementary.title")}
@@ -49,7 +48,7 @@ export const Others: FC<OthersProps> = ({
         title={t("colors.alternatives.title")}
         description={t("colors.alternatives.description", hex)}
         more={t("colors.alternatives.more")}
-        href={`/generators?hex=${hex.replace("#", "")}&tab=alternative`}
+        href={`/generators?hex=${hex.replace("#", "")}&tab=alternatives`}
         colors={alternativeColors}
       />
       <List
@@ -105,16 +104,28 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
               as="li"
               whileHover={{ scale: 0.95 }}
             >
-              <Link href={`/colors/${hex.replace("#", "")}`}>
-                <Box boxSize={{ base: "8" }} bg={hex} rounded="lg" />
-              </Link>
+              <Box
+                as={Link}
+                display="block"
+                href={`/colors/${hex.replace("#", "")}`}
+                outlineColor="focus"
+                rounded="lg"
+                boxSize={{ base: "8" }}
+                bg={hex}
+              />
             </Motion>
           ))}
         </Wrap>
       </Box>
 
       {more && href ? (
-        <NextLink href={href} variant="muted" fontSize="sm" whiteSpace="nowrap">
+        <NextLink
+          href={href}
+          variant="muted"
+          fontSize="sm"
+          whiteSpace="nowrap"
+          alignSelf="flex-start"
+        >
           {more}
         </NextLink>
       ) : null}

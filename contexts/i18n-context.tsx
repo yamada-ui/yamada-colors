@@ -51,7 +51,9 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
 
   const changeLocale = useCallback(
     (locale: Locale & StringLiteral) => {
-      push(pathname, asPath, { locale })
+      console.log(pathname, asPath)
+
+      push(asPath, asPath, { locale })
     },
     [push, pathname, asPath],
   )
@@ -91,6 +93,8 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
       if (isString(strOrArray)) {
         const match = strOrArray.match(/`([^`]+)`/)
 
+        console.log(match)
+
         if (!match) {
           return strOrArray
         } else {
@@ -129,9 +133,7 @@ const renderElement = (
         </Fragment>
       )
     } else {
-      return (
-        <Fragment key={index}>{callback ? callback(str, index) : str}</Fragment>
-      )
+      return <Fragment key={index}>{str}</Fragment>
     }
   })
 }

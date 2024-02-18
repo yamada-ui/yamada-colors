@@ -93,8 +93,6 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
       if (isString(strOrArray)) {
         const match = strOrArray.match(/`([^`]+)`/)
 
-        console.log(match)
-
         if (!match) {
           return strOrArray
         } else {

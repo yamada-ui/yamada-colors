@@ -7,7 +7,7 @@ import Link from "next/link"
 import type { FC } from "react"
 import { useI18n } from "contexts/i18n-context"
 
-const TABS = ["shades", "tints", "tones", "alternatives", "hues"]
+const TABS = ["alternatives", "shades", "tints", "tones", "hues"]
 
 export type TabsProps = { tab: string; hex: string }
 

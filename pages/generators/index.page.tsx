@@ -62,7 +62,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     props: { cookies },
   } = await getServerSideCommonProps(req)
   let hex = `#${req.query.hex}` as string
-  let tab = (req.query.tab ?? "alternative") as string
+  let tab = (req.query.tab ?? "alternatives") as string
 
   try {
     hex = c.toHex(hex)

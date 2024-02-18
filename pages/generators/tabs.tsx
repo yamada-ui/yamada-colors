@@ -22,6 +22,7 @@ export const Tabs: FC<TabsProps> = ({ tab, hex }) => {
             <SegmentedControlButton
               key={tab}
               as={Link}
+              tabIndex={-1}
               value={tab}
               href={`/generators?hex=${hex.replace("#", "")}&tab=${tab}`}
             >

@@ -29,7 +29,7 @@ export const Data: FC<DataProps> = ({
   return (
     <>
       <Box as="section" position="relative">
-        <ScrollArea type="never">
+        <ScrollArea type="never" tabIndex={-1}>
           <HStack
             as="ul"
             divider={<Divider />}

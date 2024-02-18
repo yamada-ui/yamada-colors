@@ -1,21 +1,13 @@
-import {
-  AspectRatio,
-  Grid,
-  GridItem,
-  Motion,
-  Text,
-  VStack,
-} from "@yamada-ui/react"
+import { Grid, GridItem } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import Link from "next/link"
+import { ColorCard } from "components/data-display"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
-import { isLight } from "utils/color"
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 import { getCookie } from "utils/storage"
@@ -42,29 +34,7 @@ const Page: NextPage<PageProps> = ({ history }) => {
       >
         {history.map(({ hex, name }, index) => (
           <GridItem key={`${hex}-${index}`} as="li">
-            <AspectRatio as={Link} href={`/colors/${hex.replace("#", "")}`}>
-              <Motion
-                bg={hex}
-                color={isLight(hex) ? "black" : "white"}
-                p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
-                rounded="2xl"
-                whileHover={{ scale: 0.95 }}
-              >
-                <VStack
-                  boxSize="full"
-                  justifyContent="flex-end"
-                  gap={{ base: "xs", sm: "0" }}
-                >
-                  <Text as="span" fontWeight="medium" lineClamp={1}>
-                    {name}
-                  </Text>
-
-                  <Text as="span" fontSize="sm" lineClamp={1}>
-                    {hex}
-                  </Text>
-                </VStack>
-              </Motion>
-            </AspectRatio>
+            <ColorCard hex={hex} name={name} />
           </GridItem>
         ))}
       </Grid>

@@ -1,12 +1,9 @@
 import {
-  AspectRatio,
   Box,
   Center,
   Grid,
   GridItem,
   Motion,
-  Text,
-  VStack,
   Wrap,
   useUpdateEffect,
 } from "@yamada-ui/react"
@@ -15,14 +12,12 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import Link from "next/link"
 import { useCallback, useState } from "react"
-import { categories } from "components/data-display"
+import { ColorCard, categories } from "components/data-display"
 import { NextLinkButton } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
 import { getRandomColors } from "functions/get-random-colors"
 import { AppLayout } from "layouts/app-layout"
-import { isLight } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
 import { toCamelCase } from "utils/string"
 
@@ -87,46 +82,7 @@ const Page: NextPage<PageProps> = ({
       >
         {colors.map(({ name, hex }, index) => (
           <GridItem key={`${hex}-${index}`} as="li">
-            <AspectRatio>
-              <Box
-                as={Link}
-                href={`/colors/${hex.replace("#", "")}`}
-                outline={0}
-                position="relative"
-                _focusVisible={{
-                  zIndex: 1,
-                  _before: {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    boxShadow: "inline",
-                    borderRadius: "2xl",
-                  },
-                }}
-              >
-                <Motion
-                  boxSize="full"
-                  bg={hex}
-                  color={isLight(hex) ? "black" : "white"}
-                  p={{ base: "normal", lg: "md", md: "normal" }}
-                  rounded="2xl"
-                  whileHover={{ scale: 0.95 }}
-                >
-                  <VStack boxSize="full" justifyContent="flex-end" gap="xs">
-                    <Text as="span" fontWeight="medium" lineClamp={1}>
-                      {name}
-                    </Text>
-
-                    <Text as="span" fontSize="sm" lineClamp={1}>
-                      {hex}
-                    </Text>
-                  </VStack>
-                </Motion>
-              </Box>
-            </AspectRatio>
+            <ColorCard hex={hex} name={name} />
           </GridItem>
         ))}
       </Grid>

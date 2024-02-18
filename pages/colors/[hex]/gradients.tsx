@@ -1,14 +1,6 @@
-import {
-  Box,
-  Grid,
-  GridItem,
-  Heading,
-  Motion,
-  Text,
-  VStack,
-} from "@yamada-ui/react"
-import Link from "next/link"
+import { Box, Grid, GridItem, Heading, Text, VStack } from "@yamada-ui/react"
 import type { FC, ReactNode } from "react"
+import { ColorCard } from "components/data-display"
 import { NextLink } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
 
@@ -80,34 +72,13 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
       <Box as="nav">
         <VStack as="ul">
           {colors.slice(0, 4).map(({ name, hex }, index) => (
-            <Motion
+            <ColorCard
+              size="md"
               key={`${hex}-${index}`}
-              as="li"
-              rounded="2xl"
-              whileHover={{ scale: 0.95 }}
-            >
-              <Grid
-                as={Link}
-                href={`/colors/${hex.replace("#", "")}`}
-                templateColumns={{ base: "auto 1fr" }}
-                gap={{ base: "md", sm: "sm" }}
-                outline={0}
-                _focusVisible={{ boxShadow: "outline" }}
-                rounded="2xl"
-              >
-                <Box boxSize={{ base: "12" }} bg={hex} rounded="2xl" />
-
-                <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
-                  <Text as="span" fontWeight="medium" lineClamp={1}>
-                    {name}
-                  </Text>
-
-                  <Text as="span" fontSize="sm" color="muted" lineClamp={1}>
-                    {hex}
-                  </Text>
-                </VStack>
-              </Grid>
-            </Motion>
+              hex={hex}
+              name={name}
+              motionProps={{ as: "li" }}
+            />
           ))}
         </VStack>
       </Box>

@@ -2,24 +2,20 @@ import type { CarouselProps } from "@yamada-ui/carousel"
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel"
 import type { GridProps, StackProps, StringLiteral } from "@yamada-ui/react"
 import {
-  AspectRatio,
-  Box,
   Grid,
   GridItem,
   HStack,
   Heading,
-  Motion,
   Text,
   VStack,
   forwardRef,
   useBreakpointValue,
 } from "@yamada-ui/react"
-import Link from "next/link"
 import type { FC, PropsWithChildren } from "react"
 import { memo } from "react"
+import { ColorCard } from "./color-card"
 import { NextLink } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
-import { isLight } from "utils/color"
 import { toCamelCase } from "utils/string"
 
 type CategoryType = "grid" | "carousel"
@@ -132,50 +128,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
         >
           {colors.slice(0, mdCount).map(({ name, hex }, index) => (
             <GridItem key={`${hex}-${index}`} as="li">
-              <AspectRatio>
-                <Box
-                  as={Link}
-                  href={`/colors/${hex.replace("#", "")}`}
-                  outline={0}
-                  position="relative"
-                  _focusVisible={{
-                    zIndex: 1,
-                    _before: {
-                      content: '""',
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      boxShadow: "inline",
-                      borderRadius: "2xl",
-                    },
-                  }}
-                >
-                  <Motion
-                    boxSize="full"
-                    bg={hex}
-                    color={isLight(hex) ? "black" : "white"}
-                    p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
-                    rounded="2xl"
-                    whileHover={{ scale: 0.95 }}
-                  >
-                    <VStack
-                      boxSize="full"
-                      justifyContent="flex-end"
-                      gap={{ base: "xs", sm: "0" }}
-                    >
-                      <Text as="span" fontWeight="medium" lineClamp={1}>
-                        {name}
-                      </Text>
-
-                      <Text as="span" fontSize="sm" lineClamp={1}>
-                        {hex}
-                      </Text>
-                    </VStack>
-                  </Motion>
-                </Box>
-              </AspectRatio>
+              <ColorCard hex={hex} name={name} />
             </GridItem>
           ))}
         </Grid>
@@ -190,29 +143,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
         >
           {colors.slice(0, smCount).map(({ name, hex }, index) => (
             <GridItem key={`${hex}-${index}`} as="li">
-              <Motion rounded="2xl" whileHover={{ scale: 0.95 }}>
-                <Grid
-                  as={Link}
-                  href={`/colors/${hex.replace("#", "")}`}
-                  templateColumns={{ base: "auto 1fr" }}
-                  gap={{ base: "md", sm: "sm" }}
-                  outline={0}
-                  _focusVisible={{ boxShadow: "outline" }}
-                  rounded="2xl"
-                >
-                  <Box boxSize={{ base: "12" }} bg={hex} rounded="2xl" />
-
-                  <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
-                    <Text as="span" fontWeight="medium" lineClamp={1}>
-                      {name}
-                    </Text>
-
-                    <Text as="span" fontSize="sm" color="muted" lineClamp={1}>
-                      {hex}
-                    </Text>
-                  </VStack>
-                </Grid>
-              </Motion>
+              <ColorCard size="md" hex={hex} name={name} />
             </GridItem>
           ))}
         </Grid>
@@ -244,57 +175,7 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
       >
         {colors.map(({ name, hex }, index) => (
           <CarouselSlide key={`${hex}-${index}`} as="li">
-            <AspectRatio>
-              <Box
-                as={Link}
-                href={`/colors/${hex.replace("#", "")}`}
-                outline={0}
-                position="relative"
-                _focusVisible={{
-                  zIndex: 1,
-                  _before: {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    boxShadow: "inline",
-                    borderRadius: "2xl",
-                  },
-                }}
-              >
-                <Motion
-                  boxSize="full"
-                  bg={hex}
-                  color={isLight(hex) ? "black" : "white"}
-                  p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
-                  rounded="2xl"
-                  whileHover={{ scale: 0.95 }}
-                >
-                  <VStack
-                    boxSize="full"
-                    justifyContent="flex-end"
-                    gap={{ base: "xs", sm: "0" }}
-                  >
-                    {size === "md" ? (
-                      <Text as="span" fontWeight="medium" lineClamp={1}>
-                        {name}
-                      </Text>
-                    ) : null}
-
-                    <Text
-                      as="span"
-                      fontSize="sm"
-                      textAlign={size === "md" ? "left" : "center"}
-                      lineClamp={1}
-                    >
-                      {hex}
-                    </Text>
-                  </VStack>
-                </Motion>
-              </Box>
-            </AspectRatio>
+            <ColorCard hex={hex} name={size === "md" ? name : undefined} />
           </CarouselSlide>
         ))}
       </Carousel>

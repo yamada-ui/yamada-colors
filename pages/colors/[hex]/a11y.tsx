@@ -33,8 +33,8 @@ export type A11yProps = {
     achromatopsia: string
   }
   contrast: {
-    white: ContrastData
-    black: ContrastData
+    light: ContrastData
+    dark: ContrastData
   }
 }
 
@@ -52,9 +52,9 @@ export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
           templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(1, 1fr)" }}
           gap="md"
         >
-          <Contrast hex={hex} type="white" data={contrast.white} />
+          <Contrast hex={hex} type="light" data={contrast.light} />
 
-          <Contrast hex={hex} type="black" data={contrast.black} />
+          <Contrast hex={hex} type="dark" data={contrast.dark} />
         </Grid>
 
         <NextLink
@@ -160,12 +160,13 @@ const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
 
 type ContrastProps = {
   hex: string
-  type: "white" | "black"
+  type: "light" | "dark"
   data: ContrastData
 }
 
 const Contrast: FC<ContrastProps> = ({ hex, type, data }) => {
-  const color = type === "white" ? "black" : "white"
+  const color = type === "light" ? "black" : "white"
+  const bg = type === "light" ? "white" : "black"
   const muted = `${color}Alpha.700`
 
   return (
@@ -174,7 +175,7 @@ const Contrast: FC<ContrastProps> = ({ hex, type, data }) => {
       p={{ base: "lg", sm: "md" }}
       borderWidth="1px"
       gap="sm"
-      bg={type}
+      bg={bg}
       color={color}
     >
       <HStack gap="sm">

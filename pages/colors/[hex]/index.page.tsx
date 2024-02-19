@@ -132,12 +132,12 @@ const getContrast = (hex: string) => {
   const { white, black } = defaultTheme.colors
 
   return {
-    white: {
+    light: {
       score: readability(hex, white),
       small: isReadable(hex, white, { level: "AA", size: "small" }),
       large: isReadable(hex, white, { level: "AA", size: "large" }),
     },
-    black: {
+    dark: {
       score: readability(hex, black),
       small: isReadable(hex, black, { level: "AA", size: "small" }),
       large: isReadable(hex, black, { level: "AA", size: "large" }),

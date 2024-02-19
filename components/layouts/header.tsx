@@ -35,6 +35,7 @@ import {
   useMotionValueEvent,
   useRipple,
   useScroll,
+  useUpdateEffect,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -53,10 +54,10 @@ import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 
-export type HeaderProps = CenterProps & {}
+export type HeaderProps = CenterProps & { hex?: string }
 
 export const Header = memo(
-  forwardRef<HeaderProps, "div">(({ ...rest }, ref) => {
+  forwardRef<HeaderProps, "div">(({ hex, ...rest }, ref) => {
     const headerRef = useRef<HTMLHeadingElement>()
     const { scrollY } = useScroll()
     const [y, setY] = useState<number>(0)
@@ -113,31 +114,37 @@ export const Header = memo(
 
               <Spacer />
 
-              <Search isScroll={isScroll} />
+              <Search hex={hex} isScroll={isScroll} />
 
               <ButtonGroup {...{ isOpen, onOpen }} />
             </HStack>
           </Center>
         </Center>
 
-        <MobileMenu isOpen={isOpen} onClose={onClose} />
+        <MobileMenu hex={hex} isOpen={isOpen} onClose={onClose} />
       </>
     )
   }),
 )
 
-type SearchProps = ColorPickerProps & { isScroll: boolean }
+type SearchProps = ColorPickerProps & { hex?: string; isScroll: boolean }
 
-const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
+const Search: FC<SearchProps> = memo(({ hex, isScroll, ...rest }) => {
+  const [value, setValue] = useState<string | undefined>(hex)
+
+  useUpdateEffect(() => {
+    setValue(hex)
+  }, [hex])
+
   return (
     <>
       <ColorPicker
+        value={value}
+        onChange={setValue}
         maxW={{ base: "sm", md: "xs" }}
         matchWidth
         colorSelectorSize="md"
         display={{ base: "block", sm: "none" }}
-        // TODO: Remove once updated
-        swatchProps={{ zIndex: 2 }}
         borderColor="transparent"
         _hover={{}}
         bg={
@@ -391,9 +398,9 @@ const ColorButton: FC<ColorButtonProps> = memo(({ colorScheme, ...rest }) => {
 
 ColorButton.displayName = "ColorButton"
 
-type MobileMenuProps = DrawerProps
+type MobileMenuProps = DrawerProps & { hex?: string }
 
-const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
+const MobileMenu: FC<MobileMenuProps> = memo(({ hex, isOpen, onClose }) => {
   const { events } = useRouter()
   const breakpoint = useBreakpoint()
 
@@ -427,7 +434,7 @@ const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
       </DrawerHeader>
 
       <DrawerBody my="md">
-        <Tree />
+        <Tree hex={hex} />
       </DrawerBody>
     </Drawer>
   )

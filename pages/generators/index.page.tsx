@@ -22,6 +22,7 @@ const Page: NextPage<PageProps> = ({ name, tab, hex, hexes }) => {
     <AppLayout
       title={t("generators.title")}
       description={t("generators.description")}
+      hex={hex}
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hex, name }} />

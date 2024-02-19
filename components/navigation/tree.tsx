@@ -13,11 +13,14 @@ import {
 } from "components/media-and-icons"
 import { useI18n } from "contexts/i18n-context"
 
-export type TreeProps = BoxProps & { isAside?: boolean }
+export type TreeProps = BoxProps & { hex?: string; isAside?: boolean }
 
 export const Tree = memo(
-  forwardRef<TreeProps, "nav">(({ isAside, ...rest }, ref) => {
+  forwardRef<TreeProps, "nav">(({ hex, isAside, ...rest }, ref) => {
     const { t } = useI18n()
+    hex ??= `#${Math.floor(Math.random() * 16777215)
+      .toString(16)
+      .padStart(6, "0")}`
 
     return (
       <Box ref={ref} as="nav" w="full" {...rest}>
@@ -37,16 +40,14 @@ export const Tree = memo(
             {t("palettes.title")}
           </TreeItem>
           <TreeItem
-            href={`/generators?hex=${Math.floor(Math.random() * 16777215)
-              .toString(16)
-              .padStart(6, "0")}`}
+            href={`/generators?hex=${hex?.replace("#", "")}`}
             icon={<Brush boxSize="1.2em" />}
             isAside={isAside}
           >
             {t("generators.title")}
           </TreeItem>
           <TreeItem
-            href="/contrast-checker"
+            href={`/contrast-checker?hex=${hex?.replace("#", "")}`}
             icon={<Contrast boxSize="1.2em" />}
             isAside={isAside}
           >

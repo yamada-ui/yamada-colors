@@ -3,10 +3,10 @@ import { VStack, forwardRef } from "@yamada-ui/react"
 import { memo } from "react"
 import { Tree } from "components/navigation"
 
-export type SidebarProps = StackProps
+export type SidebarProps = StackProps & { hex?: string }
 
 export const Sidebar = memo(
-  forwardRef<SidebarProps, "aside">(({ ...rest }, ref) => {
+  forwardRef<SidebarProps, "aside">(({ hex, ...rest }, ref) => {
     return (
       <VStack
         ref={ref}
@@ -20,7 +20,7 @@ export const Sidebar = memo(
         p="md"
         {...rest}
       >
-        <Tree isAside />
+        <Tree hex={hex} isAside />
       </VStack>
     )
   }),

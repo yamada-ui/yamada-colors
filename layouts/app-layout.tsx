@@ -7,6 +7,7 @@ import { SEO } from "components/media-and-icons"
 type AppLayoutOptions = {
   title: string
   description: string
+  hex?: string
   hasSidebar?: boolean
 }
 
@@ -15,6 +16,7 @@ export type AppLayoutProps = PropsWithChildren & StackProps & AppLayoutOptions
 export const AppLayout: FC<AppLayoutProps> = ({
   title,
   description,
+  hex,
   hasSidebar = true,
   children,
   ...rest
@@ -23,7 +25,7 @@ export const AppLayout: FC<AppLayoutProps> = ({
     <>
       <SEO title={title} description={description} />
 
-      <Header />
+      <Header hex={hex} />
 
       <Center>
         <HStack
@@ -35,7 +37,7 @@ export const AppLayout: FC<AppLayoutProps> = ({
           px={{ base: "lg", md: "md" }}
         >
           {hasSidebar ? (
-            <Sidebar display={{ base: "flex", lg: "none" }} />
+            <Sidebar hex={hex} display={{ base: "flex", lg: "none" }} />
           ) : null}
 
           <VStack

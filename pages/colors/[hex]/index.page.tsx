@@ -64,6 +64,7 @@ const Page: NextPage<PageProps> = ({
     <AppLayout
       title={hex}
       description={t("colors.description")}
+      hex={hex}
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hex, name }} />

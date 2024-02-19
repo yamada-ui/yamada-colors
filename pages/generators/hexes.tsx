@@ -22,68 +22,86 @@ export const Hexes: FC<HexesProps> = ({ hexes }) => {
         templateColumns={{ base: `repeat(${count}, 1fr)`, md: "1fr" }}
         gap={{ base: "0", md: "md" }}
       >
-        {hexes.map((hex, index) => (
-          <GridItem
-            key={`${hex}-${index}`}
-            as={VStack}
-            minW="0"
-            gap={{ base: "md", md: "sm" }}
-          >
-            <Box
-              as={Link}
-              href={`/colors/${hex.replace("#", "")}`}
-              w="full"
-              minH={{ base: "xs", md: "20", sm: "16" }}
-              outline={0}
-              position="relative"
-              _focusVisible={{
-                zIndex: 1,
-                _before: {
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  boxShadow: "outline",
-                  roundedLeft: { base: !index ? "2xl" : "0px", md: "2xl" },
-                  roundedRight: {
-                    base: index + 1 === count ? "2xl" : "0px",
-                    md: "2xl",
-                  },
-                },
-              }}
+        {hexes.map((hex, index) => {
+          const isStart = !index
+          const isEnd = index + 1 === count
+
+          return (
+            <GridItem
+              key={`${hex}-${index}`}
+              as={VStack}
+              minW="0"
+              gap={{ base: "md", md: "sm" }}
             >
               <Motion
                 display={{ base: "block", md: "none" }}
+                w="full"
+                minH="xs"
                 bg={hex}
                 boxSize="full"
                 initial={{
-                  borderStartStartRadius: !index ? "16px" : "0px",
-                  borderEndStartRadius: !index ? "16px" : "0px",
-                  borderStartEndRadius: index + 1 === count ? "16px" : "0px",
-                  borderEndEndRadius: index + 1 === count ? "16px" : "0px",
+                  borderStartStartRadius: isStart ? "16px" : "0px",
+                  borderEndStartRadius: isStart ? "16px" : "0px",
+                  borderStartEndRadius: isEnd ? "16px" : "0px",
+                  borderEndEndRadius: isEnd ? "16px" : "0px",
                 }}
                 whileHover={{ scale: 1.1, borderRadius: "16px" }}
-              />
+              >
+                <LinkBox hex={hex} isStart={isStart} isEnd={isEnd} />
+              </Motion>
 
               <Motion
                 display={{ base: "none", md: "block" }}
+                minH={{ base: "20", sm: "16" }}
                 bg={hex}
                 boxSize="full"
                 rounded="2xl"
                 whileHover={{ scale: 0.95 }}
-              />
-            </Box>
+              >
+                <LinkBox hex={hex} isStart={isStart} isEnd={isEnd} />
+              </Motion>
 
-            <Center px="xs">
-              <Text as="span" color="muted" fontSize="sm" lineClamp={1}>
-                {hex}
-              </Text>
-            </Center>
-          </GridItem>
-        ))}
+              <Center px="xs">
+                <Text as="span" color="muted" fontSize="sm" lineClamp={1}>
+                  {hex}
+                </Text>
+              </Center>
+            </GridItem>
+          )
+        })}
       </Grid>
     </>
+  )
+}
+
+type LinkBoxProps = { hex: string; isStart: boolean; isEnd: boolean }
+
+const LinkBox: FC<LinkBoxProps> = ({ hex, isStart, isEnd }) => {
+  return (
+    <Box
+      as={Link}
+      display="block"
+      boxSize="full"
+      href={`/colors/${hex.replace("#", "")}`}
+      outline={0}
+      position="relative"
+      _focusVisible={{
+        zIndex: 1,
+        _before: {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          boxShadow: "outline",
+          roundedLeft: { base: isStart ? "2xl" : "0px", md: "2xl" },
+          roundedRight: {
+            base: isEnd ? "2xl" : "0px",
+            md: "2xl",
+          },
+        },
+      }}
+    />
   )
 }

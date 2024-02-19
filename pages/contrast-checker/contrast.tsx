@@ -245,7 +245,6 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                     fontSize={{ base: "sm", sm: "xs" }}
                     minH={{ base: 6, sm: 5 }}
                     lineHeight={1}
-                    rounded="full"
                   >
                     AA
                   </Tag>
@@ -306,7 +305,6 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                     fontSize={{ base: "sm", sm: "xs" }}
                     minH={{ base: 6, sm: 5 }}
                     lineHeight={1}
-                    rounded="full"
                   >
                     AAA
                   </Tag>

@@ -45,7 +45,7 @@ export const AppLayout: FC<AppLayoutProps> = ({
             flex="1"
             minW="0"
             gap="0"
-            px={hasSidebar ? { base: "lg", lg: "0" } : undefined}
+            ps={hasSidebar ? { base: "lg", lg: "0" } : undefined}
             {...rest}
           >
             {children}

@@ -68,9 +68,13 @@ const Page: NextPage<PageProps> = ({
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hex, name }} />
+
       <Data {...data} />
+
       <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
+
       <A11y {...{ hex, blind, contrast }} />
+
       <Others
         {...{
           hex,

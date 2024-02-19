@@ -18,7 +18,9 @@
   },
   "contrast-checker": {
     "title": "コントラストチェッカー",
-    "description": ""
+    "description": "",
+    "foreground": "前景色",
+    "background": "背景色"
   },
   "history": {
     "title": "履歴",

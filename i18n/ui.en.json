@@ -18,7 +18,9 @@
   },
   "contrast-checker": {
     "title": "Contrast Checker",
-    "description": ""
+    "description": "",
+    "foreground": "Foreground",
+    "background": "Background"
   },
   "history": {
     "title": "History",

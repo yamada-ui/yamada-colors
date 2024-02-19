@@ -1,5 +1,12 @@
 import type { BoxProps, StackProps } from "@yamada-ui/react"
-import { Box, HStack, Text, VStack, forwardRef } from "@yamada-ui/react"
+import {
+  Box,
+  HStack,
+  Text,
+  VStack,
+  forwardRef,
+  isString,
+} from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import type { ReactNode } from "react"
@@ -13,14 +20,25 @@ import {
 } from "components/media-and-icons"
 import { useI18n } from "contexts/i18n-context"
 
-export type TreeProps = BoxProps & { hex?: string; isAside?: boolean }
+const randomHex = () =>
+  `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`
+
+export type TreeProps = BoxProps & {
+  hex?: string | [string, string]
+  isAside?: boolean
+}
 
 export const Tree = memo(
   forwardRef<TreeProps, "nav">(({ hex, isAside, ...rest }, ref) => {
     const { t } = useI18n()
-    hex ??= `#${Math.floor(Math.random() * 16777215)
-      .toString(16)
-      .padStart(6, "0")}`
+    hex ??= randomHex()
+
+    const hexes = {
+      light: isString(hex) ? hex : hex[0],
+      dark: isString(hex) ? hex : hex[1],
+    }
 
     return (
       <Box ref={ref} as="nav" w="full" {...rest}>
@@ -40,14 +58,14 @@ export const Tree = memo(
             {t("palettes.title")}
           </TreeItem>
           <TreeItem
-            href={`/generators?hex=${hex?.replace("#", "")}`}
+            href={`/generators?hex=${hexes.light.replace("#", "")}`}
             icon={<Brush boxSize="1.2em" />}
             isAside={isAside}
           >
             {t("generators.title")}
           </TreeItem>
           <TreeItem
-            href={`/contrast-checker?hex=${hex?.replace("#", "")}`}
+            href={`/contrast-checker?light.fg=${hexes.light.replace("#", "")}&dark.fg=${hexes.dark.replace("#", "")}`}
             icon={<Contrast boxSize="1.2em" />}
             isAside={isAside}
           >

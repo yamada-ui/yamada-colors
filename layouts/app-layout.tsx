@@ -7,7 +7,7 @@ import { SEO } from "components/media-and-icons"
 type AppLayoutOptions = {
   title: string
   description: string
-  hex?: string
+  hex?: string | [string, string]
   hasSidebar?: boolean
 }
 

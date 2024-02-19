@@ -26,6 +26,7 @@ import {
   Spacer,
   Text,
   forwardRef,
+  isString,
   mergeRefs,
   noop,
   useBreakpoint,
@@ -54,7 +55,7 @@ import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 
-export type HeaderProps = CenterProps & { hex?: string }
+export type HeaderProps = CenterProps & { hex?: string | [string, string] }
 
 export const Header = memo(
   forwardRef<HeaderProps, "div">(({ hex, ...rest }, ref) => {
@@ -127,13 +128,18 @@ export const Header = memo(
   }),
 )
 
-type SearchProps = ColorPickerProps & { hex?: string; isScroll: boolean }
+type SearchProps = ColorPickerProps & {
+  hex?: string | [string, string]
+  isScroll: boolean
+}
 
 const Search: FC<SearchProps> = memo(({ hex, isScroll, ...rest }) => {
-  const [value, setValue] = useState<string | undefined>(hex)
+  const [value, setValue] = useState<string | undefined>(
+    isString(hex) ? hex : hex?.[0],
+  )
 
   useUpdateEffect(() => {
-    setValue(hex)
+    setValue(isString(hex) ? hex : hex?.[0])
   }, [hex])
 
   return (
@@ -398,7 +404,7 @@ const ColorButton: FC<ColorButtonProps> = memo(({ colorScheme, ...rest }) => {
 
 ColorButton.displayName = "ColorButton"
 
-type MobileMenuProps = DrawerProps & { hex?: string }
+type MobileMenuProps = DrawerProps & { hex?: string | [string, string] }
 
 const MobileMenu: FC<MobileMenuProps> = memo(({ hex, isOpen, onClose }) => {
   const { events } = useRouter()

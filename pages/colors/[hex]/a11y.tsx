@@ -58,7 +58,7 @@ export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
         </Grid>
 
         <NextLink
-          href={`/contrast-checker?hex=${hex.replace("#", "")}`}
+          href={`/contrast-checker?light.fg=${hex.replace("#", "")}&dark.fg=${hex.replace("#", "")}`}
           variant="muted"
           fontSize="sm"
           whiteSpace="nowrap"

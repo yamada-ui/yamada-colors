@@ -52,9 +52,9 @@ export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
           templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(1, 1fr)" }}
           gap="md"
         >
-          <Contrast hex={hex} type="light" data={contrast.light} />
+          <Contrast hex={hex} mode="light" data={contrast.light} />
 
-          <Contrast hex={hex} type="dark" data={contrast.dark} />
+          <Contrast hex={hex} mode="dark" data={contrast.dark} />
         </Grid>
 
         <NextLink
@@ -160,13 +160,13 @@ const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
 
 type ContrastProps = {
   hex: string
-  type: "light" | "dark"
+  mode: "light" | "dark"
   data: ContrastData
 }
 
-const Contrast: FC<ContrastProps> = ({ hex, type, data }) => {
-  const color = type === "light" ? "black" : "white"
-  const bg = type === "light" ? "white" : "black"
+const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
+  const color = mode === "light" ? "black" : "white"
+  const bg = mode === "light" ? "white" : "black"
   const muted = `${color}Alpha.700`
 
   return (

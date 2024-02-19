@@ -14,7 +14,7 @@ export const SegmentedControl: ComponentMultiStyle = {
       },
 
       button: {
-        py: { base: "3", sm: "2" },
+        py: "2",
         px: "4",
         transitionDuration: "slower",
         rounded: "full",

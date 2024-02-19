@@ -130,7 +130,7 @@ export const readability = (hex1: string, hex2: string) => {
 
 type WcagOptions = {
   level: "AA" | "AAA"
-  size: "small" | "large"
+  size: "small" | "large" | "component"
 }
 
 export const isReadable = (
@@ -146,6 +146,8 @@ export const isReadable = (
       return score >= 4.5
 
     case "AAlarge":
+    case "AAcomponent":
+    case "AAAcomponent":
       return score >= 3
 
     case "AAAsmall":

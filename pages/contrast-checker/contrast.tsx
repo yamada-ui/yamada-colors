@@ -17,6 +17,7 @@ import {
 import Link from "next/link"
 import { useState, type FC } from "react"
 import { Check, Fail, Refresh } from "components/media-and-icons"
+import { CopyText } from "components/other"
 import { useI18n } from "contexts/i18n-context"
 import { isLight } from "utils/color"
 
@@ -105,9 +106,17 @@ const ColorInput: FC<ColorInputProps> = ({
 
   return (
     <VStack minW="12.5rem" w="auto" flex="1" gap="xs">
-      <Text as="span" color="muted" fontSize="sm">
+      <CopyText
+        as="span"
+        color="muted"
+        fontSize="sm"
+        value={value}
+        alignSelf="flex-start"
+        copyIconProps={{ fontSize: "md", mb: "2px" }}
+        checkIconProps={{ fontSize: "0.9em" }}
+      >
         {label}
-      </Text>
+      </CopyText>
 
       <ColorPicker
         value={value}

@@ -1,14 +1,7 @@
-import {
-  Box,
-  Center,
-  Grid,
-  GridItem,
-  Motion,
-  Text,
-  VStack,
-} from "@yamada-ui/react"
+import { Box, Center, Grid, GridItem, Motion, VStack } from "@yamada-ui/react"
 import Link from "next/link"
 import type { FC } from "react"
+import { CopyText } from "components/other"
 
 export type HexesProps = { hexes: string[] }
 
@@ -62,9 +55,15 @@ export const Hexes: FC<HexesProps> = ({ hexes }) => {
               </Motion>
 
               <Center px="xs">
-                <Text as="span" color="muted" fontSize="sm" lineClamp={1}>
+                <CopyText
+                  hiddenIcon
+                  as="span"
+                  color="muted"
+                  fontSize="sm"
+                  lineClamp={1}
+                >
                   {hex}
-                </Text>
+                </CopyText>
               </Center>
             </GridItem>
           )

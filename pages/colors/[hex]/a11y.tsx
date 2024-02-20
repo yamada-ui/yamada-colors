@@ -12,7 +12,7 @@ import {
   Wrap,
 } from "@yamada-ui/react"
 import type { FC } from "react"
-import { Fail, Pass } from "components/media-and-icons"
+import { Check, Fail } from "components/media-and-icons"
 import { NextLink } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
 import { isLight } from "utils/color"
@@ -212,7 +212,7 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
             Large Text
           </Text>
 
-          {data.large ? <Pass color="success" /> : <Fail color="danger" />}
+          {data.large ? <Check color="success" /> : <Fail color="danger" />}
 
           <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
             {data.large ? "Pass" : "Fail"}
@@ -226,7 +226,7 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
             Small Text
           </Text>
 
-          {data.small ? <Pass color="success" /> : <Fail color="danger" />}
+          {data.small ? <Check color="success" /> : <Fail color="danger" />}
 
           <Text
             minW="4ch"

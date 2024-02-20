@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@yamada-ui/react"
 import { Button, HStack, useColorModeValue } from "@yamada-ui/react"
 import type { Dispatch, SetStateAction, FC } from "react"
-import { Pass } from "components/media-and-icons"
+import { Check } from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { setCookie } from "utils/storage"
 
@@ -57,7 +57,7 @@ const LevelButton: FC<LevelButtonProps> = ({ isSelected, ...rest }) => {
   return (
     <Button
       size="sm"
-      leftIcon={<Pass />}
+      leftIcon={<Check />}
       gap="1"
       variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "success" : colorScheme}

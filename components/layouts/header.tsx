@@ -55,7 +55,6 @@ import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
 import type { ColorFormat } from "utils/color"
-import { getCookie, setCookie } from "utils/storage"
 
 export type HeaderProps = CenterProps
 
@@ -393,26 +392,8 @@ type FormatButtonProps = IconButtonProps & {
 }
 
 const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
-  const { format: formatProp } = useApp()
-  const [format, setFormat] = useState<ColorFormat>(formatProp)
+  const { format, changeFormat } = useApp()
   const padding = useBreakpointValue({ base: 32, md: 16 })
-  const router = useRouter()
-
-  const onChange = (value: ColorFormat) => {
-    setFormat(value)
-    setCookie(CONSTANT.STORAGE.FORMAT, value)
-    router.replace(router.asPath)
-  }
-
-  useEffect(() => {
-    const clientFormat = getCookie(
-      document.cookie,
-      CONSTANT.STORAGE.FORMAT,
-      "hex",
-    )
-
-    if (format !== clientFormat) setFormat(clientFormat)
-  }, [format])
 
   return (
     <Menu
@@ -446,7 +427,7 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
       <MenuList>
         <MenuOptionGroup<ColorFormat>
           value={format}
-          onChange={onChange}
+          onChange={changeFormat}
           type="radio"
         >
           <MenuOptionItem value="hex" closeOnSelect>

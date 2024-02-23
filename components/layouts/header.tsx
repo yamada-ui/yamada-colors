@@ -131,7 +131,7 @@ export const Header = memo(
 )
 
 const disableDefaultValue = (path: string) =>
-  path === "/" || /^\/(history|categories)/.test(path)
+  path === "/" || /^\/(history|categories|palettes)/.test(path)
 
 type SearchProps = ColorPickerProps & {
   isScroll: boolean
@@ -140,11 +140,13 @@ type SearchProps = ColorPickerProps & {
 const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
   const router = useRouter()
   const { hex, format } = useApp()
-
-  const defaultValue = !disableDefaultValue(router.asPath)
-    ? f(isString(hex) ? hex : hex[0], format)
-    : undefined
-  const [value, setValue] = useState<string | undefined>(defaultValue)
+  const [value, setValue] = useState<string | undefined>(() => {
+    if (disableDefaultValue(router.asPath)) {
+      return undefined
+    } else {
+      return f(isString(hex) ? hex : hex[0], format)
+    }
+  })
 
   useUpdateEffect(() => {
     if (disableDefaultValue(router.asPath)) return

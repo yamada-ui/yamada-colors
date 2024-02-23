@@ -18,8 +18,9 @@ import Link from "next/link"
 import { useState, type FC } from "react"
 import { Check, Fail, Refresh } from "components/media-and-icons"
 import { CopyText } from "components/other"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import { isLight } from "utils/color"
+import { f, isLight } from "utils/color"
 
 export type ContrastProps = {
   mode: ColorMode
@@ -98,7 +99,8 @@ const ColorInput: FC<ColorInputProps> = ({
   value: valueProp,
   queries,
 }) => {
-  const [value, setValue] = useState<string>(valueProp)
+  const { format } = useApp()
+  const [value, setValue] = useState<string>(f(valueProp, format))
 
   useUpdateEffect(() => {
     setValue(valueProp)
@@ -121,6 +123,7 @@ const ColorInput: FC<ColorInputProps> = ({
       <ColorPicker
         value={value}
         onChange={setValue}
+        format={format}
         rounded="full"
         matchWidth
         eyeDropperProps={{ rounded: "full" }}

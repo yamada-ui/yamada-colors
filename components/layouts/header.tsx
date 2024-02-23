@@ -53,6 +53,7 @@ import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { f } from "utils/color"
 import type { ColorFormat } from "utils/color"
 import { getCookie, setCookie } from "utils/storage"
 
@@ -136,11 +137,11 @@ type SearchProps = ColorPickerProps & {
 const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
   const { hex, format } = useApp()
   const [value, setValue] = useState<string | undefined>(
-    isString(hex) ? hex : hex?.[0],
+    f(isString(hex) ? hex : hex[0], format),
   )
 
   useUpdateEffect(() => {
-    setValue(isString(hex) ? hex : hex?.[0])
+    setValue(f(isString(hex) ? hex : hex[0], format))
   }, [hex])
 
   return (
@@ -384,9 +385,12 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
   const { format: formatProp } = useApp()
   const [format, setFormat] = useState<ColorFormat>(formatProp)
   const padding = useBreakpointValue({ base: 32, md: 16 })
+  const router = useRouter()
 
-  const onChange = (value: string) => {
+  const onChange = (value: ColorFormat) => {
+    setFormat(value)
     setCookie(CONSTANT.STORAGE.FORMAT, value)
+    router.replace(router.asPath)
   }
 
   useEffect(() => {
@@ -429,7 +433,7 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
       />
 
       <MenuList>
-        <MenuOptionGroup<string>
+        <MenuOptionGroup<ColorFormat>
           value={format}
           onChange={onChange}
           type="radio"

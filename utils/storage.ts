@@ -4,8 +4,11 @@ export const getCookie = (
   fallback: string = "{}",
 ) => {
   const match = cookie.match(new RegExp(`(^| )${key}=([^;]+)`))
+  const value = match?.[2] ?? fallback
 
-  return JSON.parse(match?.[2] ?? fallback)
+  return /^\{.*\}$|^\[.*\]$/.test(value)
+    ? JSON.parse(match?.[2] ?? fallback)
+    : value
 }
 
 export const setCookie = (key: string, value: string) => {

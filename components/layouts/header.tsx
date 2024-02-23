@@ -130,23 +130,32 @@ export const Header = memo(
   }),
 )
 
+const disableDefaultValue = (path: string) =>
+  path === "/" || /^\/(history|categories)/.test(path)
+
 type SearchProps = ColorPickerProps & {
   isScroll: boolean
 }
 
 const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
+  const router = useRouter()
   const { hex, format } = useApp()
-  const [value, setValue] = useState<string | undefined>(
-    f(isString(hex) ? hex : hex[0], format),
-  )
+
+  const defaultValue = !disableDefaultValue(router.asPath)
+    ? f(isString(hex) ? hex : hex[0], format)
+    : undefined
+  const [value, setValue] = useState<string | undefined>(defaultValue)
 
   useUpdateEffect(() => {
+    if (disableDefaultValue(router.asPath)) return
+
     setValue(f(isString(hex) ? hex : hex[0], format))
   }, [hex])
 
   return (
     <>
       <ColorPicker
+        placeholder={f("#ffffff", format)}
         value={value}
         onChange={setValue}
         maxW={{ base: "sm", md: "xs" }}

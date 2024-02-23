@@ -1,6 +1,9 @@
+import { convertColor } from "@yamada-ui/react"
 import blinder from "color-blind"
 import convert from "color-convert"
 import * as color from "color2k"
+
+export type ColorFormat = "hex" | "rgb" | "hsl"
 
 export const tones = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95]
 
@@ -17,6 +20,9 @@ export const toCmyk = (hex: string) => convert.hex.cmyk(hex)
 export const toCielab = (hex: string) => convert.hex.lab(hex)
 
 export const toCielch = (hex: string) => convert.hex.lch(hex)
+
+export const f = (hex: string, format: ColorFormat = "hex") =>
+  convertColor(hex)(format)
 
 export const darken = (hex: string) => {
   const [h, s, l] = toHsl(hex)

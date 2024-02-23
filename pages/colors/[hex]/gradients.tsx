@@ -2,7 +2,9 @@ import { Box, Grid, GridItem, Heading, Text, VStack } from "@yamada-ui/react"
 import type { FC, ReactNode } from "react"
 import { ColorCard } from "components/data-display"
 import { NextLink } from "components/navigation"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { f } from "utils/color"
 
 export type GradientsProps = {
   hex: string
@@ -18,6 +20,7 @@ export const Gradients: FC<GradientsProps> = ({
   toneColors,
 }) => {
   const { t } = useI18n()
+  const { format } = useApp()
 
   return (
     <Grid
@@ -27,21 +30,27 @@ export const Gradients: FC<GradientsProps> = ({
     >
       <List
         title={t("colors.shades.title")}
-        description={t("colors.shades.description", hex)}
+        description={t("colors.shades.description", {
+          label: f(hex, format),
+          base: f("#000000", format),
+        })}
         more={t("colors.shades.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=shades`}
         colors={shadeColors}
       />
       <List
         title={t("colors.tints.title")}
-        description={t("colors.tints.description", hex)}
+        description={t("colors.tints.description", {
+          label: f(hex, format),
+          base: f("#ffffff", format),
+        })}
         more={t("colors.tints.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=tints`}
         colors={tintColors}
       />
       <List
         title={t("colors.tones.title")}
-        description={t("colors.tones.description", hex)}
+        description={t("colors.tones.description", f(hex, format))}
         more={t("colors.tones.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=tones`}
         colors={toneColors}
@@ -64,7 +73,7 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
       <VStack gap={{ base: "xs", sm: "0" }}>
         <Heading fontSize={{ base: "lg" }}>{title}</Heading>
 
-        <Text color="muted" fontSize="sm">
+        <Text color="muted" fontSize="sm" lineClamp={1}>
           {description}
         </Text>
       </VStack>

@@ -11,7 +11,9 @@ import {
 import Link from "next/link"
 import type { FC, ReactNode } from "react"
 import { NextLink } from "components/navigation"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { f } from "utils/color"
 
 export type OthersProps = {
   hex: string
@@ -33,6 +35,7 @@ export const Others: FC<OthersProps> = ({
   splitComplementaryColors,
 }) => {
   const { t } = useI18n()
+  const { format } = useApp()
 
   return (
     <Grid
@@ -41,36 +44,36 @@ export const Others: FC<OthersProps> = ({
     >
       <List
         title={t("colors.complementary.title")}
-        description={t("colors.complementary.description", hex)}
+        description={t("colors.complementary.description")}
         colors={complementaryColors}
       />
       <List
         title={t("colors.alternatives.title")}
-        description={t("colors.alternatives.description", hex)}
+        description={t("colors.alternatives.description", f(hex, format))}
         more={t("colors.alternatives.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=alternatives`}
         colors={alternativeColors}
       />
       <List
         title={t("colors.hues.title")}
-        description={t("colors.hues.description", hex)}
+        description={t("colors.hues.description")}
         more={t("colors.hues.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=hues`}
         colors={hueColors}
       />
       <List
         title={t("colors.triadic.title")}
-        description={t("colors.triadic.description", hex)}
+        description={t("colors.triadic.description")}
         colors={triadicColors}
       />
       <List
         title={t("colors.square.title")}
-        description={t("colors.square.description", hex)}
+        description={t("colors.square.description")}
         colors={squareColors}
       />
       <List
         title={t("colors.split-complementary.title")}
-        description={t("colors.split-complementary.description", hex)}
+        description={t("colors.split-complementary.description")}
         colors={splitComplementaryColors}
       />
     </Grid>
@@ -91,7 +94,7 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
       <VStack gap={{ base: "xs", sm: "0" }}>
         <Heading fontSize={{ base: "lg" }}>{title}</Heading>
 
-        <Text color="muted" fontSize="sm">
+        <Text color="muted" fontSize="sm" lineClamp={1}>
           {description}
         </Text>
       </VStack>

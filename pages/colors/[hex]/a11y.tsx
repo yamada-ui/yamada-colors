@@ -14,8 +14,9 @@ import {
 import type { FC } from "react"
 import { Check, Fail } from "components/media-and-icons"
 import { NextLink } from "components/navigation"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import { isLight } from "utils/color"
+import { f, isLight } from "utils/color"
 
 type ContrastData = {
   score: number
@@ -165,6 +166,7 @@ type ContrastProps = {
 }
 
 const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
+  const { format } = useApp()
   const color = mode === "light" ? "black" : "white"
   const bg = mode === "light" ? "white" : "black"
   const muted = `${color}Alpha.700`
@@ -186,7 +188,7 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
         />
 
         <Text color={muted} fontSize={{ base: "md", sm: "sm" }}>
-          {hex}
+          {f(hex, format)}
         </Text>
       </HStack>
 

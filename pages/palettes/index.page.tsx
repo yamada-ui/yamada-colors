@@ -5,13 +5,15 @@ import { getServerSideCommonProps } from "utils/next"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({}) => {
+const Page: NextPage<PageProps> = ({ hex, format }) => {
   const { t } = useI18n()
 
   return (
     <AppLayout
       title={t("palettes.title")}
       description={t("palettes.description")}
+      hex={hex}
+      format={format}
     ></AppLayout>
   )
 }

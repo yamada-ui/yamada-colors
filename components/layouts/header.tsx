@@ -1,5 +1,4 @@
 import type {
-  BoxProps,
   CenterProps,
   ColorPickerProps,
   DrawerProps,
@@ -22,7 +21,6 @@ import {
   MenuList,
   MenuOptionGroup,
   MenuOptionItem,
-  Ripple,
   Spacer,
   Text,
   forwardRef,
@@ -34,7 +32,6 @@ import {
   useColorMode,
   useDisclosure,
   useMotionValueEvent,
-  useRipple,
   useScroll,
   useUpdateEffect,
 } from "@yamada-ui/react"
@@ -43,6 +40,7 @@ import { useRouter } from "next/router"
 import type { FC } from "react"
 import { memo, useEffect, useRef, useState } from "react"
 import {
+  Color,
   Discord,
   Github,
   Hamburger,
@@ -53,12 +51,15 @@ import {
 } from "components/media-and-icons"
 import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import type { ColorFormat } from "utils/color"
+import { getCookie, setCookie } from "utils/storage"
 
-export type HeaderProps = CenterProps & { hex?: string | [string, string] }
+export type HeaderProps = CenterProps
 
 export const Header = memo(
-  forwardRef<HeaderProps, "div">(({ hex, ...rest }, ref) => {
+  forwardRef<HeaderProps, "div">(({ ...rest }, ref) => {
     const headerRef = useRef<HTMLHeadingElement>()
     const { scrollY } = useScroll()
     const [y, setY] = useState<number>(0)
@@ -115,25 +116,25 @@ export const Header = memo(
 
               <Spacer />
 
-              <Search hex={hex} isScroll={isScroll} />
+              <Search isScroll={isScroll} />
 
               <ButtonGroup {...{ isOpen, onOpen }} />
             </HStack>
           </Center>
         </Center>
 
-        <MobileMenu hex={hex} isOpen={isOpen} onClose={onClose} />
+        <MobileMenu isOpen={isOpen} onClose={onClose} />
       </>
     )
   }),
 )
 
 type SearchProps = ColorPickerProps & {
-  hex?: string | [string, string]
   isScroll: boolean
 }
 
-const Search: FC<SearchProps> = memo(({ hex, isScroll, ...rest }) => {
+const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
+  const { hex, format } = useApp()
   const [value, setValue] = useState<string | undefined>(
     isString(hex) ? hex : hex?.[0],
   )
@@ -152,6 +153,7 @@ const Search: FC<SearchProps> = memo(({ hex, isScroll, ...rest }) => {
         colorSelectorSize="md"
         display={{ base: "block", sm: "none" }}
         borderColor="transparent"
+        format={format}
         _hover={{}}
         bg={
           isScroll
@@ -183,7 +185,9 @@ const Search: FC<SearchProps> = memo(({ hex, isScroll, ...rest }) => {
 
 Search.displayName = "Search"
 
-type ButtonGroupProps = Partial<UseDisclosureReturn> & { isMobile?: boolean }
+type ButtonGroupProps = Partial<UseDisclosureReturn> & {
+  isMobile?: boolean
+}
 
 const ButtonGroup: FC<ButtonGroupProps> = memo(
   ({ isMobile, isOpen, onOpen, onClose }) => {
@@ -210,6 +214,8 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
           color="muted"
           icon={<Github />}
         />
+
+        <FormatButton />
 
         {CONSTANT.I18N.LOCALES.length > 1 ? (
           <I18nButton
@@ -370,43 +376,85 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
 
 ColorModeButton.displayName = "ColorModeButton"
 
-type ColorButtonProps = BoxProps & {
-  colorScheme: string
+type FormatButtonProps = IconButtonProps & {
+  menuProps?: MenuProps
 }
 
-const ColorButton: FC<ColorButtonProps> = memo(({ colorScheme, ...rest }) => {
-  const { onPointerDown, ...rippleProps } = useRipple({})
+const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
+  const { format: formatProp } = useApp()
+  const [format, setFormat] = useState<ColorFormat>(formatProp)
+  const padding = useBreakpointValue({ base: 32, md: 16 })
+
+  const onChange = (value: string) => {
+    setCookie(CONSTANT.STORAGE.FORMAT, value)
+  }
+
+  useEffect(() => {
+    const clientFormat = getCookie(
+      document.cookie,
+      CONSTANT.STORAGE.FORMAT,
+      "hex",
+    )
+
+    if (format !== clientFormat) setFormat(clientFormat)
+  }, [format])
 
   return (
-    <Box
-      as="button"
-      type="button"
-      position="relative"
-      overflow="hidden"
-      bg={`${colorScheme}.500`}
-      minW={{ base: "12", md: "10" }}
-      minH={{ base: "12", md: "10" }}
-      rounded="md"
-      boxShadow="inner"
-      outline="0"
-      _hover={{ bg: `${colorScheme}.600` }}
-      _active={{ bg: `${colorScheme}.700` }}
-      _focusVisible={{ shadow: "outline" }}
-      transitionProperty="common"
-      transitionDuration="slower"
-      {...rest}
-      onPointerDown={onPointerDown}
+    <Menu
+      placement="bottom"
+      modifiers={[
+        {
+          name: "preventOverflow",
+          options: {
+            padding: {
+              top: padding,
+              bottom: padding,
+              left: padding,
+              right: padding,
+            },
+          },
+        },
+      ]}
+      restoreFocus={false}
+      {...menuProps}
     >
-      <Ripple {...rippleProps} />
-    </Box>
+      <MenuButton
+        as={IconButton}
+        aria-label="Open color mode switching menu"
+        isRounded
+        variant="ghost"
+        color="muted"
+        icon={<Color />}
+        {...rest}
+      />
+
+      <MenuList>
+        <MenuOptionGroup<string>
+          value={format}
+          onChange={onChange}
+          type="radio"
+        >
+          <MenuOptionItem value="hex" closeOnSelect>
+            HEX
+          </MenuOptionItem>
+          <MenuOptionItem value="rgb" closeOnSelect>
+            RGB
+          </MenuOptionItem>
+          <MenuOptionItem value="hsl" closeOnSelect>
+            HSL
+          </MenuOptionItem>
+        </MenuOptionGroup>
+      </MenuList>
+    </Menu>
   )
 })
 
-ColorButton.displayName = "ColorButton"
+FormatButton.displayName = "FormatButton"
 
-type MobileMenuProps = DrawerProps & { hex?: string | [string, string] }
+type MobileMenuProps = DrawerProps
 
-const MobileMenu: FC<MobileMenuProps> = memo(({ hex, isOpen, onClose }) => {
+const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
+  const { hex, format } = useApp()
   const { events } = useRouter()
   const breakpoint = useBreakpoint()
 
@@ -436,7 +484,7 @@ const MobileMenu: FC<MobileMenuProps> = memo(({ hex, isOpen, onClose }) => {
         fontSize="md"
         fontWeight="normal"
       >
-        <ButtonGroup isMobile {...{ isOpen, onClose }} />
+        <ButtonGroup isMobile {...{ format, isOpen, onClose }} />
       </DrawerHeader>
 
       <DrawerBody my="md">

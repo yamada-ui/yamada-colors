@@ -18,22 +18,17 @@ import {
   Contrast,
   History,
 } from "components/media-and-icons"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 
-const randomHex = () =>
-  `#${Math.floor(Math.random() * 16777215)
-    .toString(16)
-    .padStart(6, "0")}`
-
 export type TreeProps = BoxProps & {
-  hex?: string | [string, string]
   isAside?: boolean
 }
 
 export const Tree = memo(
-  forwardRef<TreeProps, "nav">(({ hex, isAside, ...rest }, ref) => {
+  forwardRef<TreeProps, "nav">(({ isAside, ...rest }, ref) => {
+    const { hex } = useApp()
     const { t } = useI18n()
-    hex ??= randomHex()
 
     const hexes = {
       light: isString(hex) ? hex : hex[0],

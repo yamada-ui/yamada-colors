@@ -11,7 +11,7 @@ import { getServerSideCommonProps } from "utils/next"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ categories }) => {
+const Page: NextPage<PageProps> = ({ hex, format, categories }) => {
   const { t } = useI18n()
 
   return (
@@ -19,6 +19,8 @@ const Page: NextPage<PageProps> = ({ categories }) => {
       title={t("app.title")}
       description={t("app.description")}
       gap={{ base: "lg", sm: "normal" }}
+      hex={hex}
+      format={format}
     >
       {categories.map(({ category, colors }, index) => {
         const type = index % 4 === 2 || index % 4 === 3 ? "carousel" : "grid"
@@ -42,7 +44,7 @@ export default Page
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies },
+    props: { cookies, hex, format },
   } = await getServerSideCommonProps(req)
 
   const omittedCategories = (categories as unknown as string[])
@@ -55,7 +57,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     return { category, colors }
   })
 
-  const props = { cookies, categories: computedCategories }
+  const props = { cookies, hex, format, categories: computedCategories }
 
   return { props }
 }

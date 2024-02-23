@@ -42,6 +42,7 @@ export type ColorData = PageProps["data"]
 
 const Page: NextPage<PageProps> = ({
   cookies,
+  format,
   hex,
   name,
   data,
@@ -65,6 +66,7 @@ const Page: NextPage<PageProps> = ({
       title={hex}
       description={t("colors.description")}
       hex={hex}
+      format={format}
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hex, name }} />
@@ -147,7 +149,7 @@ const getContrast = (hex: string) => {
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies },
+    props: { cookies, format },
   } = await getServerSideCommonProps(req)
   let hex = `#${req.query.hex}`
 
@@ -172,6 +174,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 
     const props = {
       cookies,
+      format,
       name,
       hex,
       data,

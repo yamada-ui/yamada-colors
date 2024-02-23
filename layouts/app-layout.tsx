@@ -3,11 +3,14 @@ import { Center, HStack, VStack } from "@yamada-ui/react"
 import { type FC, type PropsWithChildren } from "react"
 import { Footer, Header, Sidebar } from "components/layouts"
 import { SEO } from "components/media-and-icons"
+import { AppProvider } from "contexts/app-context"
+import type { ColorFormat } from "utils/color"
 
 type AppLayoutOptions = {
   title: string
   description: string
   hex?: string | [string, string]
+  format?: ColorFormat
   hasSidebar?: boolean
 }
 
@@ -17,15 +20,16 @@ export const AppLayout: FC<AppLayoutProps> = ({
   title,
   description,
   hex,
+  format,
   hasSidebar = true,
   children,
   ...rest
 }) => {
   return (
-    <>
+    <AppProvider {...{ hex, format }}>
       <SEO title={title} description={description} />
 
-      <Header hex={hex} />
+      <Header />
 
       <Center>
         <HStack
@@ -37,7 +41,7 @@ export const AppLayout: FC<AppLayoutProps> = ({
           px={{ base: "lg", md: "md" }}
         >
           {hasSidebar ? (
-            <Sidebar hex={hex} display={{ base: "flex", lg: "none" }} />
+            <Sidebar display={{ base: "flex", lg: "none" }} />
           ) : null}
 
           <VStack
@@ -54,6 +58,6 @@ export const AppLayout: FC<AppLayoutProps> = ({
       </Center>
 
       <Footer />
-    </>
+    </AppProvider>
   )
 }

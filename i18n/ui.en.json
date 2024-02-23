@@ -34,12 +34,12 @@
     "description": "",
     "shades": {
       "title": "Shades",
-      "description": ":label + #000000",
+      "description": ":label + :base",
       "more": "See All"
     },
     "tints": {
       "title": "Tints",
-      "description": ":label + #ffffff",
+      "description": ":label + :base",
       "more": "See All"
     },
     "tones": {

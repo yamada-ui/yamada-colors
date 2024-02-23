@@ -12,7 +12,8 @@ import {
 import type { FC } from "react"
 import type { ColorData } from "./index.page"
 import { ScrollShadow } from "components/data-display"
-import { isLight } from "utils/color"
+import { useApp } from "contexts/app-context"
+import { f, isLight } from "utils/color"
 
 export type DataProps = ColorData & {}
 
@@ -26,6 +27,8 @@ export const Data: FC<DataProps> = ({
   cielab,
   cielch,
 }) => {
+  const { format } = useApp()
+
   return (
     <>
       <Box as="section" position="relative">
@@ -70,7 +73,7 @@ export const Data: FC<DataProps> = ({
           fontSize={{ base: "lg", sm: "md" }}
           color={isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700"}
         >
-          {hex}
+          {f(hex, format)}
         </Text>
       </Center>
     </>

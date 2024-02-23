@@ -2,10 +2,13 @@ import { Box, Center, Grid, GridItem, Motion, VStack } from "@yamada-ui/react"
 import Link from "next/link"
 import type { FC } from "react"
 import { CopyText } from "components/other"
+import { useApp } from "contexts/app-context"
+import { f } from "utils/color"
 
 export type HexesProps = { hexes: string[] }
 
 export const Hexes: FC<HexesProps> = ({ hexes }) => {
+  const { format } = useApp()
   const count = hexes.length
 
   return (
@@ -62,7 +65,7 @@ export const Hexes: FC<HexesProps> = ({ hexes }) => {
                   fontSize="sm"
                   lineClamp={1}
                 >
-                  {hex}
+                  {f(hex, format)}
                 </CopyText>
               </Center>
             </GridItem>

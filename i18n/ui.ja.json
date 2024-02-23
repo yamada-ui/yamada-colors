@@ -34,12 +34,12 @@
     "description": "",
     "shades": {
       "title": "シェード",
-      "description": ":label + #000000",
+      "description": ":label + :base",
       "more": "すべて見る"
     },
     "tints": {
       "title": "ティント",
-      "description": ":label + #ffffff",
+      "description": ":label + :base",
       "more": "すべて見る"
     },
     "tones": {

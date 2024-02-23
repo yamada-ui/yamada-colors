@@ -16,8 +16,9 @@ import {
 import type { LinkProps } from "next/link"
 import Link from "next/link"
 import { memo } from "react"
+import { useApp } from "contexts/app-context"
 
-import { isLight } from "utils/color"
+import { f, isLight } from "utils/color"
 
 export type ColorCardProps = AspectRatioProps & {
   size?: "md" | "lg"
@@ -44,6 +45,8 @@ export const ColorCard = memo(
       },
       ref,
     ) => {
+      const { format } = useApp()
+
       if (size === "lg") {
         return (
           <AspectRatio ref={ref} {...rest}>
@@ -93,7 +96,7 @@ export const ColorCard = memo(
                     lineClamp={1}
                     textAlign={name ? "left" : "center"}
                   >
-                    {hex}
+                    {f(hex, format)}
                   </Text>
                 </VStack>
               </Motion>
@@ -133,7 +136,7 @@ export const ColorCard = memo(
                 ) : null}
 
                 <Text as="span" fontSize="sm" color="muted" lineClamp={1}>
-                  {hex}
+                  {f(hex, format)}
                 </Text>
               </VStack>
             </Grid>

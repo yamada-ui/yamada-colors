@@ -1,10 +1,14 @@
 import { Box, Grid, HStack, Heading, Spacer, VStack } from "@yamada-ui/react"
 import type { FC } from "react"
 import { CopyText } from "components/other"
+import { useApp } from "contexts/app-context"
+import { f } from "utils/color"
 
 export type HeaderProps = Color
 
 export const Header: FC<HeaderProps> = ({ hex, name }) => {
+  const { format } = useApp()
+
   return (
     <HStack as="section">
       <Grid templateColumns={{ base: "auto 1fr" }} gap={{ base: "md" }}>
@@ -14,7 +18,7 @@ export const Header: FC<HeaderProps> = ({ hex, name }) => {
           <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>
 
           <CopyText as="h2" color="muted" alignSelf="flex-start">
-            {hex}
+            {f(hex, format)}
           </CopyText>
         </VStack>
       </Grid>

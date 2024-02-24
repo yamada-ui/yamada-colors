@@ -7,7 +7,7 @@ import type {
 } from "next"
 import { useState } from "react"
 import { Contrast } from "./contrast"
-import { Level } from "./level"
+import { Header } from "./header"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
@@ -33,9 +33,9 @@ const Page: NextPage<PageProps> = ({ level, hexes, format, light, dark }) => {
       description={t("contrast-checker.description")}
       hex={hexes}
       format={format}
-      gap="md"
+      gap={{ base: "lg", sm: "normal" }}
     >
-      <Level {...{ aa, aaa, setLevel }} />
+      <Header {...{ hexes, aa, aaa, setLevel }} />
 
       <Grid
         templateColumns={{

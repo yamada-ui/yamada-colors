@@ -10,12 +10,11 @@ import { Tabs } from "./tabs"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
 import { alternative, darken, hue, lighten, tone } from "utils/color"
-import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ name, tab, hex, format, hexes }) => {
+const Page: NextPage<PageProps> = ({ tab, hex, format, hexes }) => {
   const { t } = useI18n()
 
   return (
@@ -26,7 +25,7 @@ const Page: NextPage<PageProps> = ({ name, tab, hex, format, hexes }) => {
       format={format}
       gap={{ base: "lg", sm: "normal" }}
     >
-      <Header {...{ hex, name }} />
+      <Header {...{ hex, tab }} />
 
       <Tabs {...{ tab, hex }} />
 
@@ -69,14 +68,12 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   try {
     hex = c.toHex(hex)
 
-    const name = getColorName(hex)
     const hexes = getTabData(hex, tab)
 
     const props = {
       cookies,
       format,
       tab,
-      name,
       hex,
       hexes,
     }

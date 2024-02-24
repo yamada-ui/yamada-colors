@@ -1,36 +1,38 @@
-import { Box, Grid, HStack, Heading, Spacer, VStack } from "@yamada-ui/react"
-import Link from "next/link"
-import type { FC } from "react"
-import { CopyText } from "components/other"
+import { ChevronIcon, HStack, Spacer } from "@yamada-ui/react"
+import { useRouter } from "next/router"
+import { useState, type FC } from "react"
+import { SearchColor } from "components/form"
+import { NextLinkIconButton } from "components/navigation"
 import { useApp } from "contexts/app-context"
 import { f } from "utils/color"
 
-export type HeaderProps = Color
+export type HeaderProps = { hex: string; tab: string }
 
-export const Header: FC<HeaderProps> = ({ hex, name }) => {
+export const Header: FC<HeaderProps> = ({ hex, tab }) => {
   const { format } = useApp()
+  const router = useRouter()
+  const [value, setValue] = useState<string>(f(hex, format))
 
   return (
-    <HStack as="section">
-      <Grid
-        as={Link}
-        templateColumns={{ base: "auto 1fr" }}
-        gap={{ base: "md" }}
+    <HStack as="section" gap="sm">
+      <NextLinkIconButton
         href={`/colors/${hex.replace("#", "")}`}
-        outline={0}
-        _focusVisible={{ boxShadow: "outline" }}
-        rounded="2xl"
-      >
-        <Box boxSize={{ base: "20", sm: "16" }} bg={hex} rounded="2xl" />
+        bg={["blackAlpha.100", "whiteAlpha.100"]}
+        colorScheme="neutral"
+        icon={<ChevronIcon fontSize="1.5em" transform="rotate(90deg)" />}
+        borderColor="transparent"
+        isRounded
+      />
 
-        <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
-          <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>
+      <SearchColor
+        value={value}
+        onChange={setValue}
+        onSubmit={(value) => {
+          if (hex === value) return
 
-          <CopyText as="h2" color="muted" alignSelf="flex-start">
-            {f(hex, format)}
-          </CopyText>
-        </VStack>
-      </Grid>
+          router.push(`/generators?hex=${value.replace("#", "")}&tab=${tab}`)
+        }}
+      />
 
       <Spacer />
     </HStack>

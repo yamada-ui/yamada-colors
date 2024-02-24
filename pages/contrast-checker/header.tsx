@@ -1,19 +1,38 @@
 import type { ButtonProps } from "@yamada-ui/react"
-import { Button, HStack, useColorModeValue } from "@yamada-ui/react"
+import {
+  Button,
+  ChevronIcon,
+  HStack,
+  Spacer,
+  useColorModeValue,
+} from "@yamada-ui/react"
 import type { Dispatch, SetStateAction, FC } from "react"
 import { Check } from "components/media-and-icons"
+import { NextLinkIconButton } from "components/navigation"
 import { CONSTANT } from "constant"
 import { setCookie } from "utils/storage"
 
-export type LevelProps = {
+export type HeaderProps = {
+  hexes: [string, string]
   aa: boolean
   aaa: boolean
   setLevel: Dispatch<SetStateAction<{ aa: boolean; aaa: boolean }>>
 }
 
-export const Level: FC<LevelProps> = ({ aa, aaa, setLevel }) => {
+export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
   return (
-    <HStack alignSelf="flex-end" gap="sm">
+    <HStack gap="sm">
+      <NextLinkIconButton
+        href={`/colors/${hexes[0].replace("#", "")}`}
+        bg={["blackAlpha.100", "whiteAlpha.100"]}
+        borderColor="transparent"
+        colorScheme="neutral"
+        icon={<ChevronIcon fontSize="1.5em" transform="rotate(90deg)" />}
+        isRounded
+      />
+
+      <Spacer />
+
       <LevelButton
         isSelected={aa}
         pointerEvents={aa && !aaa ? "none" : "auto"}

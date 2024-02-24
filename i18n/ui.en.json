@@ -98,6 +98,9 @@
       "label": "CATEGORY",
       "more": "See All"
     },
+    "color-search": {
+      "submit": "Apply"
+    },
     "footer": {
       "description": "Built by `Hirotomo Yamada` and `these awesome people`"
     }

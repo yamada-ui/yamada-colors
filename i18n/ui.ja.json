@@ -98,6 +98,9 @@
       "label": "カテゴリー",
       "more": "すべて見る"
     },
+    "color-search": {
+      "submit": "適用"
+    },
     "footer": {
       "description": "このアプリケーションは、`Hirotomo Yamada`と`愉快な仲間たち`によって開発されました。"
     }

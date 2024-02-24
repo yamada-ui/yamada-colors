@@ -1,0 +1,120 @@
+import {
+  Box,
+  Button,
+  ChevronIcon,
+  ColorPicker,
+  IconButton,
+  handlerAll,
+  useDisclosure,
+} from "@yamada-ui/react"
+import type {
+  BoxProps,
+  ColorPickerProps,
+  IconButtonProps,
+} from "@yamada-ui/react"
+import * as c from "color2k"
+import { forwardRef, memo } from "react"
+import { useApp } from "contexts/app-context"
+import { useI18n } from "contexts/i18n-context"
+import { f } from "utils/color"
+
+export type SearchColorProps = Omit<
+  ColorPickerProps,
+  "value" | "onChange" | "onSubmit"
+> &
+  Required<Pick<ColorPickerProps, "value" | "onChange">> & {
+    onSubmit?: (value: string) => void
+    containerProps?: BoxProps
+    submitProps?: IconButtonProps
+  }
+
+export const SearchColor = memo(
+  forwardRef<HTMLInputElement, SearchColorProps>(
+    (
+      {
+        value,
+        onChange,
+        onSubmit: onSubmitProp,
+        containerProps,
+        submitProps,
+        ...rest
+      },
+      ref,
+    ) => {
+      const { isOpen, onOpen, onClose } = useDisclosure()
+      const { t } = useI18n()
+      const { format } = useApp()
+
+      const onSubmit = () => {
+        try {
+          value = c.toHex(value)
+        } catch {
+          value = "#ffffff"
+
+          onChange(value)
+        }
+
+        onClose()
+        onSubmitProp(value)
+      }
+
+      return (
+        <Box position="relative" {...containerProps}>
+          <ColorPicker
+            ref={ref}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            value={value}
+            onChange={onChange}
+            placeholder={f("#ffffff", format)}
+            matchWidth
+            format={format}
+            rounded="full"
+            eyeDropperProps={{ right: 9, fontSize: "1em", rounded: "full" }}
+            inputProps={{ pe: "4rem" }}
+            onKeyDown={(ev) => {
+              if (ev.key !== "Enter") return
+
+              onSubmit()
+            }}
+            {...rest}
+          >
+            <Button
+              colorScheme="neutral"
+              fontWeight="normal"
+              onClick={onSubmit}
+            >
+              {t("component.color-search.submit")}
+            </Button>
+          </ColorPicker>
+
+          <IconButton
+            type="submit"
+            icon={
+              <ChevronIcon
+                fontSize="1.3em"
+                color="muted"
+                transform="rotate(-90deg)"
+              />
+            }
+            colorScheme="neutral"
+            position="absolute"
+            zIndex="kurillin"
+            top="50%"
+            right="2"
+            transform="translateY(-50%)"
+            boxSize="6"
+            minW="auto"
+            size="sm"
+            isRounded
+            {...submitProps}
+            onClick={handlerAll(submitProps?.onClick, onSubmit)}
+          />
+        </Box>
+      )
+    },
+  ),
+)
+
+SearchColor.displayName = "SearchColor"

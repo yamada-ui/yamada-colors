@@ -57,13 +57,14 @@ const LevelButton: FC<LevelButtonProps> = ({ isSelected, ...rest }) => {
   return (
     <Button
       size="sm"
-      leftIcon={<Check />}
+      leftIcon={<Check fontSize="0.9em" />}
       gap="1"
       variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "success" : colorScheme}
       color={isSelected ? undefined : "muted"}
       border="1px solid"
       borderColor={isSelected ? "success.500" : "border"}
+      fontWeight="normal"
       rounded="full"
       {...rest}
     />

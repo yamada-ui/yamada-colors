@@ -1,7 +1,6 @@
 import type { CenterProps, ColorMode } from "@yamada-ui/react"
 import {
   Center,
-  ColorPicker,
   Grid,
   IconButton,
   Spacer,
@@ -15,7 +14,9 @@ import {
   Tag,
 } from "@yamada-ui/react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useState, type FC } from "react"
+import { SearchColor } from "components/form"
 import { Check, Fail, Refresh } from "components/media-and-icons"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
@@ -96,9 +97,12 @@ type ColorInputProps = Pick<ContrastProps, "mode"> & {
 
 const ColorInput: FC<ColorInputProps> = ({
   label,
+  mode,
   value: valueProp,
-  queries,
+  queries: queriesProp,
 }) => {
+  const queries = new URLSearchParams(queriesProp)
+  const router = useRouter()
   const { format } = useApp()
   const [value, setValue] = useState<string>(f(valueProp, format))
 
@@ -107,7 +111,7 @@ const ColorInput: FC<ColorInputProps> = ({
   }, [valueProp])
 
   return (
-    <VStack minW="12.5rem" w="auto" flex="1" gap="xs">
+    <VStack minW="xs" w="auto" flex="1" gap="xs">
       <CopyText
         as="span"
         color="muted"
@@ -120,13 +124,16 @@ const ColorInput: FC<ColorInputProps> = ({
         {label}
       </CopyText>
 
-      <ColorPicker
+      <SearchColor
         value={value}
         onChange={setValue}
-        format={format}
-        rounded="full"
-        matchWidth
-        eyeDropperProps={{ rounded: "full" }}
+        onSubmit={(value) => {
+          if (valueProp === value) return
+
+          queries.set(`${mode}.fg`, value.replace("#", ""))
+
+          router.push(`/contrast-checker?${queries}`)
+        }}
       />
     </VStack>
   )

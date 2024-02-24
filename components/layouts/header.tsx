@@ -1,6 +1,5 @@
 import type {
   CenterProps,
-  ColorPickerProps,
   DrawerProps,
   IconButtonProps,
   MenuProps,
@@ -10,7 +9,6 @@ import {
   Box,
   Center,
   CloseButton,
-  ColorPicker,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -39,6 +37,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import type { FC } from "react"
 import { memo, useEffect, useRef, useState } from "react"
+import { SearchColor } from "components/form"
 import {
   Color,
   Discord,
@@ -132,7 +131,7 @@ export const Header = memo(
 const disableDefaultValue = (path: string) =>
   path === "/" || /^\/(history|categories|palettes)/.test(path)
 
-type SearchProps = ColorPickerProps & {
+type SearchProps = {
   isScroll: boolean
 }
 
@@ -143,7 +142,7 @@ const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
     if (disableDefaultValue(router.asPath)) {
       return undefined
     } else {
-      return f(isString(hex) ? hex : hex[0], format)
+      return f(isString(hex) ? hex : hex?.[0], format)
     }
   })
 
@@ -155,29 +154,29 @@ const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
 
   return (
     <>
-      <ColorPicker
-        placeholder={f("#ffffff", format)}
+      <SearchColor
         value={value}
         onChange={setValue}
+        onSubmit={(value) => {
+          if (hex === value) return
+
+          router.push(`/colors/${value.replace("#", "")}`)
+        }}
         maxW={{ base: "sm", md: "xs" }}
         matchWidth
-        colorSelectorSize="md"
         display={{ base: "block", sm: "none" }}
         borderColor="transparent"
-        format={format}
         _hover={{}}
         bg={
           isScroll
             ? ["whiteAlpha.600", "blackAlpha.500"]
             : ["whiteAlpha.900", "blackAlpha.600"]
         }
-        rounded="full"
         backdropFilter="auto"
         backdropSaturate="180%"
         backdropBlur="10px"
         transitionProperty="common"
         transitionDuration="slower"
-        eyeDropperProps={{ rounded: "full" }}
         {...rest}
       />
 

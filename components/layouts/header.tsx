@@ -158,8 +158,6 @@ const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
         value={value}
         onChange={setValue}
         onSubmit={(value) => {
-          if (hex === value) return
-
           router.push(`/colors/${value.replace("#", "")}`)
         }}
         maxW={{ base: "sm", md: "xs" }}

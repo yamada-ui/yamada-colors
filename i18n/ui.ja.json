@@ -101,6 +101,10 @@
     "color-search": {
       "submit": "適用"
     },
+    "palette-menu": {
+      "title": "保存するパレット",
+      "create": "作成"
+    },
     "footer": {
       "description": "このアプリケーションは、`Hirotomo Yamada`と`愉快な仲間たち`によって開発されました。"
     }

@@ -101,6 +101,10 @@
     "color-search": {
       "submit": "Apply"
     },
+    "palette-menu": {
+      "title": "Save to",
+      "create": "Create"
+    },
     "footer": {
       "description": "Built by `Hirotomo Yamada` and `these awesome people`"
     }

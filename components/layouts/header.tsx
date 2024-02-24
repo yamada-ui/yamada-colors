@@ -9,6 +9,7 @@ import {
   Box,
   Center,
   CloseButton,
+  Collapse,
   Drawer,
   DrawerBody,
   DrawerHeader,
@@ -21,10 +22,10 @@ import {
   MenuOptionItem,
   Spacer,
   Text,
+  VStack,
   forwardRef,
   isString,
   mergeRefs,
-  noop,
   useBreakpoint,
   useBreakpointValue,
   useColorMode,
@@ -62,7 +63,8 @@ export const Header = memo(
     const headerRef = useRef<HTMLHeadingElement>()
     const { scrollY } = useScroll()
     const [y, setY] = useState<number>(0)
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const menuControls = useDisclosure()
+    const searchControls = useDisclosure()
     const { height = 0 } = headerRef.current?.getBoundingClientRect() ?? {}
 
     useMotionValueEvent(scrollY, "change", setY)
@@ -83,11 +85,11 @@ export const Header = memo(
           {...rest}
         >
           <Center w="full" maxW="9xl" px={{ base: "lg", lg: "0" }}>
-            <HStack
+            <VStack
               w="full"
+              gap="0"
               py="3"
               px={{ base: "lg", lg: "md" }}
-              gap={{ base: "md", sm: "sm" }}
               bg={["blackAlpha.50", "whiteAlpha.100"]}
               backdropFilter="auto"
               backdropSaturate="180%"
@@ -97,32 +99,52 @@ export const Header = memo(
               roundedBottom="2xl"
               shadow={isScroll ? ["base", "dark-sm"] : undefined}
             >
-              <Box
-                as={Link}
-                href="/"
-                aria-label="Yamada UI"
-                _hover={{ opacity: 0.7 }}
-                transitionProperty="opacity"
-                transitionDuration="slower"
-                _focus={{ outline: "none" }}
-                _focusVisible={{ boxShadow: "outline" }}
-                rounded="md"
-              >
-                <Text as="span" fontSize="xl" fontWeight="semibold">
-                  Yamada Colors
-                </Text>
-              </Box>
+              <HStack gap={{ base: "md", sm: "sm" }}>
+                <Box
+                  as={Link}
+                  href="/"
+                  aria-label="Yamada UI"
+                  _hover={{ opacity: 0.7 }}
+                  transitionProperty="opacity"
+                  transitionDuration="slower"
+                  _focus={{ outline: "none" }}
+                  _focusVisible={{ boxShadow: "outline" }}
+                  rounded="md"
+                >
+                  <Text as="span" fontSize="xl" fontWeight="semibold">
+                    Yamada Colors
+                  </Text>
+                </Box>
 
-              <Spacer />
+                <Spacer />
 
-              <Search isScroll={isScroll} />
+                <>
+                  <Search isScroll={isScroll} />
 
-              <ButtonGroup {...{ isOpen, onOpen }} />
-            </HStack>
+                  <IconButton
+                    variant="ghost"
+                    isRounded
+                    aria-label="Open navigation menu"
+                    display={{ base: "none", sm: "inline-flex" }}
+                    color="muted"
+                    onClick={searchControls.onToggle}
+                    icon={<MagnifyingGlass />}
+                  />
+                </>
+
+                <ButtonGroup {...menuControls} />
+              </HStack>
+
+              <Collapse isOpen={searchControls.isOpen}>
+                <Box p="1">
+                  <Search isScroll={isScroll} isMobile />
+                </Box>
+              </Collapse>
+            </VStack>
           </Center>
         </Center>
 
-        <MobileMenu isOpen={isOpen} onClose={onClose} />
+        <MobileMenu {...menuControls} />
       </>
     )
   }),
@@ -133,9 +155,11 @@ const disableDefaultValue = (path: string) =>
 
 type SearchProps = {
   isScroll: boolean
+  isMobile?: boolean
 }
 
-const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
+const Search: FC<SearchProps> = memo(({ isScroll, isMobile }) => {
+  const padding = useBreakpointValue({ base: 32, md: 16 })
   const router = useRouter()
   const { hex, format } = useApp()
   const [value, setValue] = useState<string | undefined>(() => {
@@ -153,41 +177,47 @@ const Search: FC<SearchProps> = memo(({ isScroll, ...rest }) => {
   }, [hex])
 
   return (
-    <>
-      <SearchColor
-        value={value}
-        onChange={setValue}
-        onSubmit={(value) => {
-          router.push(`/colors/${value.replace("#", "")}`)
-        }}
-        maxW={{ base: "sm", md: "xs" }}
-        matchWidth
-        display={{ base: "block", sm: "none" }}
-        borderColor="transparent"
-        _hover={{}}
-        bg={
-          isScroll
-            ? ["whiteAlpha.600", "blackAlpha.500"]
-            : ["whiteAlpha.900", "blackAlpha.600"]
-        }
-        backdropFilter="auto"
-        backdropSaturate="180%"
-        backdropBlur="10px"
-        transitionProperty="common"
-        transitionDuration="slower"
-        {...rest}
-      />
-
-      <IconButton
-        variant="ghost"
-        isRounded
-        aria-label="Open navigation menu"
-        display={{ base: "none", sm: "inline-flex" }}
-        color="muted"
-        onClick={noop}
-        icon={<MagnifyingGlass />}
-      />
-    </>
+    <SearchColor
+      value={value}
+      onChange={setValue}
+      onSubmit={(value) => {
+        router.push(`/colors/${value.replace("#", "")}`)
+      }}
+      maxW={!isMobile ? { base: "sm", md: "xs" } : "full"}
+      matchWidth
+      containerProps={{
+        display: !isMobile
+          ? { base: "block", sm: "none" }
+          : { base: "none", sm: "block" },
+        mt: isMobile ? "3" : "0",
+      }}
+      borderColor="transparent"
+      _hover={{}}
+      bg={
+        isScroll
+          ? ["whiteAlpha.600", "blackAlpha.500"]
+          : ["whiteAlpha.900", "blackAlpha.600"]
+      }
+      backdropFilter="auto"
+      backdropSaturate="180%"
+      backdropBlur="10px"
+      transitionProperty="common"
+      transitionDuration="slower"
+      modifiers={[
+        {
+          name: "preventOverflow",
+          options: {
+            padding: {
+              top: padding,
+              bottom: padding,
+              left: padding,
+              right: padding,
+            },
+          },
+        },
+      ]}
+      strategy="fixed"
+    />
   )
 })
 
@@ -210,6 +240,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
           display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
           color="muted"
           icon={<Discord />}
+          _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         />
 
         <NextLinkIconButton
@@ -221,6 +252,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
           display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
           color="muted"
           icon={<Github />}
+          _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         />
 
         <FormatButton />
@@ -247,6 +279,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
             color="muted"
             onClick={onOpen}
             icon={<Hamburger />}
+            _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           />
         ) : (
           <CloseButton
@@ -257,6 +290,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
             display={{ base: "none", lg: "inline-flex" }}
             color="muted"
             onClick={onClose}
+            _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           />
         )}
       </HStack>
@@ -300,6 +334,7 @@ const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
         variant="ghost"
         color="muted"
         icon={<Translate />}
+        _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />
 
@@ -357,6 +392,7 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
           variant="ghost"
           color="muted"
           icon={colorMode === "dark" ? <Sun /> : <Moon />}
+          _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           {...rest}
         />
 
@@ -418,6 +454,7 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
         variant="ghost"
         color="muted"
         icon={<Color />}
+        _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />
 

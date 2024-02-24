@@ -9,7 +9,7 @@ export const SegmentedControl: ComponentMultiStyle = {
       },
       cursor: {
         boxShadow: "inherit",
-        bg: ["blackAlpha.50", "whiteAlpha.100"],
+        bg: ["blackAlpha.100", "whiteAlpha.100"],
         rounded: "full",
       },
 

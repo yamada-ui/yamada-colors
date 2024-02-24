@@ -67,10 +67,7 @@ export const Header = memo(
     const searchControls = useDisclosure()
     const { height = 0 } = headerRef.current?.getBoundingClientRect() ?? {}
 
-    useMotionValueEvent(scrollY, "change", (y) => {
-      searchControls.onClose()
-      setY(y)
-    })
+    useMotionValueEvent(scrollY, "change", setY)
 
     const isScroll = y > height
 
@@ -220,6 +217,7 @@ const Search: FC<SearchProps> = memo(({ isScroll, isMobile }) => {
         },
       ]}
       strategy={isMobile ? "fixed" : "absolute"}
+      isRemoveScroll={isMobile}
     />
   )
 })

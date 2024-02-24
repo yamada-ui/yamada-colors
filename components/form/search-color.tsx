@@ -14,7 +14,7 @@ import type {
 } from "@yamada-ui/react"
 import * as c from "color2k"
 import { forwardRef, memo } from "react"
-import { RemoveScroll } from "react-remove-scroll"
+import { RemoveScroll } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
@@ -24,6 +24,7 @@ export type SearchColorProps = Omit<
   "value" | "onChange" | "onSubmit"
 > &
   Required<Pick<ColorPickerProps, "value" | "onChange">> & {
+    isRemoveScroll?: boolean
     onSubmit?: (value: string) => void
     containerProps?: BoxProps
     submitProps?: IconButtonProps
@@ -38,6 +39,7 @@ export const SearchColor = memo(
         onSubmit: onSubmitProp,
         containerProps,
         submitProps,
+        isRemoveScroll,
         ...rest
       },
       ref,
@@ -60,7 +62,10 @@ export const SearchColor = memo(
       }
 
       return (
-        <RemoveScroll allowPinchZoom={false} enabled={isOpen} forwardProps>
+        <RemoveScroll
+          allowPinchZoom={false}
+          enabled={!!isRemoveScroll && isOpen}
+        >
           <Box position="relative" h="fit-content" {...containerProps}>
             <ColorPicker
               ref={ref}

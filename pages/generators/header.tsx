@@ -19,7 +19,13 @@ export const Header: FC<HeaderProps> = ({ hex, tab }) => {
         href={`/colors/${hex.replace("#", "")}`}
         bg={["blackAlpha.100", "whiteAlpha.100"]}
         colorScheme="neutral"
-        icon={<ChevronIcon fontSize="1.5em" transform="rotate(90deg)" />}
+        icon={
+          <ChevronIcon
+            color="muted"
+            fontSize="1.5em"
+            transform="rotate(90deg)"
+          />
+        }
         borderColor="transparent"
         isRounded
       />

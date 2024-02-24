@@ -27,7 +27,13 @@ export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
         bg={["blackAlpha.100", "whiteAlpha.100"]}
         borderColor="transparent"
         colorScheme="neutral"
-        icon={<ChevronIcon fontSize="1.5em" transform="rotate(90deg)" />}
+        icon={
+          <ChevronIcon
+            color="muted"
+            fontSize="1.5em"
+            transform="rotate(90deg)"
+          />
+        }
         isRounded
       />
 

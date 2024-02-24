@@ -59,7 +59,7 @@ export const SearchColor = memo(
       }
 
       return (
-        <Box position="relative" boxSize="fit-content" {...containerProps}>
+        <Box position="relative" h="fit-content" {...containerProps}>
           <ColorPicker
             ref={ref}
             isOpen={isOpen}

@@ -59,7 +59,7 @@ export const SearchColor = memo(
       }
 
       return (
-        <Box position="relative" {...containerProps}>
+        <Box position="relative" boxSize="fit-content" {...containerProps}>
           <ColorPicker
             ref={ref}
             isOpen={isOpen}
@@ -82,6 +82,8 @@ export const SearchColor = memo(
           >
             <Button
               colorScheme="neutral"
+              borderColor="transparent"
+              bg={["blackAlpha.200", "whiteAlpha.100"]}
               fontWeight="normal"
               onClick={onSubmit}
             >
@@ -90,7 +92,8 @@ export const SearchColor = memo(
           </ColorPicker>
 
           <IconButton
-            type="submit"
+            bg={["blackAlpha.200", "whiteAlpha.100"]}
+            borderColor="transparent"
             icon={
               <ChevronIcon
                 fontSize="1.3em"

@@ -42,7 +42,11 @@ export const AppProvider: FC<AppProviderProps> = ({
   }, [])
 
   useEffect(() => {
-    const format = getCookie(document.cookie, CONSTANT.STORAGE.FORMAT, "hex")
+    const format = getCookie<ColorFormat>(
+      document.cookie,
+      CONSTANT.STORAGE.FORMAT,
+      "hex",
+    )
 
     if (formatProp !== format) setFormat(format)
   }, [formatProp])

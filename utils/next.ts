@@ -12,8 +12,7 @@ export const getServerSideCommonProps = async ({
   req,
 }: GetServerSidePropsContext) => {
   const cookies = req.headers.cookie ?? ""
-  const format = (getCookie(cookies, CONSTANT.STORAGE.FORMAT) ??
-    "hex") as ColorFormat
+  const format = getCookie<ColorFormat>(cookies, CONSTANT.STORAGE.FORMAT, "hex")
   const hex = randomHex()
 
   return { props: { cookies, format, hex } }

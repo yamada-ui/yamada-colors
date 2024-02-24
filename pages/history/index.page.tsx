@@ -51,7 +51,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     props: { hex, cookies, format },
   } = await getServerSideCommonProps(req)
 
-  const hexes: string[] = getCookie(cookies, CONSTANT.STORAGE.HISTORY, "[]")
+  const hexes = getCookie<string[]>(cookies, CONSTANT.STORAGE.HISTORY, "[]")
   const history = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
 
   const props = { cookies, hex, format, history }

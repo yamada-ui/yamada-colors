@@ -90,7 +90,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format },
   } = await getServerSideCommonProps(req)
-  const level: { aa: boolean; aaa: boolean } = getCookie(
+  const level = getCookie<{ aa: boolean; aaa: boolean }>(
     cookies,
     CONSTANT.STORAGE.LEVEL,
     '{ "aa": true, "aaa": false }',

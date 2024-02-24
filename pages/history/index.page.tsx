@@ -14,7 +14,7 @@ import { getCookie } from "utils/storage"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ hex, history, format }) => {
+const Page: NextPage<PageProps> = ({ hex, history, format, palettes }) => {
   const { t } = useI18n()
 
   return (
@@ -23,6 +23,7 @@ const Page: NextPage<PageProps> = ({ hex, history, format }) => {
       description={t("history.description")}
       hex={hex}
       format={format}
+      palettes={palettes}
     >
       <Grid
         as="ul"
@@ -48,13 +49,13 @@ export default Page
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { hex, cookies, format },
+    props: { hex, cookies, format, palettes },
   } = await getServerSideCommonProps(req)
 
   const hexes = getCookie<string[]>(cookies, CONSTANT.STORAGE.HISTORY, "[]")
   const history = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
 
-  const props = { cookies, hex, format, history }
+  const props = { cookies, hex, format, history, palettes }
 
   return { props }
 }

@@ -10,6 +10,7 @@ type AppLayoutOptions = {
   title: string
   description: string
   hex?: string | [string, string]
+  palettes?: ColorPalettes
   format?: ColorFormat
   hasSidebar?: boolean
 }
@@ -21,12 +22,13 @@ export const AppLayout: FC<AppLayoutProps> = ({
   description,
   hex,
   format,
+  palettes,
   hasSidebar = true,
   children,
   ...rest
 }) => {
   return (
-    <AppProvider {...{ hex, format }}>
+    <AppProvider {...{ hex, format, palettes }}>
       <SEO title={title} description={description} />
 
       <Header />

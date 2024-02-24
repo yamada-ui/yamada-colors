@@ -28,6 +28,7 @@ const Page: NextPage<PageProps> = ({
   category: currentCategory,
   categories,
   format,
+  palettes,
   colors: defaultColors,
 }) => {
   const [colors, setColors] = useState<Colors>(defaultColors)
@@ -52,6 +53,7 @@ const Page: NextPage<PageProps> = ({
       description={t("categories.description")}
       hex={hex}
       format={format}
+      palettes={palettes}
     >
       <Box as="nav">
         <Wrap as="ul" gap="sm" mb={{ base: "lg", sm: "normal" }}>
@@ -105,12 +107,12 @@ export default Page
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies, hex, format },
+    props: { cookies, hex, format, palettes },
   } = await getServerSideCommonProps(req)
   const category = req.query.category as string
   const colors = getRandomColors({ category, count: 120 })
 
-  const props = { cookies, hex, format, category, categories, colors }
+  const props = { cookies, hex, format, palettes, category, categories, colors }
 
   return { props }
 }

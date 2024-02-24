@@ -14,7 +14,7 @@ import { getServerSideCommonProps } from "utils/next"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ tab, hex, format, hexes }) => {
+const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
   const { t } = useI18n()
 
   return (
@@ -23,6 +23,7 @@ const Page: NextPage<PageProps> = ({ tab, hex, format, hexes }) => {
       description={t("generators.description")}
       hex={hex}
       format={format}
+      palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hex, tab }} />
@@ -60,7 +61,7 @@ const getTabData = (hex: string, tab: string) => {
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies, format },
+    props: { cookies, format, palettes },
   } = await getServerSideCommonProps(req)
   let hex = `#${req.query.hex}`
   let tab = (req.query.tab ?? "alternatives") as string
@@ -73,6 +74,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     const props = {
       cookies,
       format,
+      palettes,
       tab,
       hex,
       hexes,

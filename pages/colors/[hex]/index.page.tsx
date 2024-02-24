@@ -44,6 +44,7 @@ const Page: NextPage<PageProps> = ({
   cookies,
   format,
   hex,
+  palettes,
   name,
   data,
   shadeColors,
@@ -67,6 +68,7 @@ const Page: NextPage<PageProps> = ({
       description={t("colors.description")}
       hex={hex}
       format={format}
+      palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hex, name }} />
@@ -149,7 +151,7 @@ const getContrast = (hex: string) => {
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies, format },
+    props: { cookies, format, palettes },
   } = await getServerSideCommonProps(req)
   let hex = `#${req.query.hex}`
 
@@ -176,6 +178,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
       cookies,
       format,
       name,
+      palettes,
       hex,
       data,
       shadeColors,

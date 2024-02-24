@@ -17,7 +17,14 @@ import { getCookie } from "utils/storage"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ level, hexes, format, light, dark }) => {
+const Page: NextPage<PageProps> = ({
+  level,
+  hexes,
+  palettes,
+  format,
+  light,
+  dark,
+}) => {
   const { t } = useI18n()
   const [{ aa, aaa }, setLevel] = useState(level)
   const queries = new URLSearchParams({
@@ -33,6 +40,7 @@ const Page: NextPage<PageProps> = ({ level, hexes, format, light, dark }) => {
       description={t("contrast-checker.description")}
       hex={hexes}
       format={format}
+      palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
     >
       <Header {...{ hexes, aa, aaa, setLevel }} />
@@ -88,7 +96,7 @@ const getContrast = (
 
 export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies, format },
+    props: { cookies, format, palettes },
   } = await getServerSideCommonProps(req)
   const level = getCookie<{ aa: boolean; aaa: boolean }>(
     cookies,
@@ -104,6 +112,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     const props = {
       cookies,
       format,
+      palettes,
       level,
       hexes,
       light,

@@ -14,3 +14,9 @@ export const getCookie = <T extends any>(
 export const setCookie = (key: string, value: string) => {
   document.cookie = `${key}=${value}; max-age=31536000; path=/`
 }
+
+export const generateUUID = () => {
+  const chunk = () => Math.random().toString(36).substring(2, 6)
+
+  return `${chunk()}-${chunk()}-${chunk()}-${chunk()}`
+}

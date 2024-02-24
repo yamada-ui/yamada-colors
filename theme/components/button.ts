@@ -2,6 +2,10 @@ import type { ComponentStyle } from "@yamada-ui/react"
 import { getColor, isAccessible, isArray, isGray, mode } from "@yamada-ui/react"
 
 export const Button: ComponentStyle = {
+  baseStyle: {
+    fontWeight: "normal",
+  },
+
   variants: {
     solid: ({
       theme: t,

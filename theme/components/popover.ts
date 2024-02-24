@@ -4,9 +4,7 @@ export const Popover: ComponentMultiStyle = {
   baseStyle: {
     container: {},
     closeButton: {},
-    header: {
-      fontWeight: "normal",
-    },
+    header: {},
     body: {},
     footer: {},
   },

@@ -84,7 +84,6 @@ export const SearchColor = memo(
               colorScheme="neutral"
               borderColor="transparent"
               bg={["blackAlpha.200", "whiteAlpha.100"]}
-              fontWeight="normal"
               onClick={onSubmit}
             >
               {t("component.color-search.submit")}

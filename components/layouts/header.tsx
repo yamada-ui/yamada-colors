@@ -67,7 +67,10 @@ export const Header = memo(
     const searchControls = useDisclosure()
     const { height = 0 } = headerRef.current?.getBoundingClientRect() ?? {}
 
-    useMotionValueEvent(scrollY, "change", setY)
+    useMotionValueEvent(scrollY, "change", (y) => {
+      searchControls.onClose()
+      setY(y)
+    })
 
     const isScroll = y > height
 
@@ -81,7 +84,7 @@ export const Header = memo(
           top="0"
           left="0"
           right="0"
-          zIndex="guldo"
+          zIndex="jeice"
           {...rest}
         >
           <Center w="full" maxW="9xl" px={{ base: "lg", lg: "0" }}>
@@ -216,7 +219,7 @@ const Search: FC<SearchProps> = memo(({ isScroll, isMobile }) => {
           },
         },
       ]}
-      strategy="fixed"
+      strategy={isMobile ? "fixed" : "absolute"}
     />
   )
 })

@@ -15,7 +15,7 @@ export const getServerSideCommonProps = async ({
   const format = getCookie<ColorFormat>(cookies, CONSTANT.STORAGE.FORMAT, "hex")
   const hex = randomHex()
   const chunk = "[a-zA-Z0-9]{4}"
-  const palettes = getCookies<ColorPalettes>(
+  const palettes = getCookies<ColorPalette>(
     cookies,
     new RegExp(
       `${CONSTANT.STORAGE.PALETTE}-${chunk}-${chunk}-${chunk}-${chunk}`,

@@ -17,7 +17,12 @@
       "submit": "作成",
       "cancel": "キャンセル"
     },
-    "rename": { "title": "名前を変更", "submit": "名前を変更" },
+    "rename": {
+      "title": "名前を変更",
+      "placeholder": "パレット名",
+      "submit": "名前を変更",
+      "cancel": "キャンセル"
+    },
     "delete": { "submit": "削除", "cancel": "キャンセル" }
   },
   "generators": {

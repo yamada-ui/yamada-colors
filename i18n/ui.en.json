@@ -14,7 +14,12 @@
       "submit": "Create",
       "cancel": "Cancel"
     },
-    "rename": { "title": "Rename", "submit": "Rename" },
+    "rename": {
+      "title": "Rename",
+      "placeholder": "Palette name",
+      "submit": "Rename",
+      "cancel": "Cancel"
+    },
     "delete": { "submit": "Delete", "cancel": "Cancel" }
   },
   "generators": {

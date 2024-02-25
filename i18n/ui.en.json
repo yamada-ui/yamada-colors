@@ -5,7 +5,17 @@
   },
   "palettes": {
     "title": "My Paletters",
-    "description": ""
+    "description": "",
+    "search": "Search",
+    "not-found": { "label": "No palettes", "create": "Create a palette" },
+    "create": {
+      "title": "Create a palette",
+      "placeholder": "Palette name",
+      "submit": "Create",
+      "cancel": "Cancel"
+    },
+    "rename": { "title": "Rename", "submit": "Rename" },
+    "delete": { "submit": "Delete", "cancel": "Cancel" }
   },
   "generators": {
     "title": "Generators",

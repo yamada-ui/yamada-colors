@@ -5,7 +5,20 @@
   },
   "palettes": {
     "title": "マイパレット",
-    "description": ""
+    "description": "",
+    "search": "Search",
+    "not-found": {
+      "label": "パレットがありません",
+      "create": "パレットを作成する"
+    },
+    "create": {
+      "title": "パレットを作成する",
+      "placeholder": "パレット名",
+      "submit": "作成",
+      "cancel": "キャンセル"
+    },
+    "rename": { "title": "名前を変更", "submit": "名前を変更" },
+    "delete": { "submit": "削除", "cancel": "キャンセル" }
   },
   "generators": {
     "title": "ジェネレーター",

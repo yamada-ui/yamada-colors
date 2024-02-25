@@ -4,18 +4,25 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Header } from "./header"
 import { Palettes } from "./palettes"
+import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
+import { deleteCookie, getCookie } from "utils/storage"
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ palettes, hex, format }) => {
+const Page: NextPage<PageProps> = ({ palettes, hex, format, query }) => {
   const { t } = useI18n()
   const onCreateRef = useRef<() => void>(noop)
+  const onSearchRef = useRef<(query: string) => void>(noop)
+
+  useEffect(() => {
+    deleteCookie(CONSTANT.STORAGE.PALETTE_QUERY)
+  }, [])
 
   return (
     <AppLayout
@@ -26,9 +33,17 @@ const Page: NextPage<PageProps> = ({ palettes, hex, format }) => {
       palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
     >
-      <Header onCreateRef={onCreateRef} />
+      <Header
+        onCreateRef={onCreateRef}
+        query={query}
+        onSearch={(value) => onSearchRef.current(value)}
+      />
 
-      <Palettes onCreate={() => onCreateRef.current()} />
+      <Palettes
+        onCreate={() => onCreateRef.current()}
+        query={query}
+        onSearchRef={onSearchRef}
+      />
     </AppLayout>
   )
 }
@@ -39,12 +54,14 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format, hex, palettes },
   } = await getServerSideCommonProps(req)
+  const query = getCookie<string>(cookies, CONSTANT.STORAGE.PALETTE_QUERY, "")
 
   const props = {
     cookies,
     format,
     hex,
     palettes,
+    query,
   }
 
   return { props }

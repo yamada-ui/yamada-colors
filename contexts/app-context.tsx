@@ -46,15 +46,23 @@ export const AppProvider: FC<AppProviderProps> = ({
   const createPalette = useCallback((name: string) => {
     const uuid = generateUUID()
 
-    const palette: ColorPalette = {
-      uuid,
-      name,
-      colors: [],
-    }
+    setCookie(
+      `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
+      JSON.stringify({
+        uuid,
+        name: encodeURIComponent(name),
+        colors: [],
+      }),
+    )
 
-    setCookie(`${CONSTANT.STORAGE.PALETTE}-${uuid}`, JSON.stringify(palette))
-
-    setPalettes((prev) => [palette, ...prev])
+    setPalettes((prev) => [
+      {
+        uuid,
+        name,
+        colors: [],
+      },
+      ...prev,
+    ])
   }, [])
 
   const changeFormat = useCallback((format: ColorFormat) => {

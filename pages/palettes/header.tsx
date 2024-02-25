@@ -46,7 +46,7 @@ export const Header: FC<HeaderProps> = memo(
           />
         </InputGroup>
 
-        <CreateIcon onCreate={createPalette} onCreateRef={onCreateRef} />
+        <CreateButton onCreate={createPalette} onCreateRef={onCreateRef} />
       </HStack>
     )
   },
@@ -54,74 +54,80 @@ export const Header: FC<HeaderProps> = memo(
 
 Header.displayName = "Header"
 
-type CreateIconProps = {
+type CreateButtonProps = {
   onCreate: (name: string) => void
   onCreateRef: MutableRefObject<() => void>
 }
 
-const CreateIcon: FC<CreateIconProps> = memo(({ onCreate, onCreateRef }) => {
-  const { t } = useI18n()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [value, setValue] = useState<string>("")
-  const isComposition = useRef<boolean>(false)
+const CreateButton: FC<CreateButtonProps> = memo(
+  ({ onCreate, onCreateRef }) => {
+    const { t } = useI18n()
+    const [value, setValue] = useState<string>("")
+    const { isOpen, onOpen, onClose } = useDisclosure({
+      onClose: () => {
+        setValue("")
+      },
+    })
+    const isComposition = useRef<boolean>(false)
 
-  assignRef(onCreateRef, onOpen)
+    assignRef(onCreateRef, onOpen)
 
-  return (
-    <>
-      <IconButton
-        isRounded
-        icon={<Plus color="muted" />}
-        bg={["blackAlpha.100", "whiteAlpha.100"]}
-        borderColor="transparent"
-        colorScheme="neutral"
-        onClick={onOpen}
-      />
+    return (
+      <>
+        <IconButton
+          isRounded
+          icon={<Plus color="muted" />}
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          borderColor="transparent"
+          colorScheme="neutral"
+          onClick={onOpen}
+        />
 
-      <Dialog isOpen={isOpen} onClose={onClose} withCloseButton={false}>
-        <DialogHeader>{t("palettes.create.title")}</DialogHeader>
+        <Dialog isOpen={isOpen} onClose={onClose} withCloseButton={false}>
+          <DialogHeader>{t("palettes.create.title")}</DialogHeader>
 
-        <DialogBody>
-          <Input
-            value={value}
-            onChange={(ev) => setValue(ev.target.value)}
-            placeholder={t("palettes.create.placeholder")}
-            onCompositionStart={() => {
-              isComposition.current = true
-            }}
-            onCompositionEnd={() => {
-              isComposition.current = false
-            }}
-            onKeyDown={(ev) => {
-              if (ev.key !== "Enter") return
-              if (isComposition.current) return
-              if (!value.length) return
+          <DialogBody>
+            <Input
+              value={value}
+              onChange={(ev) => setValue(ev.target.value)}
+              placeholder={t("palettes.create.placeholder")}
+              onCompositionStart={() => {
+                isComposition.current = true
+              }}
+              onCompositionEnd={() => {
+                isComposition.current = false
+              }}
+              onKeyDown={(ev) => {
+                if (ev.key !== "Enter") return
+                if (isComposition.current) return
+                if (!value.length) return
 
-              onClose()
-              onCreate(value)
-            }}
-          />
-        </DialogBody>
+                onClose()
+                onCreate(value)
+              }}
+            />
+          </DialogBody>
 
-        <DialogFooter>
-          <Button variant="ghost" colorScheme="neutral" onClick={onClose}>
-            {t("palettes.create.cancel")}
-          </Button>
+          <DialogFooter>
+            <Button variant="ghost" colorScheme="neutral" onClick={onClose}>
+              {t("palettes.create.cancel")}
+            </Button>
 
-          <Button
-            isDisabled={!value.length}
-            colorScheme="primary"
-            onClick={() => {
-              onClose()
-              onCreate(value)
-            }}
-          >
-            {t("palettes.create.submit")}
-          </Button>
-        </DialogFooter>
-      </Dialog>
-    </>
-  )
-})
+            <Button
+              isDisabled={!value.length}
+              colorScheme="primary"
+              onClick={() => {
+                onClose()
+                onCreate(value)
+              }}
+            >
+              {t("palettes.create.submit")}
+            </Button>
+          </DialogFooter>
+        </Dialog>
+      </>
+    )
+  },
+)
 
-CreateIcon.displayName = "CreateIcon"
+CreateButton.displayName = "CreateButton"

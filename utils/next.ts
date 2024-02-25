@@ -21,6 +21,11 @@ export const getServerSideCommonProps = async ({
       `${CONSTANT.STORAGE.PALETTE}-${chunk}-${chunk}-${chunk}-${chunk}`,
     ),
   )
+  const resolvedPalettes = palettes.map(({ uuid, name, colors }) => ({
+    uuid,
+    name: decodeURIComponent(name),
+    colors,
+  }))
 
-  return { props: { cookies, format, hex, palettes } }
+  return { props: { cookies, format, hex, palettes: resolvedPalettes } }
 }

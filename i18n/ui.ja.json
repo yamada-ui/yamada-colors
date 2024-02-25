@@ -23,7 +23,11 @@
       "submit": "名前を変更",
       "cancel": "キャンセル"
     },
-    "delete": { "submit": "削除", "cancel": "キャンセル" }
+    "delete": {
+      "submit": "削除",
+      "description": "このパレットを削除してよろしいですか？",
+      "cancel": "キャンセル"
+    }
   },
   "generators": {
     "title": "ジェネレーター",

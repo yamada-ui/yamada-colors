@@ -20,7 +20,11 @@
       "submit": "Rename",
       "cancel": "Cancel"
     },
-    "delete": { "submit": "Delete", "cancel": "Cancel" }
+    "delete": {
+      "submit": "Delete",
+      "description": "Are you sure you want to delete this palette?",
+      "cancel": "Cancel"
+    }
   },
   "generators": {
     "title": "Generators",

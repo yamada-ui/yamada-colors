@@ -23,6 +23,10 @@ export const setCookie = (key: string, value: string) => {
   document.cookie = `${key}=${value}; max-age=31536000; path=/`
 }
 
+export const deleteCookie = (key: string) => {
+  document.cookie = `${key}; max-age=0; path=/`
+}
+
 export const generateUUID = () => {
   const chunk = () => Math.random().toString(36).substring(2, 6)
 

@@ -10,7 +10,7 @@ import {
 import type { PropsWithChildren, FC } from "react"
 import { CONSTANT } from "constant"
 import type { ColorFormat } from "utils/color"
-import { generateUUID, getCookie, setCookie } from "utils/storage"
+import { deleteCookie, generateUUID, getCookie, setCookie } from "utils/storage"
 
 type AppContext = {
   hex?: string | [string, string]
@@ -18,6 +18,8 @@ type AppContext = {
   palettes: ColorPalettes
   changeFormat: (format: ColorFormat) => void
   createPalette: (name: string) => void
+  changePalette: (palette: ColorPalette) => void
+  deletePalette: (uuid: string) => void
 }
 
 const AppContext = createContext<AppContext>({
@@ -26,6 +28,8 @@ const AppContext = createContext<AppContext>({
   palettes: [],
   changeFormat: noop,
   createPalette: noop,
+  changePalette: noop,
+  deletePalette: noop,
 })
 
 export type AppProviderProps = PropsWithChildren<{
@@ -65,6 +69,35 @@ export const AppProvider: FC<AppProviderProps> = ({
     ])
   }, [])
 
+  const changePalette = useCallback(({ uuid, name, colors }: ColorPalette) => {
+    console.log("run")
+
+    setCookie(
+      `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
+      JSON.stringify({
+        uuid,
+        name: encodeURIComponent(name),
+        colors,
+      }),
+    )
+
+    setPalettes((prev) =>
+      prev.map((palette) => {
+        if (palette.uuid === uuid) {
+          return { ...palette, name, colors }
+        } else {
+          return palette
+        }
+      }),
+    )
+  }, [])
+
+  const deletePalette = useCallback((uuid: string) => {
+    deleteCookie(`${CONSTANT.STORAGE.PALETTE}-${uuid}`)
+
+    setPalettes((prev) => prev.filter((palette) => palette.uuid !== uuid))
+  }, [])
+
   const changeFormat = useCallback((format: ColorFormat) => {
     setFormat(format)
     setCookie(CONSTANT.STORAGE.FORMAT, format)
@@ -81,8 +114,24 @@ export const AppProvider: FC<AppProviderProps> = ({
   }, [formatProp])
 
   const value = useMemo(
-    () => ({ hex, format, palettes, changeFormat, createPalette }),
-    [hex, format, palettes, changeFormat, createPalette],
+    () => ({
+      hex,
+      format,
+      palettes,
+      changeFormat,
+      createPalette,
+      changePalette,
+      deletePalette,
+    }),
+    [
+      hex,
+      format,
+      palettes,
+      changeFormat,
+      createPalette,
+      changePalette,
+      deletePalette,
+    ],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

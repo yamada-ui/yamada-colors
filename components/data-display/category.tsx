@@ -175,11 +175,19 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
     return (
       <Carousel
         innerProps={{ as: "ul", h: "auto" }}
-        slideSize={{
-          base: size === "md" ? "33.3%" : "25%",
-          md: size === "md" ? "50%" : "33.3%",
-          sm: size === "md" ? "100%" : "50%",
-        }}
+        var={[
+          // TODO: Remove once updated
+          // @ts-ignore
+          {
+            name: "slide-size",
+            value: {
+              base: size === "md" ? "33.3%" : "25%",
+              md: size === "md" ? "50%" : "33.3%",
+              sm: size === "md" ? "100%" : "50%",
+            },
+          },
+        ]}
+        slideSize="var(--ui-slide-size)"
         align="start"
         withIndicators={false}
         {...rest}

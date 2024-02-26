@@ -85,7 +85,7 @@ export const Palettes: FC<PalettesProps> = memo(
                   overflow="hidden"
                   boxShadow={[
                     "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
-                    "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 5px 10px rgba(0, 0, 0, 0.2), 0px -5px 10px rgba(0, 0, 0, 0.2)",
+                    "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
                   ]}
                   onClick={() => {
                     setCookie(CONSTANT.STORAGE.PALETTE_QUERY, queryRef.current)

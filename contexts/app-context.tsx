@@ -70,8 +70,6 @@ export const AppProvider: FC<AppProviderProps> = ({
   }, [])
 
   const changePalette = useCallback(({ uuid, name, colors }: ColorPalette) => {
-    console.log("run")
-
     setCookie(
       `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
       JSON.stringify({
@@ -82,13 +80,9 @@ export const AppProvider: FC<AppProviderProps> = ({
     )
 
     setPalettes((prev) =>
-      prev.map((palette) => {
-        if (palette.uuid === uuid) {
-          return { ...palette, name, colors }
-        } else {
-          return palette
-        }
-      }),
+      prev.map((palette) =>
+        palette.uuid === uuid ? { ...palette, name, colors } : palette,
+      ),
     )
   }, [])
 

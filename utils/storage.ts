@@ -24,7 +24,7 @@ export const setCookie = (key: string, value: string) => {
 }
 
 export const deleteCookie = (key: string) => {
-  document.cookie = `${key}; max-age=0; path=/`
+  document.cookie = `${key}=; max-age=0; path=/`
 }
 
 export const generateUUID = () => {

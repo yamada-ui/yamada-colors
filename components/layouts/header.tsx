@@ -285,8 +285,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
         ) : (
           <CloseButton
             size="lg"
-            // TODO: Remove once updated
-            rounded="full"
+            isRounded
             aria-label="Close navigation menu"
             display={{ base: "none", lg: "inline-flex" }}
             color="muted"

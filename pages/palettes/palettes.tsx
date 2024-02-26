@@ -140,7 +140,7 @@ export const Palettes: FC<PalettesProps> = memo(
           borderColor="transparent"
           colorScheme="neutral"
           leftIcon={<Plus />}
-          rounded="full"
+          isRounded
           onClick={onCreate}
         >
           {t("palettes.not-found.create")}

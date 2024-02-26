@@ -64,7 +64,7 @@ const Page: NextPage<PageProps> = ({
               <Box key={category} as="li">
                 <NextLinkButton
                   href={`/categories/${category}`}
-                  rounded="full"
+                  isRounded
                   variant={isCurrent ? "solid" : "outline"}
                   colorScheme={category}
                 >

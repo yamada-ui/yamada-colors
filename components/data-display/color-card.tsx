@@ -65,7 +65,7 @@ export const ColorCard = memo(
                   right: 0,
                   bottom: 0,
                   boxShadow: "inline",
-                  borderRadius: "2xl",
+                  rounded: "2xl",
                 },
               }}
               {...linkProps}

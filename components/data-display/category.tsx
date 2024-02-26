@@ -176,8 +176,6 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
       <Carousel
         innerProps={{ as: "ul", h: "auto" }}
         var={[
-          // TODO: Remove once updated
-          // @ts-ignore
           {
             name: "slide-size",
             value: {

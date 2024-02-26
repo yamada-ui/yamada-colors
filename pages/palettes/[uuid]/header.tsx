@@ -22,19 +22,36 @@ import {
   Text,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
-import { memo, useRef, useState } from "react"
+import { useRouter } from "next/router"
+import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
 import { Download, Pen, Trash } from "components/media-and-icons"
+import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 
-export type HeaderProps = StackProps &
-  Pick<ColorPalette, "name"> & {
-    onEdit: (name: string) => void
-    onDelete: () => void
-  }
+export type HeaderProps = StackProps & ColorPalette & {}
 
 export const Header: FC<HeaderProps> = memo(
-  ({ name, onEdit, onDelete, ...rest }) => {
+  ({ uuid, name: nameProp, colors, ...rest }) => {
+    const { changePalette, deletePalette } = useApp()
+    const [name, setName] = useState<string>(nameProp)
+    const router = useRouter()
+
+    const onEdit = useCallback(
+      (name: string) => {
+        setName(name)
+
+        changePalette({ uuid, name, colors })
+      },
+      [uuid, colors, changePalette],
+    )
+
+    const onDelete = useCallback(() => {
+      deletePalette(uuid)
+
+      router.push("/palettes")
+    }, [deletePalette, uuid, router])
+
     return (
       <HStack alignItems="flex-start" gap="sm" {...rest}>
         <Grid templateColumns={{ base: "auto 1fr" }} gap={{ base: "md" }}>
@@ -131,7 +148,9 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
   const { t } = useI18n()
   const [value, setValue] = useState<string>(name)
   const { isOpen, onOpen, onClose } = useDisclosure({
-    onClose: () => {},
+    onClose: () => {
+      setValue((prev) => (!prev.length ? name : prev))
+    },
   })
   const isComposition = useRef<boolean>(false)
 

@@ -26,6 +26,9 @@
       "cancel": "Cancel"
     }
   },
+  "palette": {
+    "create": "Add a color"
+  },
   "generators": {
     "title": "Generators",
     "description": "",

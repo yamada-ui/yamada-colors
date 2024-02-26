@@ -29,6 +29,9 @@
       "cancel": "キャンセル"
     }
   },
+  "palette": {
+    "create": "色を追加する"
+  },
   "generators": {
     "title": "ジェネレーター",
     "description": "",

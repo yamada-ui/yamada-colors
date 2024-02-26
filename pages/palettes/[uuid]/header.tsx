@@ -55,10 +55,18 @@ export const Header: FC<HeaderProps> = memo(
     return (
       <HStack alignItems="flex-start" gap="sm" {...rest}>
         <Grid templateColumns={{ base: "auto 1fr" }} gap={{ base: "md" }}>
-          <Box boxSize={{ base: "20", sm: "16" }} rounded="2xl" />
+          <Box
+            boxSize={{ base: "20", sm: "16" }}
+            rounded="2xl"
+            bg={["blackAlpha.50", "whiteAlpha.100"]}
+          />
 
           <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
             <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>
+
+            <Text as="span" color="muted" alignSelf="flex-start">
+              {colors.length} colors
+            </Text>
           </VStack>
         </Grid>
 

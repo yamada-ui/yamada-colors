@@ -35,7 +35,13 @@ const Page: NextPage = ({}) => {
           </Text>
         </VStack>
 
-        <NextLinkButton href="/" size="lg">
+        <NextLinkButton
+          href="/"
+          size="lg"
+          colorScheme="neutral"
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          borderColor="transparent"
+        >
           {tc("not-found.back-to-app")}
         </NextLinkButton>
       </VStack>

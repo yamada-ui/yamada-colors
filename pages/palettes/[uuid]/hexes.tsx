@@ -135,28 +135,80 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 Hexes.displayName = "Hexes"
 
 const variants: MotionVariants = {
-  initial: ({ isFirst, isLast }) =>
-    isFirst || isLast
-      ? {
-          ...(isFirst
-            ? { borderStartStartRadius: "16px", borderStartEndRadius: "16px" }
-            : { borderStartStartRadius: "0px", borderStartEndRadius: "0px" }),
-          ...(isLast
-            ? { borderEndStartRadius: "16px", borderEndEndRadius: "16px" }
-            : { borderEndStartRadius: "0px", borderEndEndRadius: "0px" }),
-        }
-      : { borderRadius: "0px" },
-  animate: ({ isFirst, isLast }) =>
-    isFirst || isLast
-      ? {
-          ...(isFirst
-            ? { borderStartStartRadius: "16px", borderStartEndRadius: "16px" }
-            : { borderStartStartRadius: "0px", borderStartEndRadius: "0px" }),
-          ...(isLast
-            ? { borderEndStartRadius: "16px", borderEndEndRadius: "16px" }
-            : { borderEndStartRadius: "0px", borderEndEndRadius: "0px" }),
-        }
-      : { borderRadius: "0px" },
+  initial: ({ name, isFirst, isLast }) => {
+    if (!isFirst && !isLast)
+      return {
+        borderStartStartRadius: "0px",
+        borderStartEndRadius: "0px",
+        borderEndStartRadius: "0px",
+        borderEndEndRadius: "0px",
+      }
+
+    let styles: MotionVariants[number] = {}
+
+    if (isFirst) {
+      styles = {
+        ...styles,
+        borderStartStartRadius: "16px",
+        borderStartEndRadius: "16px",
+      }
+    }
+
+    if (isLast) {
+      styles = {
+        ...styles,
+        borderEndStartRadius: "16px",
+        borderEndEndRadius: "16px",
+      }
+    }
+
+    console.log("initial", name, styles)
+
+    return styles
+  },
+  animate: ({ name, isFirst, isLast }) => {
+    if (!isFirst && !isLast)
+      return {
+        borderStartStartRadius: "0px",
+        borderStartEndRadius: "0px",
+        borderEndStartRadius: "0px",
+        borderEndEndRadius: "0px",
+      }
+
+    let styles: MotionVariants[number] = {}
+
+    if (isFirst) {
+      styles = {
+        ...styles,
+        borderStartStartRadius: "16px",
+        borderStartEndRadius: "16px",
+      }
+    } else {
+      styles = {
+        ...styles,
+        borderStartStartRadius: "0px",
+        borderStartEndRadius: "0px",
+      }
+    }
+
+    if (isLast) {
+      styles = {
+        ...styles,
+        borderEndStartRadius: "16px",
+        borderEndEndRadius: "16px",
+      }
+    } else {
+      styles = {
+        ...styles,
+        borderEndStartRadius: "0px",
+        borderEndEndRadius: "0px",
+      }
+    }
+
+    console.log("animate", name, styles)
+
+    return styles
+  },
 }
 
 type HexProps = OrderColor & { isFirst: boolean; isLast: boolean }
@@ -170,13 +222,13 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       display="flex"
       gap="md"
       bg={hex}
-      w={{ base: "lg" }}
+      w={{ base: "md" }}
       py="lg"
       px="md"
       initial="initial"
       animate="animate"
       variants={variants}
-      custom={{ isFirst, isLast }}
+      custom={{ name, isFirst, isLast }}
       onHoverStart={onOpen}
       onHoverEnd={onClose}
     >
@@ -200,7 +252,7 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
         transitionProperty="common"
         transitionDuration="slower"
       >
-        <Text as="span" w="15ch" lineClamp={1}>
+        <Text as="span" lineClamp={1}>
           {name}
         </Text>
 

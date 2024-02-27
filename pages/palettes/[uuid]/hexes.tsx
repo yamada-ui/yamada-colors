@@ -93,8 +93,6 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
   const value = useMemo(() => ({ onClone, onDelete }), [onClone, onDelete])
 
-  console.log(colors)
-
   return (
     <HexesProvider value={value}>
       <Reorder

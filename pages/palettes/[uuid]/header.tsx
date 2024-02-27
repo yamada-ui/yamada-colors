@@ -20,6 +20,7 @@ import {
   useDisclosure,
   Text,
   VStack,
+  GridItem,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
 import { useRouter } from "next/router"
@@ -59,11 +60,29 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
         alignItems="center"
         gap={{ base: "md" }}
       >
-        <Box
-          boxSize={{ base: "20", sm: "16" }}
-          rounded="2xl"
-          bg={["blackAlpha.50", "whiteAlpha.100"]}
-        />
+        {colors.length ? (
+          <Grid
+            boxSize={{ base: "20", sm: "16" }}
+            rounded="2xl"
+            overflow="hidden"
+            templateColumns={`repeat(${colors.length < 3 ? 1 : 2}, 1fr)`}
+          >
+            {colors.map(({ hex }, index) => (
+              <GridItem
+                key={index}
+                bg={hex}
+                colSpan={colors.length === 3 ? (!index ? 2 : 1) : 1}
+                display={index < 4 ? "block" : "none"}
+              />
+            ))}
+          </Grid>
+        ) : (
+          <Box
+            boxSize={{ base: "20", sm: "16" }}
+            rounded="2xl"
+            bg={["blackAlpha.50", "whiteAlpha.100"]}
+          />
+        )}
 
         <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
           <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>

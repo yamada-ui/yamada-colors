@@ -97,7 +97,11 @@ export const Palettes: FC<PalettesProps> = memo(
                   >
                     {colors.length ? (
                       colors.map(({ hex }, index) => (
-                        <GridItem key={`${hex}-${index}`}></GridItem>
+                        <GridItem
+                          key={`${hex}-${index}`}
+                          bg={hex}
+                          display={index < 4 ? "block" : "none"}
+                        />
                       ))
                     ) : (
                       <>

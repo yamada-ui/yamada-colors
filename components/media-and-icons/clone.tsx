@@ -2,7 +2,7 @@ import type { IconProps } from "@yamada-ui/react"
 import { Icon } from "@yamada-ui/react"
 import { forwardRef } from "react"
 
-export const Copy = forwardRef<SVGSVGElement, IconProps>(
+export const Clone = forwardRef<SVGSVGElement, IconProps>(
   ({ boxSize = "0.75em", ...rest }, ref) => {
     return (
       <Icon
@@ -20,4 +20,4 @@ export const Copy = forwardRef<SVGSVGElement, IconProps>(
   },
 )
 
-Copy.displayName = "Copy"
+Clone.displayName = "Clone"

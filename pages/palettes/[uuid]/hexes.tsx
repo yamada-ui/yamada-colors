@@ -9,27 +9,20 @@ import {
   Spacer,
   Text,
   VStack,
-  createContext,
   useDisclosure,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { memo, useCallback, useMemo } from "react"
 import type { FC } from "react"
+import { HexesProvider, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
 import { HexData } from "./hex-data"
-import { usePalette, type OrderColor } from "./index.page"
+import { type OrderColor } from "./index.page"
 import { Dots, Plus } from "components/media-and-icons"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f, isLight } from "utils/color"
 import { generateUUID } from "utils/storage"
-
-type HexesContext = {
-  onClone: (color: OrderColor) => void
-  onDelete: (id: string) => void
-}
-
-export const [HexesProvider, useHexes] = createContext<HexesContext>()
 
 const DEFAULT_COLOR: Color = { name: "White", hex: "#ffffff" }
 
@@ -99,6 +92,8 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   )
 
   const value = useMemo(() => ({ onClone, onDelete }), [onClone, onDelete])
+
+  console.log(colors)
 
   return (
     <HexesProvider value={value}>

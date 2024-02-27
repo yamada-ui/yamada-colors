@@ -10,7 +10,7 @@ import {
 import type { CenterProps, StackProps } from "@yamada-ui/react"
 import { memo } from "react"
 import type { FC } from "react"
-import { useHexes } from "./hexes"
+import { useHexes } from "./context"
 import type { OrderColor } from "./index.page"
 import { Clipboard, Clone, Pen, Trash } from "components/media-and-icons"
 import { isLight } from "utils/color"

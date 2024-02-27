@@ -1,11 +1,10 @@
-import { createContext } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import type { Dispatch, SetStateAction } from "react"
 import { useMemo, useState } from "react"
+import { PaletteProvider } from "./context"
 import { Header } from "./header"
 import { Hexes } from "./hexes"
 import { CONSTANT } from "constant"
@@ -13,16 +12,6 @@ import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 import { generateUUID, getCookie } from "utils/storage"
-
-type PaletteContext = {
-  uuid: string
-  name: string
-  colors: OrderColors
-  setName: Dispatch<SetStateAction<string>>
-  setColors: Dispatch<SetStateAction<OrderColors>>
-}
-
-export const [PaletteProvider, usePalette] = createContext<PaletteContext>()
 
 export type OrderColor = Color & { id: string }
 export type OrderColors = OrderColor[]

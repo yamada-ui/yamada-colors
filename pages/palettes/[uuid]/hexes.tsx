@@ -2,13 +2,13 @@ import type { MotionVariants } from "@yamada-ui/react"
 import {
   Button,
   Center,
-  HStack,
   Motion,
   Reorder,
   ReorderItem,
   ReorderTrigger,
   Spacer,
   Text,
+  VStack,
   createContext,
   useDisclosure,
 } from "@yamada-ui/react"
@@ -187,13 +187,16 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
     >
       <ReorderTrigger
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
+        opacity={isOpen ? 1 : 0}
+        transitionProperty="common"
+        transitionDuration="slower"
       >
         <Dots />
       </ReorderTrigger>
 
-      <HStack
+      <VStack
         as={Link}
-        gap="sm"
+        gap="0"
         href={`/colors/${hex.replace("#", "")}`}
         outline={0}
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
@@ -202,14 +205,14 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
         transitionProperty="common"
         transitionDuration="slower"
       >
-        <Text as="span" w="10ch" lineClamp={1}>
+        <Text as="span" w="15ch" lineClamp={1}>
           {name}
         </Text>
 
         <Text as="span" fontSize="sm" lineClamp={1}>
           {f(hex, format)}
         </Text>
-      </HStack>
+      </VStack>
 
       <Spacer />
 

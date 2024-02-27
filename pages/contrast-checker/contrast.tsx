@@ -118,8 +118,6 @@ const ColorInput: FC<ColorInputProps> = ({
         fontSize="sm"
         value={value}
         alignSelf="flex-start"
-        copyIconProps={{ fontSize: "md", mb: "2px" }}
-        checkIconProps={{ fontSize: "0.9em" }}
       >
         {label}
       </CopyText>

@@ -12,7 +12,7 @@ import {
 import type { IconProps, TextProps } from "@yamada-ui/react"
 import type { MouseEvent } from "react"
 import { memo } from "react"
-import { Check, Copy } from "components/media-and-icons"
+import { Check, Clipboard } from "components/media-and-icons"
 
 export type CopyTextProps = TextProps & {
   value?: string
@@ -91,13 +91,21 @@ export const CopyText = memo(
             hasCopied ? (
               <Check
                 ms="1"
+                mb="0.5"
                 fontSize="0.75em"
                 color="success"
                 {...iconProps}
                 {...checkIconProps}
               />
             ) : (
-              <Copy ms="1.5" color="muted" {...iconProps} {...copyIconProps} />
+              <Clipboard
+                fontSize="0.875em"
+                mb="0.5"
+                ms="1"
+                color="muted"
+                {...iconProps}
+                {...copyIconProps}
+              />
             )
           ) : null}
         </Text>

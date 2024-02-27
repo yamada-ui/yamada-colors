@@ -87,6 +87,8 @@ export const Palettes: FC<PalettesProps> = memo(
                     "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
                     "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
                   ]}
+                  outline={0}
+                  _focusVisible={{ boxShadow: ["outline", "outline"] }}
                   onClick={() => {
                     setCookie(CONSTANT.STORAGE.PALETTE_QUERY, queryRef.current)
                   }}

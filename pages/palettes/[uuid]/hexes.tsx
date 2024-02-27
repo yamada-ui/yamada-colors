@@ -135,7 +135,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 Hexes.displayName = "Hexes"
 
 const variants: MotionVariants = {
-  initial: ({ name, isFirst, isLast }) => {
+  initial: ({ isFirst, isLast }) => {
     if (!isFirst && !isLast)
       return {
         borderStartStartRadius: "0px",
@@ -161,12 +161,10 @@ const variants: MotionVariants = {
         borderEndEndRadius: "16px",
       }
     }
-
-    console.log("initial", name, styles)
 
     return styles
   },
-  animate: ({ name, isFirst, isLast }) => {
+  animate: ({ isFirst, isLast }) => {
     if (!isFirst && !isLast)
       return {
         borderStartStartRadius: "0px",
@@ -204,8 +202,6 @@ const variants: MotionVariants = {
         borderEndEndRadius: "0px",
       }
     }
-
-    console.log("animate", name, styles)
 
     return styles
   },
@@ -228,7 +224,7 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       initial="initial"
       animate="animate"
       variants={variants}
-      custom={{ name, isFirst, isLast }}
+      custom={{ isFirst, isLast }}
       onHoverStart={onOpen}
       onHoverEnd={onClose}
     >

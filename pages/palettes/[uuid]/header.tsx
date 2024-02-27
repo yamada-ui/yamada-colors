@@ -19,65 +19,71 @@ import {
   Input,
   useDisclosure,
   Text,
+  VStack,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
 import { useRouter } from "next/router"
 import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
+import { usePalette } from "./index.page"
 import { Download, Pen, Trash } from "components/media-and-icons"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 
-export type HeaderProps = StackProps & ColorPalette & {}
+export type HeaderProps = StackProps & {}
 
-export const Header: FC<HeaderProps> = memo(
-  ({ uuid, name: nameProp, colors, ...rest }) => {
-    const { changePalette, deletePalette } = useApp()
-    const [name, setName] = useState<string>(nameProp)
-    const router = useRouter()
+export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
+  const { uuid, name, colors, setName } = usePalette()
+  const { changePalette, deletePalette } = useApp()
+  const router = useRouter()
 
-    const onEdit = useCallback(
-      (name: string) => {
-        setName(name)
+  const onEdit = useCallback(
+    (name: string) => {
+      setName(name)
 
-        changePalette({ uuid, name, colors })
-      },
-      [uuid, colors, changePalette],
-    )
+      changePalette({ uuid, name, colors })
+    },
+    [setName, changePalette, uuid, colors],
+  )
 
-    const onDelete = useCallback(() => {
-      deletePalette(uuid)
+  const onDelete = useCallback(() => {
+    deletePalette(uuid)
 
-      router.push("/palettes")
-    }, [deletePalette, uuid, router])
+    router.push("/palettes")
+  }, [deletePalette, uuid, router])
 
-    return (
-      <HStack alignItems="flex-start" gap="sm" {...rest}>
-        <Grid
-          templateColumns={{ base: "auto 1fr" }}
-          alignItems="center"
-          gap={{ base: "md" }}
-        >
-          <Box
-            boxSize={{ base: "20", sm: "16" }}
-            rounded="2xl"
-            bg={["blackAlpha.50", "whiteAlpha.100"]}
-          />
+  return (
+    <HStack alignItems="flex-start" gap="sm" {...rest}>
+      <Grid
+        templateColumns={{ base: "auto 1fr" }}
+        alignItems="center"
+        gap={{ base: "md" }}
+      >
+        <Box
+          boxSize={{ base: "20", sm: "16" }}
+          rounded="2xl"
+          bg={["blackAlpha.50", "whiteAlpha.100"]}
+        />
 
+        <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
           <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>
-        </Grid>
 
-        <Spacer />
+          <Text as="span" color="muted" alignSelf="flex-start">
+            {colors.length} colors
+          </Text>
+        </VStack>
+      </Grid>
 
-        <DownloadButton />
+      <Spacer />
 
-        <EditButton name={name} onEdit={onEdit} />
+      <DownloadButton />
 
-        <DeleteButton name={name} onDelete={onDelete} />
-      </HStack>
-    )
-  },
-)
+      <EditButton name={name} onEdit={onEdit} />
+
+      <DeleteButton name={name} onDelete={onDelete} />
+    </HStack>
+  )
+})
 
 Header.displayName = "Header"
 

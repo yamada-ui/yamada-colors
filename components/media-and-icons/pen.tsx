@@ -3,7 +3,7 @@ import { Icon } from "@yamada-ui/react"
 import { forwardRef } from "react"
 
 export const Pen = forwardRef<SVGSVGElement, IconProps>(
-  ({ boxSize = "1.3em", ...rest }, ref) => {
+  ({ boxSize = "1.45em", ...rest }, ref) => {
     return (
       <Icon
         ref={ref}

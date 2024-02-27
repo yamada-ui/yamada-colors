@@ -12,8 +12,7 @@ import {
 import type { IconProps, TextProps } from "@yamada-ui/react"
 import type { MouseEvent } from "react"
 import { memo } from "react"
-import { Check } from "components/media-and-icons"
-import { Copy } from "components/media-and-icons/copy"
+import { Check, Copy } from "components/media-and-icons"
 
 export type CopyTextProps = TextProps & {
   value?: string

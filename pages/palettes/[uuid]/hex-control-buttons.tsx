@@ -21,6 +21,7 @@ import {
 } from "@yamada-ui/react"
 import type {
   CenterProps,
+  InputProps,
   StackProps,
   UseDisclosureProps,
 } from "@yamada-ui/react"
@@ -109,120 +110,123 @@ HexControlButton.displayName = "HexControlButton"
 
 type EditColorPickerProps = Pick<Color, "hex"> & {
   hexRef: MutableRefObject<() => string>
-}
+} & Omit<InputProps, "value" | "defaultValue" | "onChange" | "size">
 
-const EditColorPicker: FC<EditColorPickerProps> = memo(({ hex, hexRef }) => {
-  const { format } = useApp()
-  const [inputValue, setInputValue] = useState<string>(f(hex, format))
-  const [value, setValue] = useState<string>(hex)
-  const { supported: eyeDropperSupported, onOpen: onEyeDropperOpen } =
-    useEyeDropper()
-  const isInputFocused = useRef<boolean>(false)
+const EditColorPicker: FC<EditColorPickerProps> = memo(
+  ({ hex, hexRef, ...rest }) => {
+    const { format } = useApp()
+    const [inputValue, setInputValue] = useState<string>(f(hex, format))
+    const [value, setValue] = useState<string>(hex)
+    const { supported: eyeDropperSupported, onOpen: onEyeDropperOpen } =
+      useEyeDropper()
+    const isInputFocused = useRef<boolean>(false)
 
-  const onInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    const value = ev.target.value
+    const onInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
+      const value = ev.target.value
 
-    setInputValue(value)
-    setValue(value)
-  }
+      setInputValue(value)
+      setValue(value)
+    }
 
-  const onChange = (value: string) => {
-    setValue(value)
+    const onChange = (value: string) => {
+      setValue(value)
 
-    setTimeout(() => {
-      if (!isInputFocused.current) setInputValue(value)
-    })
-  }
+      setTimeout(() => {
+        if (!isInputFocused.current) setInputValue(value)
+      })
+    }
 
-  const onEyeDropperClick = async () => {
-    try {
-      const { sRGBHex } = (await onEyeDropperOpen()) ?? {}
+    const onEyeDropperClick = async () => {
+      try {
+        const { sRGBHex } = (await onEyeDropperOpen()) ?? {}
 
-      if (!sRGBHex) return
+        if (!sRGBHex) return
 
-      setValue(sRGBHex)
-    } catch {}
-  }
+        setValue(sRGBHex)
+      } catch {}
+    }
 
-  assignRef(hexRef, () => value)
+    assignRef(hexRef, () => value)
 
-  return (
-    <>
-      <Box position="relative" w="full">
-        <ColorSwatch
-          color={value}
-          isRounded
-          position="absolute"
-          top="50%"
-          transform="translateY(-50%)"
-          zIndex={2}
-          boxSize="6"
-          insetStart="2"
-        />
-
-        <Input
-          value={inputValue}
-          onChange={onInputChange}
-          onFocus={() => {
-            isInputFocused.current = true
-          }}
-          onBlur={() => {
-            isInputFocused.current = false
-            const next = convertColor(value, "#ffffff")(format)
-
-            setValue((prev) => (!next || prev === next ? prev : next))
-            setInputValue(next ?? "")
-          }}
-          w="full"
-          pl="10"
-          pr="8"
-          _focus={{ zIndex: "unset" }}
-          placeholder={f("#ffffff", format)}
-        />
-
-        {eyeDropperSupported ? (
-          <Box
-            as="button"
+    return (
+      <>
+        <Box position="relative" w="full">
+          <ColorSwatch
+            color={value}
+            isRounded
             position="absolute"
             top="50%"
             transform="translateY(-50%)"
-            display="inline-flex"
-            justifyContent="center"
-            alignItems="center"
-            zIndex={1}
-            insetEnd="2"
-            w="6"
-            py="1"
-            fontSize="lg"
-            outline={0}
-            rounded="md"
-            transitionProperty="common"
-            transitionDuration="normal"
-            pointerEvents="auto"
-            color={["blackAlpha.600", "whiteAlpha.700"]}
-            _hover={{
-              color: ["blackAlpha.500", "whiteAlpha.600"],
-            }}
-            _focusVisible={{
-              boxShadow: "outline",
-            }}
-            onClick={onEyeDropperClick}
-          >
-            <EyeDropper />
-          </Box>
-        ) : null}
-      </Box>
+            zIndex={2}
+            boxSize="6"
+            insetStart="2"
+          />
 
-      <ColorSelector
-        value={value}
-        onChange={onChange}
-        format={format}
-        withEyeDropper={false}
-        withResult={false}
-      />
-    </>
-  )
-})
+          <Input
+            value={inputValue}
+            onChange={onInputChange}
+            onFocus={() => {
+              isInputFocused.current = true
+            }}
+            onBlur={() => {
+              isInputFocused.current = false
+              const next = convertColor(value, "#ffffff")(format)
+
+              setValue((prev) => (!next || prev === next ? prev : next))
+              setInputValue(next ?? "")
+            }}
+            w="full"
+            pl="10"
+            pr="8"
+            _focus={{ zIndex: "unset" }}
+            placeholder={f("#ffffff", format)}
+            {...rest}
+          />
+
+          {eyeDropperSupported ? (
+            <Box
+              as="button"
+              position="absolute"
+              top="50%"
+              transform="translateY(-50%)"
+              display="inline-flex"
+              justifyContent="center"
+              alignItems="center"
+              zIndex={1}
+              insetEnd="2"
+              w="6"
+              py="1"
+              fontSize="lg"
+              outline={0}
+              rounded="md"
+              transitionProperty="common"
+              transitionDuration="normal"
+              pointerEvents="auto"
+              color={["blackAlpha.600", "whiteAlpha.700"]}
+              _hover={{
+                color: ["blackAlpha.500", "whiteAlpha.600"],
+              }}
+              _focusVisible={{
+                boxShadow: "outline",
+              }}
+              onClick={onEyeDropperClick}
+            >
+              <EyeDropper />
+            </Box>
+          ) : null}
+        </Box>
+
+        <ColorSelector
+          value={value}
+          onChange={onChange}
+          format={format}
+          withEyeDropper={false}
+          withResult={false}
+        />
+      </>
+    )
+  },
+)
 
 EditColorPicker.displayName = "EditColorPicker"
 
@@ -245,7 +249,12 @@ const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
   }
 
   return (
-    <Popover isOpen={isOpen} onClose={onClose} closeOnButton={false}>
+    <Popover
+      isOpen={isOpen}
+      onClose={onClose}
+      closeOnButton={false}
+      restoreFocus={false}
+    >
       <PopoverTrigger>
         <HexControlButton hex={hex} onClick={onOpen}>
           <Pen />
@@ -256,7 +265,15 @@ const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
         <PopoverBody>
           <Input value={value} onChange={(ev) => setValue(ev.target.value)} />
 
-          <EditColorPicker hex={hex} hexRef={hexRef} />
+          <EditColorPicker
+            hex={hex}
+            hexRef={hexRef}
+            onKeyDown={(ev) => {
+              if (ev.key !== "Enter") return
+
+              onSubmit()
+            }}
+          />
 
           <Button
             isDisabled={!value.length}

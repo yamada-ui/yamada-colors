@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from "@yamada-ui/react"
 import Link from "next/link"
-import { memo, useCallback, useMemo } from "react"
+import { memo, useCallback, useMemo, useRef } from "react"
 import type { FC } from "react"
 import { HexesProvider, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
@@ -233,7 +233,12 @@ type HexProps = OrderColor & { isFirst: boolean; isLast: boolean }
 
 const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
   const { format } = useApp()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const isEditRef = useRef<boolean>(false)
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    onClose: () => {
+      isEditRef.current = false
+    },
+  })
 
   return (
     <Motion
@@ -248,7 +253,11 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       variants={variants}
       custom={{ isFirst, isLast }}
       onHoverStart={onOpen}
-      onHoverEnd={onClose}
+      onHoverEnd={() => {
+        if (isEditRef.current) return
+
+        onClose()
+      }}
     >
       <ReorderTrigger
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
@@ -281,7 +290,12 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
 
       <Spacer />
 
-      <HexControlButtons opacity={isOpen ? 1 : 0} {...{ id, name, hex }} />
+      <HexControlButtons
+        opacity={isOpen ? 1 : 0}
+        isEditRef={isEditRef}
+        onClose={onClose}
+        {...{ id, name, hex }}
+      />
     </Motion>
   )
 })

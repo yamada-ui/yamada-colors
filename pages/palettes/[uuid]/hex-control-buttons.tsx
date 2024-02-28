@@ -16,7 +16,11 @@ import {
   useDisclosure,
   useNotice,
 } from "@yamada-ui/react"
-import type { CenterProps, StackProps } from "@yamada-ui/react"
+import type {
+  CenterProps,
+  StackProps,
+  UseDisclosureProps,
+} from "@yamada-ui/react"
 import { memo, useRef, useState } from "react"
 import type { FC, MutableRefObject } from "react"
 import { useHexes } from "./context"
@@ -26,10 +30,14 @@ import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f, isLight } from "utils/color"
 
-export type HexControlButtonsProps = StackProps & OrderColor & {}
+export type HexControlButtonsProps = StackProps &
+  OrderColor & {
+    isEditRef: MutableRefObject<boolean>
+    onClose: () => void
+  }
 
 export const HexControlButtons: FC<HexControlButtonsProps> = memo(
-  ({ id, name, hex, ...rest }) => {
+  ({ id, name, hex, isEditRef, onClose, ...rest }) => {
     const { onClone, onDelete } = useHexes()
 
     return (
@@ -39,7 +47,15 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
         transitionDuration="slower"
         {...rest}
       >
-        <EditButton id={id} name={name} hex={hex} />
+        <EditButton
+          id={id}
+          name={name}
+          hex={hex}
+          onOpen={() => {
+            isEditRef.current = true
+          }}
+          onClose={onClose}
+        />
 
         <HexControlButton hex={hex} onClick={() => onClone({ id, name, hex })}>
           <Clone fontSize="1.45em" />
@@ -138,10 +154,10 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(({ hex, hexRef }) => {
 
 EditColorPicker.displayName = "EditColorPicker"
 
-type EditButtonProps = OrderColor
+type EditButtonProps = OrderColor & UseDisclosureProps
 
-const EditButton: FC<EditButtonProps> = memo(({ id, name, hex }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure({ ...rest })
   const { onEdit } = useHexes()
   const { t } = useI18n()
   const nameRef = useRef<() => string>(() => name)

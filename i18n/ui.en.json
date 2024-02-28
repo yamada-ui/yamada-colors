@@ -27,7 +27,10 @@
     }
   },
   "palette": {
-    "create": "Add a color"
+    "create": "Add a color",
+    "edit": {
+      "submit": "Apply"
+    }
   },
   "generators": {
     "title": "Generators",

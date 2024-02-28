@@ -34,64 +34,82 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   const { changePalette } = useApp()
 
   const onCreate = () => {
-    const computedColors = [...colors, { id: generateUUID(), ...DEFAULT_COLOR }]
+    setColors((prev) => [...prev, { id: generateUUID(), ...DEFAULT_COLOR }])
 
-    changePalette({ uuid, name, colors: computedColors })
-
-    setColors(computedColors)
+    changePalette({ uuid, name, colors: [...colors, { ...DEFAULT_COLOR }] })
   }
 
-  const onChange = (ids: (string | number)[]) => {
-    const computedColors = ids.map((id) =>
-      colors.find((item) => item.id === id),
-    )
+  const onEdit = useCallback(
+    ({ id, ...rest }: OrderColor) => {
+      setColors((prev) =>
+        prev.map((color) => (color.id === id ? { id, ...rest } : color)),
+      )
 
-    setColors(computedColors)
+      const computedColors = colors.map((color) =>
+        color.id === id ? rest : color,
+      )
+
+      changePalette({ uuid, name, colors: computedColors })
+    },
+    [changePalette, colors, name, setColors, uuid],
+  )
+
+  const onChange = (ids: (string | number)[]) => {
+    setColors((prev) => ids.map((id) => prev.find((item) => item.id === id)))
   }
 
   const onCompleteChange = (ids: (string | number)[]) => {
-    const computedColors = ids.map((id) => {
+    const resolvedColors = ids.map((id) => {
       const { name, hex } = colors.find((item) => item.id === id)
 
       return { name, hex }
     })
 
-    changePalette({ uuid, name, colors: computedColors })
+    changePalette({ uuid, name, colors: resolvedColors })
   }
 
   const onClone = useCallback(
     ({ id, ...rest }: OrderColor) => {
       const index = colors.findIndex((color) => color.id === id)
 
-      const computedColors = [
-        ...colors.slice(0, index),
+      setColors((prev) => [
+        ...prev.slice(0, index),
         { id: generateUUID(), ...rest },
-        ...colors.slice(index),
+        ...prev.slice(index),
+      ])
+
+      const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
+
+      const resolvedColors = [
+        ...computedColors.slice(0, index),
+        { ...rest },
+        ...computedColors.slice(index),
       ]
 
-      changePalette({ uuid, name, colors: computedColors })
-
-      setColors(computedColors)
+      changePalette({ uuid, name, colors: resolvedColors })
     },
     [changePalette, colors, name, setColors, uuid],
   )
 
   const onDelete = useCallback(
     (targetId: string) => {
-      const computedColors = colors
+      setColors((prev) => prev.filter(({ id }) => id !== targetId))
+
+      const resolvedColors = colors
         .map(({ id, name, hex }) =>
           targetId !== id ? { name, hex } : undefined,
         )
         .filter(Boolean)
 
-      setColors((prev) => prev.filter(({ id }) => id !== targetId))
-
-      changePalette({ uuid, name, colors: computedColors })
+      changePalette({ uuid, name, colors: resolvedColors })
     },
     [changePalette, colors, name, setColors, uuid],
   )
 
-  const value = useMemo(() => ({ onClone, onDelete }), [onClone, onDelete])
+  const value = useMemo(
+    () => ({ onClone, onEdit, onDelete }),
+    [onClone, onEdit, onDelete],
+  )
 
   return (
     <HexesProvider value={value}>

@@ -14,6 +14,7 @@ export const [PaletteProvider, usePalette] = createContext<PaletteContext>()
 
 type HexesContext = {
   onClone: (color: OrderColor) => void
+  onEdit: (color: OrderColor) => void
   onDelete: (id: string) => void
 }
 

@@ -42,6 +42,7 @@ export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
       <LevelButton
         isSelected={aa}
         pointerEvents={aa && !aaa ? "none" : "auto"}
+        tabIndex={aa && !aaa ? -1 : 0}
         onClick={() => {
           setLevel(({ aa, aaa }) => {
             const value = { aa: !aa, aaa }
@@ -58,6 +59,7 @@ export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
       <LevelButton
         isSelected={aaa}
         pointerEvents={aaa && !aa ? "none" : "auto"}
+        tabIndex={aaa && !aa ? -1 : 0}
         onClick={() => {
           setLevel(({ aa, aaa }) => {
             const value = { aa, aaa: !aaa }

@@ -47,8 +47,8 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
   const onEdit = useCallback(
     ({ id, ...rest }: OrderColor) => {
-      const computedColors = colors.map((color) =>
-        color.id === id ? rest : color,
+      const computedColors = colors.map(({ id: targetId, name, hex }) =>
+        targetId === id ? rest : { name, hex },
       )
 
       setColors((prev) =>

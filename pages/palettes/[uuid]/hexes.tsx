@@ -34,19 +34,25 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   const { changePalette } = useApp()
 
   const onCreate = () => {
+    const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
+
     setColors((prev) => [...prev, { id: generateUUID(), ...DEFAULT_COLOR }])
 
-    changePalette({ uuid, name, colors: [...colors, { ...DEFAULT_COLOR }] })
+    changePalette({
+      uuid,
+      name,
+      colors: [...computedColors, { ...DEFAULT_COLOR }],
+    })
   }
 
   const onEdit = useCallback(
     ({ id, ...rest }: OrderColor) => {
-      setColors((prev) =>
-        prev.map((color) => (color.id === id ? { id, ...rest } : color)),
-      )
-
       const computedColors = colors.map((color) =>
         color.id === id ? rest : color,
+      )
+
+      setColors((prev) =>
+        prev.map((color) => (color.id === id ? { id, ...rest } : color)),
       )
 
       changePalette({ uuid, name, colors: computedColors })
@@ -72,13 +78,13 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
     ({ id, ...rest }: OrderColor) => {
       const index = colors.findIndex((color) => color.id === id)
 
+      const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
+
       setColors((prev) => [
         ...prev.slice(0, index),
         { id: generateUUID(), ...rest },
         ...prev.slice(index),
       ])
-
-      const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
 
       const resolvedColors = [
         ...computedColors.slice(0, index),
@@ -93,13 +99,13 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
   const onDelete = useCallback(
     (targetId: string) => {
-      setColors((prev) => prev.filter(({ id }) => id !== targetId))
-
       const resolvedColors = colors
         .map(({ id, name, hex }) =>
           targetId !== id ? { name, hex } : undefined,
         )
         .filter(Boolean)
+
+      setColors((prev) => prev.filter(({ id }) => id !== targetId))
 
       changePalette({ uuid, name, colors: resolvedColors })
     },

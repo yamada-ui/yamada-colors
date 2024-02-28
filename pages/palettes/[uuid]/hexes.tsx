@@ -29,7 +29,7 @@ const DEFAULT_COLOR: Color = { name: "White", hex: "#ffffff" }
 export type HexesProps = {}
 
 export const Hexes: FC<HexesProps> = memo(({}) => {
-  const { uuid, name, colors, setColors } = usePalette()
+  const { uuid, name, colors, timestamp, setColors } = usePalette()
   const { t } = useI18n()
   const { changePalette } = useApp()
 
@@ -42,6 +42,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
       uuid,
       name,
       colors: [...computedColors, { ...DEFAULT_COLOR }],
+      timestamp,
     })
   }
 
@@ -55,9 +56,9 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
         prev.map((color) => (color.id === id ? { id, ...rest } : color)),
       )
 
-      changePalette({ uuid, name, colors: computedColors })
+      changePalette({ uuid, name, colors: computedColors, timestamp })
     },
-    [changePalette, colors, name, setColors, uuid],
+    [changePalette, colors, name, setColors, uuid, timestamp],
   )
 
   const onChange = (ids: (string | number)[]) => {
@@ -71,7 +72,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
       return { name, hex }
     })
 
-    changePalette({ uuid, name, colors: resolvedColors })
+    changePalette({ uuid, name, colors: resolvedColors, timestamp })
   }
 
   const onClone = useCallback(
@@ -92,9 +93,9 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
         ...computedColors.slice(index),
       ]
 
-      changePalette({ uuid, name, colors: resolvedColors })
+      changePalette({ uuid, name, colors: resolvedColors, timestamp })
     },
-    [changePalette, colors, name, setColors, uuid],
+    [changePalette, colors, name, setColors, uuid, timestamp],
   )
 
   const onDelete = useCallback(
@@ -107,9 +108,9 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
       setColors((prev) => prev.filter(({ id }) => id !== targetId))
 
-      changePalette({ uuid, name, colors: resolvedColors })
+      changePalette({ uuid, name, colors: resolvedColors, timestamp })
     },
-    [changePalette, colors, name, setColors, uuid],
+    [changePalette, colors, name, setColors, uuid, timestamp],
   )
 
   const value = useMemo(

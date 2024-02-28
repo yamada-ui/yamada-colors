@@ -24,11 +24,11 @@ const Page: NextPage<PageProps> = ({ hex, format, palettes, palette }) => {
   const [colors, setColors] = useState<OrderColors>(
     palette.colors.map((color) => ({ id: generateUUID(), ...color })),
   )
-  const { uuid } = palette
+  const { uuid, timestamp } = palette
 
   const value = useMemo(
-    () => ({ uuid, name, colors, setName, setColors }),
-    [uuid, colors, name],
+    () => ({ uuid, name, colors, timestamp, setName, setColors }),
+    [uuid, colors, name, timestamp],
   )
 
   return (

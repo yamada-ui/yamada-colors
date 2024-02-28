@@ -49,6 +49,7 @@ export const AppProvider: FC<AppProviderProps> = ({
 
   const createPalette = useCallback((name: string) => {
     const uuid = generateUUID()
+    const timestamp = Date.now()
 
     setCookie(
       `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
@@ -56,6 +57,7 @@ export const AppProvider: FC<AppProviderProps> = ({
         uuid,
         name: encodeURIComponent(name),
         colors: [],
+        timestamp,
       }),
     )
 
@@ -64,27 +66,32 @@ export const AppProvider: FC<AppProviderProps> = ({
         uuid,
         name,
         colors: [],
+        timestamp,
       },
       ...prev,
     ])
   }, [])
 
-  const changePalette = useCallback(({ uuid, name, colors }: ColorPalette) => {
-    setCookie(
-      `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
-      JSON.stringify({
-        uuid,
-        name: encodeURIComponent(name),
-        colors,
-      }),
-    )
+  const changePalette = useCallback(
+    ({ uuid, name, colors, timestamp }: ColorPalette) => {
+      setCookie(
+        `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
+        JSON.stringify({
+          uuid,
+          name: encodeURIComponent(name),
+          colors,
+          timestamp,
+        }),
+      )
 
-    setPalettes((prev) =>
-      prev.map((palette) =>
-        palette.uuid === uuid ? { ...palette, name, colors } : palette,
-      ),
-    )
-  }, [])
+      setPalettes((prev) =>
+        prev.map((palette) =>
+          palette.uuid === uuid ? { ...palette, name, colors } : palette,
+        ),
+      )
+    },
+    [],
+  )
 
   const deletePalette = useCallback((uuid: string) => {
     deleteCookie(`${CONSTANT.STORAGE.PALETTE}-${uuid}`)

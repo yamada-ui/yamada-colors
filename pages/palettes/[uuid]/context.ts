@@ -6,6 +6,7 @@ type PaletteContext = {
   uuid: string
   name: string
   colors: OrderColors
+  timestamp: number
   setName: Dispatch<SetStateAction<string>>
   setColors: Dispatch<SetStateAction<OrderColors>>
 }

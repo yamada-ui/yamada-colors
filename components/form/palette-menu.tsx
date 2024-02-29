@@ -215,7 +215,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
 
         setTimeout(() => {
           firstRef.current?.focus()
-        }, 0)
+        })
       },
     })
     const [value, setValue] = useState<string>("")

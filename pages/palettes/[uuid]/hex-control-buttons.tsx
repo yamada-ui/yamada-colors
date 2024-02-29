@@ -14,6 +14,7 @@ import {
   assignRef,
   convertColor,
   forwardRef,
+  noop,
   useClipboard,
   useDisclosure,
   useEyeDropper,
@@ -114,10 +115,11 @@ HexControlButton.displayName = "HexControlButton"
 
 type EditColorPickerProps = Pick<Color, "hex"> & {
   hexRef: MutableRefObject<() => string>
+  resetRef: MutableRefObject<() => void>
 } & Omit<InputProps, "value" | "defaultValue" | "onChange" | "size">
 
 const EditColorPicker: FC<EditColorPickerProps> = memo(
-  ({ hex, hexRef, ...rest }) => {
+  ({ hex, hexRef, resetRef, ...rest }) => {
     const { format } = useApp()
     const [inputValue, setInputValue] = useState<string>(f(hex, format))
     const [value, setValue] = useState<string>(hex)
@@ -151,6 +153,10 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
     }
 
     assignRef(hexRef, () => value)
+    assignRef(resetRef, () => {
+      setInputValue(f(hex, format))
+      setValue(hex)
+    })
 
     return (
       <>
@@ -237,19 +243,34 @@ EditColorPicker.displayName = "EditColorPicker"
 type EditButtonProps = OrderColor & UseDisclosureProps
 
 const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure({ ...rest })
+  const resetRef = useRef<() => void>(noop)
+  const hexRef = useRef<() => string>(() => hex)
+  const isSubmitRef = useRef<boolean>(false)
+  const { isOpen, onOpen, onClose } = useDisclosure({
+    ...rest,
+    onClose: () => {
+      rest.onClose?.()
+
+      if (!isSubmitRef.current) {
+        resetRef.current()
+        setValue(name)
+      }
+
+      isSubmitRef.current = false
+    },
+  })
   const [value, setValue] = useState<string>(name)
   const { onEdit } = useHexes()
   const { t } = useI18n()
 
-  const hexRef = useRef<() => string>(() => hex)
-
   const onSubmit = () => {
+    isSubmitRef.current = true
+
     const hex = hexRef.current()
 
-    onClose()
-
     onEdit({ id, name: value, hex })
+
+    onClose()
   }
 
   return (
@@ -271,6 +292,7 @@ const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
 
           <EditColorPicker
             hex={hex}
+            resetRef={resetRef}
             hexRef={hexRef}
             onKeyDown={(ev) => {
               if (ev.key !== "Enter") return

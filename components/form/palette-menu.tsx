@@ -9,7 +9,6 @@ import {
   IconButton,
   PopoverCloseButton,
   Button,
-  Center,
   Text,
   Grid,
   GridItem,
@@ -17,11 +16,11 @@ import {
   VStack,
   useDisclosure,
   handlerAll,
-  Collapse,
   Input,
   assignRef,
   noop,
-  ScrollArea,
+  Collapse,
+  Center,
 } from "@yamada-ui/react"
 import type { FC, MutableRefObject } from "react"
 import { memo, useCallback, useRef, useState } from "react"
@@ -60,47 +59,44 @@ export const PaletteMenu = memo(
       )
 
       return (
-        <RemoveScroll
-          allowPinchZoom={false}
-          enabled={!!isRemoveScroll && isOpen}
+        <Popover
+          placement="bottom-end"
+          isOpen={isOpen}
+          onClose={onClose}
+          {...rest}
         >
-          <Popover
-            placement="bottom-end"
-            isOpen={isOpen}
-            onClose={onClose}
-            {...rest}
-          >
-            <PopoverTrigger>
-              <IconButton
-                ref={ref}
-                icon={<ColorPalette color="muted" />}
-                bg={["blackAlpha.100", "whiteAlpha.100"]}
-                borderColor="transparent"
-                colorScheme="neutral"
-                isRounded
-                {...buttonProps}
-                onClick={handlerAll(buttonProps?.onClick, onOpen)}
-              />
-            </PopoverTrigger>
+          <PopoverTrigger>
+            <IconButton
+              ref={ref}
+              icon={<ColorPalette color="muted" />}
+              bg={["blackAlpha.100", "whiteAlpha.100"]}
+              borderColor="transparent"
+              colorScheme="neutral"
+              isRounded
+              {...buttonProps}
+              onClick={handlerAll(buttonProps?.onClick, onOpen)}
+            />
+          </PopoverTrigger>
 
-            <PopoverContent w="sm">
-              <PopoverCloseButton rounded="full" />
+          <PopoverContent w="sm">
+            <PopoverCloseButton rounded="full" />
 
-              <PopoverHeader>{t("component.palette-menu.title")}</PopoverHeader>
+            <PopoverHeader>{t("component.palette-menu.title")}</PopoverHeader>
 
-              <PopoverBody>
-                <ScrollArea type="never" maxH="sm">
+            <PopoverBody>
+              <RemoveScroll
+                allowPinchZoom={false}
+                enabled={!!isRemoveScroll && isOpen}
+              >
+                <VStack gap="sm" h="sm" overflow="auto">
                   <PaletteButtons onSelect={onSelect} />
-                  <PaletteButtons onSelect={onSelect} />
-                  <PaletteButtons onSelect={onSelect} />
-                  <PaletteButtons onSelect={onSelect} />
-                </ScrollArea>
+                </VStack>
+              </RemoveScroll>
 
-                <CreatePalette onCloseRef={onCloseRef} />
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </RemoveScroll>
+              <CreatePalette onCloseRef={onCloseRef} />
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
       )
     },
   ),
@@ -116,78 +112,82 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(({ onSelect }) => {
   const { palettes } = useApp()
   const { t } = useI18n()
 
-  if (!palettes.length)
-    return <Center>{t("component.palette-menu.not-found")}</Center>
+  return palettes.length ? (
+    palettes.map((palette) => {
+      const { uuid, name, colors } = palette
 
-  return palettes.map((palette) => {
-    const { uuid, name, colors } = palette
+      return (
+        <Grid
+          key={uuid}
+          as="button"
+          w="full"
+          h="10"
+          display="grid"
+          templateColumns={{ base: "auto 1fr" }}
+          alignItems="center"
+          gap={{ base: "sm" }}
+          rounded="md"
+          outline={0}
+          transitionProperty="common"
+          transitionDuration="slower"
+          _focusVisible={{ boxShadow: "outline" }}
+          color="muted"
+          _hover={{ color: ["black", "white"] }}
+          onClick={() => onSelect(palette)}
+        >
+          {colors.length ? (
+            <Grid
+              boxSize="8"
+              rounded="full"
+              overflow="hidden"
+              templateColumns={`repeat(${colors.length < 3 ? 1 : 2}, 1fr)`}
+            >
+              {colors.map(({ hex }, index) => (
+                <GridItem
+                  key={index}
+                  bg={hex}
+                  colSpan={colors.length === 3 ? (!index ? 2 : 1) : 1}
+                  display={index < 4 ? "block" : "none"}
+                />
+              ))}
+            </Grid>
+          ) : (
+            <Box
+              boxSize="8"
+              rounded="full"
+              bg={["blackAlpha.50", "whiteAlpha.100"]}
+            />
+          )}
 
-    return (
-      <Grid
-        as="button"
-        w="full"
-        h="10"
-        key={uuid}
-        templateColumns={{ base: "auto 1fr" }}
-        alignItems="center"
-        gap={{ base: "sm" }}
-        rounded="md"
-        outline={0}
-        transitionProperty="common"
-        transitionDuration="slower"
-        _focusVisible={{ boxShadow: "outline" }}
-        color="muted"
-        _hover={{ color: ["black", "white"] }}
-        onClick={() => onSelect(palette)}
-      >
-        {colors.length ? (
-          <Grid
-            boxSize="8"
-            rounded="full"
-            overflow="hidden"
-            templateColumns={`repeat(${colors.length < 3 ? 1 : 2}, 1fr)`}
-          >
-            {colors.map(({ hex }, index) => (
-              <GridItem
-                key={index}
-                bg={hex}
-                colSpan={colors.length === 3 ? (!index ? 2 : 1) : 1}
-                display={index < 4 ? "block" : "none"}
-              />
-            ))}
-          </Grid>
-        ) : (
-          <Box
-            boxSize="8"
-            rounded="full"
-            bg={["blackAlpha.50", "whiteAlpha.100"]}
-          />
-        )}
+          <VStack minW="0" gap="0">
+            <Text
+              as="span"
+              fontWeight="semibold"
+              lineHeight="5"
+              lineClamp={1}
+              fontSize={{ base: "md", sm: "sm" }}
+            >
+              {name}
+            </Text>
 
-        <VStack minW="0" gap="0">
-          <Text
-            as="span"
-            fontWeight="semibold"
-            lineHeight="5"
-            lineClamp={1}
-            fontSize={{ base: "md", sm: "sm" }}
-          >
-            {name}
-          </Text>
-
-          <Text
-            as="span"
-            color="muted"
-            fontSize="xs"
-            lineHeight="4"
-            lineClamp={1}
-          >
-            {colors.length} colors
-          </Text>
-        </VStack>
-      </Grid>
-    )
-  })
+            <Text
+              as="span"
+              color="muted"
+              fontSize="xs"
+              lineHeight="4"
+              lineClamp={1}
+            >
+              {colors.length} colors
+            </Text>
+          </VStack>
+        </Grid>
+      )
+    })
+  ) : (
+    <Center h="full" color="muted">
+      {t("component.palette-menu.not-found")}
+    </Center>
+  )
 })
 
 PaletteButtons.displayName = "PaletteButtons"
@@ -213,20 +213,26 @@ const CreatePalette: FC<CreatePaletteProps> = memo(({ onCloseRef }) => {
   const isComposition = useRef<boolean>(false)
   const { createPalette } = useApp()
 
-  const onCreate = () => {
-    createPalette(value)
+  const onCreate = async () => {
     onClose()
+    createPalette(value)
   }
 
   assignRef(onCloseRef, onClose)
 
   return (
-    <>
-      <Collapse isOpen={isOpen} p="1px">
+    <VStack gap="0">
+      <Collapse isOpen={isOpen}>
         <Input
           ref={inputRef}
+          mb="sm"
           value={value}
           onChange={(ev) => setValue(ev.target.value)}
+          _focusVisible={{
+            zIndex: "yamcha",
+            borderColor: ["focus", "focus"],
+            boxShadow: `inset 0 0 0 1px var(--ui-colors-focus)`,
+          }}
           onCompositionStart={() => {
             isComposition.current = true
           }}
@@ -259,7 +265,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(({ onCloseRef }) => {
       >
         {t("component.palette-menu.create")}
       </Button>
-    </>
+    </VStack>
   )
 })
 

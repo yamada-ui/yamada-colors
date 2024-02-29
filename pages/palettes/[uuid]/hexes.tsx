@@ -262,6 +262,8 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
 
         onClose()
       }}
+      onFocus={onOpen}
+      onBlur={onClose}
     >
       <ReorderTrigger
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
@@ -276,6 +278,7 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
         as={Link}
         gap="0"
         href={`/colors/${hex.replace("#", "")}`}
+        rounded="md"
         outline={0}
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
         _hover={{ color: isLight(hex) ? "black" : "white" }}

@@ -112,7 +112,7 @@ export const Palettes: FC<PalettesProps> = memo(
                         ))
                       ) : (
                         <>
-                          <GridItem bg={["blackAlpha.50", "whiteAlpha.100"]} />
+                          <GridItem bg={["blackAlpha.100", "whiteAlpha.100"]} />
                         </>
                       )}
                     </Grid>

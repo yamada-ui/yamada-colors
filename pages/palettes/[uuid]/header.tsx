@@ -80,7 +80,7 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
           <Box
             boxSize={{ base: "20", sm: "16" }}
             rounded="2xl"
-            bg={["blackAlpha.50", "whiteAlpha.100"]}
+            bg={["blackAlpha.100", "whiteAlpha.100"]}
           />
         )}
 

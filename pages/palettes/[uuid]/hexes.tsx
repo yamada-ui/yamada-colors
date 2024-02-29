@@ -1,5 +1,6 @@
 import type { MotionVariants } from "@yamada-ui/react"
 import {
+  Box,
   Button,
   Center,
   Motion,
@@ -120,27 +121,29 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
   return (
     <HexesProvider value={value}>
-      <Reorder
-        gap="0"
-        variant="unstyled"
-        onChange={onChange}
-        onCompleteChange={onCompleteChange}
-      >
-        {colors.map(({ id, name, hex }, index) => {
-          const isFirst = !index
-          const isLast = index + 1 === colors.length
+      <Box as="section">
+        <Reorder
+          gap="0"
+          variant="unstyled"
+          onChange={onChange}
+          onCompleteChange={onCompleteChange}
+        >
+          {colors.map(({ id, name, hex }, index) => {
+            const isFirst = !index
+            const isLast = index + 1 === colors.length
 
-          return (
-            <ReorderItem key={id} label={id} display="flex" gap="md">
-              <Hex {...{ id, name, hex, isFirst, isLast }} />
+            return (
+              <ReorderItem key={id} label={id} display="flex" gap="md">
+                <Hex {...{ id, name, hex, isFirst, isLast }} />
 
-              <HexData {...{ name, hex }} />
-            </ReorderItem>
-          )
-        })}
-      </Reorder>
+                <HexData {...{ name, hex }} />
+              </ReorderItem>
+            )
+          })}
+        </Reorder>
+      </Box>
 
-      <Center w="full">
+      <Center as="section" w="full">
         <Button
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"

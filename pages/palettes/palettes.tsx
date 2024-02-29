@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   Grid,
@@ -62,79 +63,85 @@ export const Palettes: FC<PalettesProps> = memo(
     assignRef(onSearchRef, onSearch)
 
     return palettes.length ? (
-      <Grid
-        as="ul"
-        templateColumns={{
-          base: "repeat(4, 1fr)",
-          xl: "repeat(2, 1fr)",
-          lg: "repeat(3, 1fr)",
-          md: "repeat(2, 1fr)",
-        }}
-        gap="md"
-        {...rest}
-      >
-        {palettes.map(({ uuid, name, colors }) => {
-          return (
-            <GridItem key={uuid} as="li">
-              <Motion whileHover={{ scale: 0.95 }}>
-                <VStack
-                  as={Link}
-                  href={`/palettes/${uuid}`}
-                  gap="0"
-                  rounded="2xl"
-                  overflow="hidden"
-                  boxShadow={[
-                    "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
-                    "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
-                  ]}
-                  outline={0}
-                  _focusVisible={{ boxShadow: ["outline", "outline"] }}
-                  onClick={() => {
-                    setCookie(CONSTANT.STORAGE.PALETTE_QUERY, queryRef.current)
-                  }}
-                >
-                  <Grid
-                    templateColumns={`repeat(${colors.length > 4 ? 4 : colors.length}, 1fr)`}
-                    h={{ base: "4xs", sm: "5xs" }}
+      <Box as="nav">
+        <Grid
+          as="ul"
+          templateColumns={{
+            base: "repeat(4, 1fr)",
+            xl: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)",
+            md: "repeat(2, 1fr)",
+          }}
+          gap="md"
+          {...rest}
+        >
+          {palettes.map(({ uuid, name, colors }) => {
+            return (
+              <GridItem key={uuid} as="li">
+                <Motion whileHover={{ scale: 0.95 }}>
+                  <VStack
+                    as={Link}
+                    href={`/palettes/${uuid}`}
+                    gap="0"
+                    rounded="2xl"
+                    overflow="hidden"
+                    boxShadow={[
+                      "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
+                      "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
+                    ]}
+                    outline={0}
+                    _focusVisible={{ boxShadow: ["outline", "outline"] }}
+                    onClick={() => {
+                      setCookie(
+                        CONSTANT.STORAGE.PALETTE_QUERY,
+                        queryRef.current,
+                      )
+                    }}
                   >
-                    {colors.length ? (
-                      colors.map(({ hex }, index) => (
-                        <GridItem
-                          key={`${hex}-${index}`}
-                          bg={hex}
-                          display={index < 4 ? "block" : "none"}
-                        />
-                      ))
-                    ) : (
-                      <>
-                        <GridItem bg={["blackAlpha.50", "whiteAlpha.100"]} />
-                      </>
-                    )}
-                  </Grid>
+                    <Grid
+                      templateColumns={`repeat(${colors.length > 4 ? 4 : colors.length}, 1fr)`}
+                      h={{ base: "4xs", sm: "5xs" }}
+                    >
+                      {colors.length ? (
+                        colors.map(({ hex }, index) => (
+                          <GridItem
+                            key={`${hex}-${index}`}
+                            bg={hex}
+                            display={index < 4 ? "block" : "none"}
+                          />
+                        ))
+                      ) : (
+                        <>
+                          <GridItem bg={["blackAlpha.50", "whiteAlpha.100"]} />
+                        </>
+                      )}
+                    </Grid>
 
-                  <Center
-                    flexDirection="column"
-                    alignItems="flex-start"
-                    px={{ base: "normal", sm: "md" }}
-                    gap={{ base: "xs", sm: "0" }}
-                    h={{ base: "4xs", sm: "5xs" }}
-                  >
-                    <Text fontWeight="medium" lineClamp={1}>
-                      {name}
-                    </Text>
+                    <Center
+                      flexDirection="column"
+                      alignItems="flex-start"
+                      px={{ base: "normal", sm: "md" }}
+                      gap={{ base: "xs", sm: "0" }}
+                      h={{ base: "4xs", sm: "5xs" }}
+                    >
+                      <Text fontWeight="medium" lineClamp={1}>
+                        {name}
+                      </Text>
 
-                    <Text as="span" fontSize="sm" color="muted">
-                      {colors.length} colors
-                    </Text>
-                  </Center>
-                </VStack>
-              </Motion>
-            </GridItem>
-          )
-        })}
-      </Grid>
+                      <Text as="span" fontSize="sm" color="muted">
+                        {colors.length} colors
+                      </Text>
+                    </Center>
+                  </VStack>
+                </Motion>
+              </GridItem>
+            )
+          })}
+        </Grid>
+      </Box>
     ) : (
       <Center
+        as="section"
         py="3xl"
         flexDirection="column"
         gap={{ base: "lg", sm: "normal" }}

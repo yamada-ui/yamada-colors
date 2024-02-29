@@ -15,7 +15,7 @@ export const Tabs: FC<TabsProps> = ({ tab, hex }) => {
   const { t } = useI18n()
 
   return (
-    <ScrollArea type="never" tabIndex={-1}>
+    <ScrollArea as="section" type="never" tabIndex={-1}>
       <SegmentedControl as="nav" variant="tabs" value={tab} w="full">
         {TABS.map((tab) => {
           return (

@@ -1,4 +1,4 @@
-import { Box, Center, Grid, GridItem, Motion, VStack } from "@yamada-ui/react"
+import { Box, Center, Grid, GridItem, Motion } from "@yamada-ui/react"
 import Link from "next/link"
 import type { FC } from "react"
 import { CopyText } from "components/other"
@@ -12,9 +12,9 @@ export const Hexes: FC<HexesProps> = ({ hexes }) => {
   const count = hexes.length
 
   return (
-    <>
+    <Box as="section">
       <Grid
-        as="section"
+        as="ul"
         templateColumns={{ base: `repeat(${count}, 1fr)`, md: "1fr" }}
         gap={{ base: "0", md: "md" }}
       >
@@ -25,7 +25,9 @@ export const Hexes: FC<HexesProps> = ({ hexes }) => {
           return (
             <GridItem
               key={`${hex}-${index}`}
-              as={VStack}
+              as="li"
+              display="flex"
+              flexDirection="column"
               minW="0"
               gap={{ base: "md", md: "sm" }}
             >
@@ -72,7 +74,7 @@ export const Hexes: FC<HexesProps> = ({ hexes }) => {
           )
         })}
       </Grid>
-    </>
+    </Box>
   )
 }
 

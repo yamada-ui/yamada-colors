@@ -31,7 +31,7 @@ export const Header: FC<HeaderProps> = memo(
     const { createPalette } = useApp()
 
     return (
-      <HStack gap="sm" {...rest}>
+      <HStack as="section" gap="sm" {...rest}>
         <InputGroup>
           <InputLeftElement ms="1">
             <MagnifyingGlass color="muted" />

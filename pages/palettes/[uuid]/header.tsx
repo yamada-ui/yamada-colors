@@ -54,7 +54,7 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
   }, [deletePalette, uuid, router])
 
   return (
-    <HStack alignItems="flex-start" gap="sm" {...rest}>
+    <HStack as="section" alignItems="flex-start" gap="sm" {...rest}>
       <Grid
         templateColumns={{ base: "auto 1fr" }}
         alignItems="center"

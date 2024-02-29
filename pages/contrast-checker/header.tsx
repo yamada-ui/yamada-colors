@@ -21,7 +21,7 @@ export type HeaderProps = {
 
 export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
   return (
-    <HStack gap="sm">
+    <HStack as="section" gap="sm">
       <NextLinkIconButton
         href={`/colors/${hexes[0].replace("#", "")}`}
         bg={["blackAlpha.100", "whiteAlpha.100"]}

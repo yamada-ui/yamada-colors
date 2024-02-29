@@ -125,12 +125,14 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(({ onSelect }) => {
           display="grid"
           templateColumns={{ base: "auto 1fr" }}
           alignItems="center"
-          gap={{ base: "sm" }}
-          rounded="md"
           outline={0}
           transitionProperty="common"
           transitionDuration="slower"
-          _focusVisible={{ boxShadow: "outline" }}
+          _focusVisible={{
+            "& > :nth-child(2)": {
+              boxShadow: `inset 0 0 0 3px var(--ui-colors-focus)`,
+            },
+          }}
           color="muted"
           _hover={{ color: ["black", "white"] }}
           onClick={() => onSelect(palette)}
@@ -159,7 +161,7 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(({ onSelect }) => {
             />
           )}
 
-          <VStack minW="0" gap="0">
+          <VStack minW="0" gap="0" ps="sm" rounded="md">
             <Text
               as="span"
               fontWeight="semibold"

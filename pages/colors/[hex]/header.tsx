@@ -30,7 +30,7 @@ export const Header: FC<HeaderProps> = ({ hex, name }) => {
 
       <Spacer />
 
-      <PaletteMenu />
+      <PaletteMenu {...{ hex, name }} />
     </HStack>
   )
 }

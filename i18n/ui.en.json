@@ -128,6 +128,7 @@
     },
     "palette-menu": {
       "title": "Save to",
+      "not-found": "No palettes",
       "create": "Create"
     },
     "footer": {

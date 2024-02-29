@@ -131,6 +131,7 @@
     },
     "palette-menu": {
       "title": "保存するパレット",
+      "not-found": "パレットがありません",
       "create": "作成"
     },
     "footer": {

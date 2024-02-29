@@ -80,6 +80,7 @@ export const ColorCard = memo(
                 {...motionProps}
               >
                 <VStack
+                  minW="0"
                   boxSize="full"
                   justifyContent="flex-end"
                   gap={{ base: "xs", sm: "0" }}
@@ -128,7 +129,11 @@ export const ColorCard = memo(
                 {...boxProps}
               />
 
-              <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
+              <VStack
+                minW="0"
+                gap={{ base: "xs", sm: "0" }}
+                justifyContent="center"
+              >
                 {name ? (
                   <Text as="span" fontWeight="medium" lineClamp={1}>
                     {name}

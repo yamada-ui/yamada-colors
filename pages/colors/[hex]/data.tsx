@@ -60,11 +60,14 @@ export const Data: FC<DataProps> = ({
         flexDirection="column"
         gap={{ base: "xs", sm: "0" }}
         bg={hex}
+        p="md"
+        textAlign="center"
       >
         <Text
           fontSize={{ base: "2xl", sm: "xl" }}
           fontWeight="semibold"
           color={isLight(hex) ? "black" : "white"}
+          lineClamp={1}
         >
           {name}
         </Text>
@@ -72,6 +75,7 @@ export const Data: FC<DataProps> = ({
         <Text
           fontSize={{ base: "lg", sm: "md" }}
           color={isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700"}
+          lineClamp={1}
         >
           {f(hex, format)}
         </Text>

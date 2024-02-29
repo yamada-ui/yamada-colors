@@ -10,6 +10,8 @@ import {
   Spacer,
   Text,
   VStack,
+  noop,
+  useBreakpointValue,
   useDisclosure,
 } from "@yamada-ui/react"
 import Link from "next/link"
@@ -243,31 +245,36 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       isEditRef.current = false
     },
   })
+  const isMobile = useBreakpointValue({ base: false, sm: true })
 
   return (
     <Motion
       display="flex"
       gap="md"
       bg={hex}
-      w={{ base: "md" }}
+      w={{ base: "md", sm: "full" }}
       py="lg"
       px="md"
       initial="initial"
       animate="animate"
       variants={variants}
       custom={{ isFirst, isLast }}
-      onHoverStart={onOpen}
-      onHoverEnd={() => {
-        if (isEditRef.current) return
+      onHoverStart={!isMobile ? onOpen : noop}
+      onHoverEnd={
+        !isMobile
+          ? () => {
+              if (isEditRef.current) return
 
-        onClose()
-      }}
-      onFocus={onOpen}
-      onBlur={onClose}
+              onClose()
+            }
+          : noop
+      }
+      onFocus={!isMobile ? onOpen : noop}
+      onBlur={!isMobile ? onClose : noop}
     >
       <ReorderTrigger
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
-        opacity={isOpen ? 1 : 0}
+        opacity={{ base: isOpen ? 1 : 0, sm: 0 }}
         transitionProperty="common"
         transitionDuration="slower"
       >
@@ -275,6 +282,7 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       </ReorderTrigger>
 
       <VStack
+        minW="0"
         as={Link}
         gap="0"
         href={`/colors/${hex.replace("#", "")}`}
@@ -298,7 +306,7 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       <Spacer />
 
       <HexControlButtons
-        opacity={isOpen ? 1 : 0}
+        opacity={{ base: isOpen ? 1 : 0, sm: 1 }}
         isEditRef={isEditRef}
         onClose={onClose}
         {...{ id, name, hex }}

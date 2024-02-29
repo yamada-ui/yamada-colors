@@ -56,13 +56,15 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     props: { cookies, format, hex, palettes },
   } = await getServerSideCommonProps(req)
   const uuid = req.query.uuid as string
-  const palette = getCookie<ColorPalette | null>(
+  let palette = getCookie<ColorPalette | null>(
     cookies,
     `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
     null,
   )
 
   if (!palette) return { notFound: true }
+
+  palette.name = decodeURIComponent(palette.name)
 
   const props = {
     cookies,

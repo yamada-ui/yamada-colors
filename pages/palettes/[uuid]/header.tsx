@@ -84,10 +84,12 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
           />
         )}
 
-        <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center">
-          <Heading fontSize={{ base: "4xl", sm: "2xl" }}>{name}</Heading>
+        <VStack minW="0" gap={{ base: "xs", sm: "0" }} justifyContent="center">
+          <Heading fontSize={{ base: "4xl", sm: "2xl" }} lineClamp={1}>
+            {name}
+          </Heading>
 
-          <Text as="span" color="muted" alignSelf="flex-start">
+          <Text as="span" color="muted" alignSelf="flex-start" lineClamp={1}>
             {colors.length} colors
           </Text>
         </VStack>

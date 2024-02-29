@@ -77,7 +77,7 @@ export const Palettes: FC<PalettesProps> = memo(
         >
           {palettes.map(({ uuid, name, colors }) => {
             return (
-              <GridItem key={uuid} as="li">
+              <GridItem key={uuid} as="li" minW="0">
                 <Motion whileHover={{ scale: 0.95 }}>
                   <VStack
                     as={Link}
@@ -117,21 +117,30 @@ export const Palettes: FC<PalettesProps> = memo(
                       )}
                     </Grid>
 
-                    <Center
-                      flexDirection="column"
-                      alignItems="flex-start"
+                    <Grid
+                      justifyContent="flex-start"
+                      alignItems="center"
                       px={{ base: "normal", sm: "md" }}
                       gap={{ base: "xs", sm: "0" }}
                       h={{ base: "4xs", sm: "5xs" }}
                     >
-                      <Text fontWeight="medium" lineClamp={1}>
+                      <Text
+                        fontWeight="medium"
+                        lineClamp={1}
+                        alignSelf="flex-end"
+                      >
                         {name}
                       </Text>
 
-                      <Text as="span" fontSize="sm" color="muted">
+                      <Text
+                        as="span"
+                        fontSize="sm"
+                        color="muted"
+                        alignSelf="flex-start"
+                      >
                         {colors.length} colors
                       </Text>
-                    </Center>
+                    </Grid>
                   </VStack>
                 </Motion>
               </GridItem>

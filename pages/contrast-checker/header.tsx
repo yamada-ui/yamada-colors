@@ -93,6 +93,7 @@ const LevelButton: FC<LevelButtonProps> = ({ isSelected, ...rest }) => {
       borderColor={isSelected ? ["success.500", "success.600"] : "border"}
       fontWeight="normal"
       isRounded
+      _hover={isSelected ? {} : undefined}
       {...rest}
     />
   )

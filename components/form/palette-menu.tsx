@@ -19,8 +19,8 @@ import {
   Input,
   assignRef,
   noop,
-  Collapse,
   Center,
+  Motion,
 } from "@yamada-ui/react"
 import type { FC, MutableRefObject } from "react"
 import { memo, useCallback, useRef, useState } from "react"
@@ -204,7 +204,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(({ onCloseRef }) => {
       inputRef.current?.focus()
     },
     onClose: () => {
-      buttonRef.current?.focus()
+      inputRef.current?.blur()
       setValue("")
     },
   })
@@ -224,12 +224,16 @@ const CreatePalette: FC<CreatePaletteProps> = memo(({ onCloseRef }) => {
 
   return (
     <VStack gap="0">
-      <Collapse isOpen={isOpen}>
+      <Motion
+        initial={{ height: "0px", opacity: 0 }}
+        animate={isOpen ? { height: "auto", opacity: 1 } : {}}
+        overflow="hidden"
+      >
         <Input
           ref={inputRef}
-          mb="sm"
           value={value}
           onChange={(ev) => setValue(ev.target.value)}
+          mb="sm"
           _focusVisible={{
             zIndex: "yamcha",
             borderColor: ["focus", "focus"],
@@ -252,7 +256,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(({ onCloseRef }) => {
             onCreate()
           }}
         />
-      </Collapse>
+      </Motion>
 
       <Button
         ref={buttonRef}
@@ -261,7 +265,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(({ onCloseRef }) => {
         bg={["blackAlpha.200", "whiteAlpha.100"]}
         borderColor="transparent"
         leftIcon={<Plus />}
-        isDisabled={isOpen && !value.length}
+        disabled={isOpen && !value.length}
         onClick={!isOpen ? onOpen : onCreate}
         _hover={{ _disabled: {} }}
       >

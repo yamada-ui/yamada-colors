@@ -14,8 +14,6 @@ export const SegmentedControl: ComponentMultiStyle = {
       },
 
       button: {
-        py: "2",
-        px: "4",
         transitionDuration: "slower",
         rounded: "full",
         color: "muted",
@@ -32,5 +30,16 @@ export const SegmentedControl: ComponentMultiStyle = {
         },
       },
     }),
+  },
+
+  sizes: {
+    sm: {
+      container: { minW: "xs" },
+      button: { py: "0", px: "4", h: "8", fontSize: "sm" },
+    },
+    md: {
+      container: { minW: "sm" },
+      button: { py: "2", px: "4", fontSize: "md" },
+    },
   },
 }

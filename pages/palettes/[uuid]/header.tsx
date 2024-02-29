@@ -34,7 +34,7 @@ import { useI18n } from "contexts/i18n-context"
 export type HeaderProps = StackProps & {}
 
 export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
-  const { uuid, name, colors, setName } = usePalette()
+  const { uuid, name, colors, timestamp, setName } = usePalette()
   const { changePalette, deletePalette } = useApp()
   const router = useRouter()
 
@@ -42,9 +42,9 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
     (name: string) => {
       setName(name)
 
-      changePalette({ uuid, name, colors })
+      changePalette({ uuid, name, colors, timestamp })
     },
-    [setName, changePalette, uuid, colors],
+    [setName, changePalette, uuid, colors, timestamp],
   )
 
   const onDelete = useCallback(() => {

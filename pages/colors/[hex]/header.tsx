@@ -1,5 +1,6 @@
 import { Box, Grid, HStack, Heading, Spacer, VStack } from "@yamada-ui/react"
 import type { FC } from "react"
+import { PaletteMenu } from "components/form"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
 import { f } from "utils/color"
@@ -10,7 +11,7 @@ export const Header: FC<HeaderProps> = ({ hex, name }) => {
   const { format } = useApp()
 
   return (
-    <HStack as="section">
+    <HStack as="section" alignItems="flex-start" gap="sm">
       <Grid
         templateColumns={{ base: "auto 1fr" }}
         alignItems="center"
@@ -28,6 +29,8 @@ export const Header: FC<HeaderProps> = ({ hex, name }) => {
       </Grid>
 
       <Spacer />
+
+      <PaletteMenu />
     </HStack>
   )
 }

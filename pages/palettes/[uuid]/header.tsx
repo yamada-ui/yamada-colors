@@ -21,6 +21,8 @@ import {
   Text,
   VStack,
   GridItem,
+  SegmentedControl,
+  SegmentedControlButton,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
 import { useRouter } from "next/router"
@@ -28,15 +30,25 @@ import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
 import { usePalette } from "./context"
 import { Download, Pen, Trash } from "components/media-and-icons"
+import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { setCookie } from "utils/storage"
+
+const TABS = ["blindness", "shades", "tints", "tones", "hidden"]
 
 export type HeaderProps = StackProps & {}
 
 export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
-  const { uuid, name, colors, timestamp, setName } = usePalette()
+  const { tab, uuid, name, colors, timestamp, setTab, setName } = usePalette()
   const { changePalette, deletePalette } = useApp()
   const router = useRouter()
+  const { t } = useI18n()
+
+  const onChange = (tab: string) => {
+    setCookie(CONSTANT.STORAGE.PALETTE_TAB, tab)
+    setTab(tab)
+  }
 
   const onEdit = useCallback(
     (name: string) => {
@@ -97,11 +109,36 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
 
       <Spacer />
 
-      <DownloadButton />
+      <VStack
+        w="auto"
+        gap="sm"
+        alignItems="flex-end"
+        justifyContent="space-between"
+      >
+        <HStack gap="sm">
+          <DownloadButton />
 
-      <EditButton name={name} onEdit={onEdit} />
+          <EditButton name={name} onEdit={onEdit} />
 
-      <DeleteButton name={name} onDelete={onDelete} />
+          <DeleteButton name={name} onDelete={onDelete} />
+        </HStack>
+
+        <SegmentedControl
+          variant="tabs"
+          value={tab}
+          display={{ base: "inline-flex", xl: "none" }}
+          size="sm"
+          onChange={onChange}
+        >
+          {TABS.map((tab) => {
+            return (
+              <SegmentedControlButton key={tab} value={tab}>
+                {t(`palette.tab.${tab}`)}
+              </SegmentedControlButton>
+            )
+          })}
+        </SegmentedControl>
+      </VStack>
     </HStack>
   )
 })

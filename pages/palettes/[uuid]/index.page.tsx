@@ -18,17 +18,24 @@ export type OrderColors = OrderColor[]
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ hex, format, palettes, palette }) => {
+const Page: NextPage<PageProps> = ({
+  hex,
+  format,
+  palettes,
+  palette,
+  tab: tabProp,
+}) => {
   const { t } = useI18n()
   const [name, setName] = useState<string>(palette.name)
   const [colors, setColors] = useState<OrderColors>(
     palette.colors.map((color) => ({ id: generateUUID(), ...color })),
   )
+  const [tab, setTab] = useState<string>(tabProp)
   const { uuid, timestamp } = palette
 
   const value = useMemo(
-    () => ({ uuid, name, colors, timestamp, setName, setColors }),
-    [uuid, colors, name, timestamp],
+    () => ({ tab, uuid, name, colors, timestamp, setTab, setName, setColors }),
+    [tab, uuid, colors, name, timestamp],
   )
 
   return (
@@ -61,6 +68,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
     null,
   )
+  const tab = getCookie<string>(cookies, CONSTANT.STORAGE.PALETTE_TAB, "tones")
 
   if (!palette) return { notFound: true }
 
@@ -72,6 +80,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     hex,
     palettes,
     palette,
+    tab,
   }
 
   return { props }

@@ -30,6 +30,13 @@
     "create": "Add a color",
     "edit": {
       "submit": "Apply"
+    },
+    "tab": {
+      "blindness": "Blindness",
+      "tones": "Tones",
+      "shades": "Shades",
+      "tints": "Tints",
+      "hidden": "Hidden"
     }
   },
   "generators": {

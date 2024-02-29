@@ -33,6 +33,13 @@
     "create": "色を追加する",
     "edit": {
       "submit": "適用"
+    },
+    "tab": {
+      "blindness": "色覚",
+      "tones": "トーン",
+      "shades": "シェード",
+      "tints": "ティント",
+      "hidden": "非表示"
     }
   },
   "generators": {

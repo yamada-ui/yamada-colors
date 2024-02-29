@@ -64,7 +64,11 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           onOpen={() => {
             isEditRef.current = true
           }}
-          onClose={onClose}
+          onClose={() => {
+            onClose()
+
+            isEditRef.current = false
+          }}
         />
 
         <HexControlButton hex={hex} onClick={() => onClone({ id, name, hex })}>

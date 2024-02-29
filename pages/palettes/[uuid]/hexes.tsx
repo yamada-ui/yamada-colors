@@ -10,7 +10,6 @@ import {
   Spacer,
   Text,
   VStack,
-  noop,
   useBreakpointValue,
   useDisclosure,
 } from "@yamada-ui/react"
@@ -240,11 +239,7 @@ type HexProps = OrderColor & { isFirst: boolean; isLast: boolean }
 const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
   const { format } = useApp()
   const isEditRef = useRef<boolean>(false)
-  const { isOpen, onOpen, onClose } = useDisclosure({
-    onClose: () => {
-      isEditRef.current = false
-    },
-  })
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const isMobile = useBreakpointValue({ base: false, sm: true })
 
   return (
@@ -259,18 +254,20 @@ const Hex: FC<HexProps> = memo(({ id, name, hex, isFirst, isLast }) => {
       animate="animate"
       variants={variants}
       custom={{ isFirst, isLast }}
-      onHoverStart={!isMobile ? onOpen : noop}
-      onHoverEnd={
-        !isMobile
-          ? () => {
-              if (isEditRef.current) return
+      onHoverStart={!isMobile ? onOpen : undefined}
+      onHoverEnd={() => {
+        if (isMobile || isEditRef.current) return
 
-              onClose()
-            }
-          : noop
-      }
-      onFocus={!isMobile ? onOpen : noop}
-      onBlur={!isMobile ? onClose : noop}
+        onClose()
+
+        isEditRef.current = false
+      }}
+      onFocus={!isMobile ? onOpen : undefined}
+      onBlur={() => {
+        if (isMobile) return
+
+        onClose()
+      }}
     >
       <ReorderTrigger
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}

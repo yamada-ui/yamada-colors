@@ -143,7 +143,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
                   base: isHidden ? "1fr" : "auto 1fr",
                   xl: "1fr",
                 }}
-                gap={{ base: "lg", "2xl": "lg" }}
+                gap="lg"
               >
                 <HexControl
                   {...{ id, name, hex, isFirst, isLast }}

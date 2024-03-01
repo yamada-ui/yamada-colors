@@ -187,14 +187,14 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
           <MenuList>
             <MenuItem>
               JSON
-              <Tag size="sm" colorScheme="neutral">
+              <Tag size="sm" variant="outline" colorScheme="neutral">
                 Tones
               </Tag>
             </MenuItem>
             <MenuItem>JSON</MenuItem>
             <MenuItem>
               CSS
-              <Tag size="sm" colorScheme="neutral">
+              <Tag size="sm" variant="outline" colorScheme="neutral">
                 Tones
               </Tag>
             </MenuItem>

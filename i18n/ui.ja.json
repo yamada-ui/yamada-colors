@@ -29,7 +29,16 @@
       "cancel": "キャンセル"
     }
   },
+  "ai-palettes": {
+    "title": "AIパレット",
+    "description": ""
+  },
+  "ui-checker": {
+    "title": "UIチェッカー",
+    "description": ""
+  },
   "palette": {
+    "description": "",
     "create": "色を追加する",
     "edit": {
       "submit": "適用"

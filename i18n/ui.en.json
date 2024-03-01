@@ -26,7 +26,16 @@
       "cancel": "Cancel"
     }
   },
+  "ai-palettes": {
+    "title": "AI Paletters",
+    "description": ""
+  },
+  "ui-checker": {
+    "title": "UI Checker",
+    "description": ""
+  },
   "palette": {
+    "description": "",
     "create": "Add a color",
     "edit": {
       "submit": "Apply"

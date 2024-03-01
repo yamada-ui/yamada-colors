@@ -19,7 +19,6 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import { type OrderColor } from "./index.page"
 import { Dots, Plus, Refresh } from "components/media-and-icons"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -50,7 +49,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   }
 
   const onEdit = useCallback(
-    ({ id, ...rest }: OrderColor) => {
+    ({ id, ...rest }: ReorderColor) => {
       const computedColors = colors.map(({ id: targetId, name, hex }) =>
         targetId === id ? rest : { name, hex },
       )
@@ -79,7 +78,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   }
 
   const onClone = useCallback(
-    ({ id, ...rest }: OrderColor) => {
+    ({ id, ...rest }: ReorderColor) => {
       const index = colors.findIndex((color) => color.id === id)
 
       const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
@@ -178,7 +177,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
 Hexes.displayName = "Hexes"
 
-type HexControlProps = OrderColor & HexContainerProps
+type HexControlProps = ReorderColor & HexContainerProps
 
 const HexControl: FC<HexControlProps> = memo(({ id, name, hex, ...rest }) => {
   const { format } = useApp()

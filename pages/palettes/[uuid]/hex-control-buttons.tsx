@@ -29,7 +29,6 @@ import type {
 import { memo, useRef, useState } from "react"
 import type { ChangeEvent, FC, MutableRefObject } from "react"
 import { useHexes } from "./context"
-import type { OrderColor } from "./index.page"
 import {
   Clipboard,
   Clone,
@@ -42,7 +41,7 @@ import { useI18n } from "contexts/i18n-context"
 import { f, isLight } from "utils/color"
 
 export type HexControlButtonsProps = StackProps &
-  OrderColor & {
+  ReorderColor & {
     isEditRef: MutableRefObject<boolean>
     onClose: () => void
   }
@@ -241,7 +240,7 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
 
 EditColorPicker.displayName = "EditColorPicker"
 
-type EditButtonProps = OrderColor & UseDisclosureProps
+type EditButtonProps = ReorderColor & UseDisclosureProps
 
 const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
   const resetRef = useRef<() => void>(noop)

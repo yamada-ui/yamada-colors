@@ -1,23 +1,22 @@
 import { createContext } from "@yamada-ui/react"
 import type { Dispatch, SetStateAction } from "react"
-import type { OrderColor, OrderColors } from "./index.page"
 
 type PaletteContext = {
   tab: string
   uuid: string
   name: string
-  colors: OrderColors
+  colors: ReorderColors
   timestamp: number
   setTab: Dispatch<SetStateAction<string>>
   setName: Dispatch<SetStateAction<string>>
-  setColors: Dispatch<SetStateAction<OrderColors>>
+  setColors: Dispatch<SetStateAction<ReorderColors>>
 }
 
 export const [PaletteProvider, usePalette] = createContext<PaletteContext>()
 
 type HexesContext = {
-  onClone: (color: OrderColor) => void
-  onEdit: (color: OrderColor) => void
+  onClone: (color: ReorderColor) => void
+  onEdit: (color: ReorderColor) => void
   onDelete: (id: string) => void
 }
 

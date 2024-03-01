@@ -30,6 +30,8 @@ import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
 import { usePalette } from "./context"
 import { Download, Pen, Trash } from "components/media-and-icons"
+import type { ExportHexType } from "components/overlay"
+import { ExportHexModal } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -151,7 +153,15 @@ type DownloadButtonProps = IconButtonProps & {
 
 const DownloadButton: FC<DownloadButtonProps> = memo(
   ({ menuProps, ...rest }) => {
+    const { colors } = usePalette()
+    const typeRef = useRef<ExportHexType>("json.token")
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const padding = useBreakpointValue({ base: 32, md: 16 })
+
+    const onSelect = (type: ExportHexType) => {
+      typeRef.current = type
+      onOpen()
+    }
 
     return (
       <>
@@ -185,22 +195,29 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
           />
 
           <MenuList>
-            <MenuItem>
+            <MenuItem onClick={() => onSelect("json.token")}>
               JSON
               <Tag size="sm" variant="outline" colorScheme="neutral">
                 Tones
               </Tag>
             </MenuItem>
-            <MenuItem>JSON</MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => onSelect("json")}>JSON</MenuItem>
+            <MenuItem onClick={() => onSelect("css.token")}>
               CSS
               <Tag size="sm" variant="outline" colorScheme="neutral">
                 Tones
               </Tag>
             </MenuItem>
-            <MenuItem>CSS</MenuItem>
+            <MenuItem onClick={() => onSelect("css")}>CSS</MenuItem>
           </MenuList>
         </Menu>
+
+        <ExportHexModal
+          type={typeRef.current}
+          colors={colors}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
       </>
     )
   },

@@ -13,9 +13,6 @@ import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 import { generateUUID, getCookie } from "utils/storage"
 
-export type OrderColor = Color & { id: string }
-export type OrderColors = OrderColor[]
-
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({
@@ -27,7 +24,7 @@ const Page: NextPage<PageProps> = ({
 }) => {
   const { t } = useI18n()
   const [name, setName] = useState<string>(palette.name)
-  const [colors, setColors] = useState<OrderColors>(
+  const [colors, setColors] = useState<ReorderColors>(
     palette.colors.map((color) => ({ id: generateUUID(), ...color })),
   )
   const [tab, setTab] = useState<string>(tabProp)

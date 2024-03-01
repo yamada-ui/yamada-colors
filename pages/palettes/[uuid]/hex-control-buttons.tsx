@@ -149,6 +149,7 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
         if (!sRGBHex) return
 
         setValue(sRGBHex)
+        setInputValue(f(sRGBHex, format))
       } catch {}
     }
 

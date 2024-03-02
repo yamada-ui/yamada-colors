@@ -16,8 +16,8 @@
     "incremental": true,
     "importHelpers": true,
     "removeComments": true,
-    "baseUrl": ".",
+    "baseUrl": "."
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

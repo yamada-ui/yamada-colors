@@ -3,8 +3,6 @@ import blinder from "color-blind"
 import convert from "color-convert"
 import * as color from "color2k"
 
-export type ColorFormat = "hex" | "rgb" | "hsl"
-
 export const tones = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95]
 
 export const isLight = (hex: string) => color.readableColorIsBlack(hex)

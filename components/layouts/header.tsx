@@ -54,7 +54,6 @@ import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
-import type { ColorFormat } from "utils/color"
 
 export type HeaderProps = CenterProps
 

@@ -1,5 +1,4 @@
 import type { GetServerSidePropsContext } from "next"
-import type { ColorFormat } from "./color"
 import { getCookie, getCookies } from "./storage"
 import { CONSTANT } from "constant"
 

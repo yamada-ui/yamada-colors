@@ -9,7 +9,6 @@ import {
 } from "react"
 import type { PropsWithChildren, FC } from "react"
 import { CONSTANT } from "constant"
-import type { ColorFormat } from "utils/color"
 import { deleteCookie, generateUUID, getCookie, setCookie } from "utils/storage"
 
 type AppContext = {

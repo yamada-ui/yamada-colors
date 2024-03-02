@@ -4,7 +4,6 @@ import { type FC, type PropsWithChildren } from "react"
 import { Footer, Header, Sidebar } from "components/layouts"
 import { SEO } from "components/media-and-icons"
 import { AppProvider } from "contexts/app-context"
-import type { ColorFormat } from "utils/color"
 
 type AppLayoutOptions = {
   title: string

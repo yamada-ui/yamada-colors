@@ -212,6 +212,7 @@ const HexControl: FC<HexControlProps> = memo(({ id, name, hex, ...rest }) => {
       <ReorderTrigger
         color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
         opacity={{ base: isOpen ? 1 : 0, sm: 0 }}
+        pointerEvents={{ base: "auto", sm: "none" }}
         transitionProperty="common"
         transitionDuration="slower"
       >

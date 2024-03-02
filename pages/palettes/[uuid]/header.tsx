@@ -30,8 +30,7 @@ import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
 import { usePalette } from "./context"
 import { Download, Pen, Trash } from "components/media-and-icons"
-import type { ExportHexType } from "components/overlay"
-import { ExportHexModal } from "components/overlay"
+import { ExportModal } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -154,11 +153,11 @@ type DownloadButtonProps = IconButtonProps & {
 const DownloadButton: FC<DownloadButtonProps> = memo(
   ({ menuProps, ...rest }) => {
     const { colors } = usePalette()
-    const typeRef = useRef<ExportHexType>("json.token")
+    const typeRef = useRef<ColorExport>("json.token")
     const { isOpen, onOpen, onClose } = useDisclosure()
     const padding = useBreakpointValue({ base: 32, md: 16 })
 
-    const onSelect = (type: ExportHexType) => {
+    const onSelect = (type: ColorExport) => {
       typeRef.current = type
       onOpen()
     }
@@ -212,7 +211,7 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
           </MenuList>
         </Menu>
 
-        <ExportHexModal
+        <ExportModal
           type={typeRef.current}
           colors={colors}
           isOpen={isOpen}

@@ -5,6 +5,7 @@ import { Link } from "./link"
 import { Modal } from "./modal"
 import { Popover } from "./popover"
 import { SegmentedControl } from "./segmented-control"
+import { Tag } from "./tag"
 
 export const components = {
   Link,
@@ -14,4 +15,5 @@ export const components = {
   Popover,
   Modal,
   Dialog,
+  Tag,
 }

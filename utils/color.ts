@@ -3,7 +3,7 @@ import blinder from "color-blind"
 import convert from "color-convert"
 import * as color from "color2k"
 
-export const tones = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95]
+export const tones = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 
 export const isLight = (hex: string) => color.readableColorIsBlack(hex)
 
@@ -47,11 +47,24 @@ export const lighten = (hex: string) => {
 }
 
 export const tone = (hex: string) => {
-  const [h, s] = toHsl(hex)
+  const [h, s, l] = toHsl(hex)
+  const hexes: string[] = []
+  const d = l <= 50
+  const x = ((!d ? 100 : 95) - l) / 5
+  const y = (l - (d ? 5 : 15)) / 5
 
-  const hexes: string[] = tones.map(
-    (l) => `#${convert.hsl.hex([h, s, 100 - l]).toLowerCase()}`,
-  )
+  tones.forEach((tone) => {
+    const t = tone / 100
+    let z: number
+
+    if (t <= 5) {
+      z = l + (5 - t) * x
+    } else {
+      z = l - (t - 5) * y
+    }
+
+    hexes.push(`#${convert.hsl.hex([h, s, z]).toLowerCase()}`)
+  })
 
   return hexes
 }

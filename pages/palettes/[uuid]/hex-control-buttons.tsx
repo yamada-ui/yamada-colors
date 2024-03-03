@@ -266,7 +266,7 @@ const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
   const onSubmit = () => {
     isSubmitRef.current = true
 
-    const hex = hexRef.current()
+    const hex = f(hexRef.current(), "hex")
 
     onEdit({ id, name: value, hex })
 

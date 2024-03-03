@@ -52,7 +52,7 @@ const handler = async (
 
     if (isTones) {
       prev[name] = tone(hex).reduce((prev, hex, index) => {
-        prev[`${tones[index]}0`] = f(hex, format)
+        prev[tones[index]] = f(hex, format)
 
         return prev
       }, {} as Dict<string>)

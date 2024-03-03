@@ -255,14 +255,7 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
             >
               {level.aa && level.aaa ? (
                 <GridItem as={Center} justifySelf="flex-start" colSpan={3}>
-                  <Tag
-                    size="sm"
-                    variant="outline"
-                    colorScheme="neutral"
-                    fontSize={{ base: "sm", sm: "xs" }}
-                    minH={{ base: 6, sm: 5 }}
-                    lineHeight={1}
-                  >
+                  <Tag size="sm" variant="muted" lineHeight={1}>
                     AA
                   </Tag>
                 </GridItem>
@@ -315,14 +308,7 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
             >
               {level.aa && level.aaa ? (
                 <GridItem as={Center} justifySelf="flex-start" colSpan={3}>
-                  <Tag
-                    size="sm"
-                    variant="outline"
-                    colorScheme="neutral"
-                    fontSize={{ base: "sm", sm: "xs" }}
-                    minH={{ base: 6, sm: 5 }}
-                    lineHeight={1}
-                  >
+                  <Tag size="sm" variant="muted">
                     AAA
                   </Tag>
                 </GridItem>

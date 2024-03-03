@@ -20,7 +20,7 @@ const items: SelectItem[] = [
     label: (
       <>
         <Text as="span">JSON</Text>
-        <Tag size="sm" variant="outline" colorScheme="neutral">
+        <Tag size="sm" variant="muted" ms="sm">
           Tones
         </Tag>
       </>
@@ -35,7 +35,7 @@ const items: SelectItem[] = [
     label: (
       <>
         <Text as="span">CSS</Text>
-        <Tag size="sm" variant="outline" colorScheme="neutral">
+        <Tag size="sm" variant="muted" ms="sm">
           Tones
         </Tag>
       </>
@@ -97,7 +97,7 @@ const ExportModalTitle: FC<ExportModalTitleProps> = ({ type }) => {
       </Text>
 
       {isTones ? (
-        <Tag size="sm" variant="outline" colorScheme="neutral">
+        <Tag size="sm" variant="muted">
           Tones
         </Tag>
       ) : null}

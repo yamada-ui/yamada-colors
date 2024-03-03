@@ -196,14 +196,14 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
           <MenuList>
             <MenuItem onClick={() => onSelect("json.token")}>
               JSON
-              <Tag size="sm" variant="outline" colorScheme="neutral">
+              <Tag size="sm" variant="muted">
                 Tones
               </Tag>
             </MenuItem>
             <MenuItem onClick={() => onSelect("json")}>JSON</MenuItem>
             <MenuItem onClick={() => onSelect("css.token")}>
               CSS
-              <Tag size="sm" variant="outline" colorScheme="neutral">
+              <Tag size="sm" variant="muted">
                 Tones
               </Tag>
             </MenuItem>

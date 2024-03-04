@@ -89,9 +89,10 @@ export const TreeItem = memo(
   forwardRef<TreeItemProps, "a">(
     ({ isAside, icon = null, href, children, ...rest }, ref) => {
       const router = useRouter()
-      const { pathname, asPath } = router
+      const { asPath } = router
+      const trulyHref = href.split("?")[0]
       const isSelected =
-        href === "/" ? asPath === href : href.startsWith(pathname)
+        trulyHref === "/" ? asPath === trulyHref : asPath.startsWith(trulyHref)
 
       return (
         <Box as="li" w="full">

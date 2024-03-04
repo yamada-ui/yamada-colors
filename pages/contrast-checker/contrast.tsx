@@ -59,12 +59,14 @@ export const Contrast: FC<ContrastProps> = ({
       <Wrap gap="md">
         <ColorInput
           label={t("contrast-checker.foreground")}
+          ground="fg"
           value={fg}
           mode={mode}
           queries={queries}
         />
         <ColorInput
           label={t("contrast-checker.background")}
+          ground="bg"
           value={bg}
           mode={mode}
           queries={queries}
@@ -91,12 +93,14 @@ export const Contrast: FC<ContrastProps> = ({
 
 type ColorInputProps = Pick<ContrastProps, "mode"> & {
   label: string
+  ground: "fg" | "bg"
   value: string
   queries: URLSearchParams
 }
 
 const ColorInput: FC<ColorInputProps> = ({
   label,
+  ground,
   mode,
   value: valueProp,
   queries: queriesProp,
@@ -126,9 +130,7 @@ const ColorInput: FC<ColorInputProps> = ({
         value={value}
         onChange={setValue}
         onSubmit={(value) => {
-          if (valueProp === value) return
-
-          queries.set(`${mode}.fg`, value.replace("#", ""))
+          queries.set(`${mode}.${ground}`, value.replace("#", ""))
 
           router.push(`/contrast-checker?${queries}`)
         }}

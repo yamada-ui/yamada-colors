@@ -70,8 +70,6 @@ export type HexControlButtonsProps = StackProps &
 
 export const HexControlButtons: FC<HexControlButtonsProps> = memo(
   ({ id, name, hex, colorMode, isEditRef, onClose, ...rest }) => {
-    console.log("run")
-
     const { onClone, onDelete } = useHexes()
     const resolvedHex = hex[colorMode === "light" ? 0 : 1]
     const [lightHex, darkHex] = hex

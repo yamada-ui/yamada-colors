@@ -7,14 +7,15 @@ export const SEO = {
       locale: "ja_JP",
       url: "https://yamada-colors.app",
       title: "Yamada Colors",
-      description: "",
-      site_name: "Yamada Colors:",
+      description: "All-in-one color tool for creator and developer.",
+      site_name:
+        "Yamada Colors: All-in-one color tool for creator and developer.",
       images: [
         {
           url: "https://yamada-colors.app/og.png",
           width: 1200,
           height: 630,
-          alt: "",
+          alt: "All-in-one color tool for creator and developer.",
         },
       ],
     },

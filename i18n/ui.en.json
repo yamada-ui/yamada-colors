@@ -1,11 +1,11 @@
 {
   "app": {
     "title": "Explore",
-    "description": ""
+    "description": "All-in-one color tool for creator and developer."
   },
   "palettes": {
     "title": "My Paletters",
-    "description": "",
+    "description": "All-in-one color tool for creator and developer.",
     "search": "Search",
     "not-found": { "label": "No palettes", "create": "Create a palette" },
     "create": {
@@ -28,14 +28,14 @@
   },
   "ai-palettes": {
     "title": "AI Paletters",
-    "description": ""
+    "description": "All-in-one color tool for creator and developer."
   },
   "ui-checker": {
     "title": "UI Checker",
-    "description": ""
+    "description": "All-in-one color tool for creator and developer."
   },
   "palette": {
-    "description": "",
+    "description": "All-in-one color tool for creator and developer.",
     "create": "Add a color",
     "edit": {
       "submit": "Apply"
@@ -50,7 +50,7 @@
   },
   "generators": {
     "title": "Generators",
-    "description": "",
+    "description": "All-in-one color tool for creator and developer.",
     "shades": "Shades",
     "tints": "Tints",
     "tones": "Tones",
@@ -59,20 +59,20 @@
   },
   "contrast-checker": {
     "title": "Contrast Checker",
-    "description": "",
+    "description": "All-in-one color tool for creator and developer.",
     "foreground": "Foreground",
     "background": "Background"
   },
   "history": {
     "title": "History",
-    "description": ""
+    "description": "All-in-one color tool for creator and developer."
   },
   "categories": {
     "title": "Categories",
-    "description": ""
+    "description": "All-in-one color tool for creator and developer."
   },
   "colors": {
-    "description": "",
+    "description": "All-in-one color tool for creator and developer.",
     "shades": {
       "title": "Shades",
       "description": ":label + :base",

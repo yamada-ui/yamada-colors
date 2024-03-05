@@ -1,11 +1,11 @@
 {
   "app": {
     "title": "探す",
-    "description": ""
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。"
   },
   "palettes": {
     "title": "マイパレット",
-    "description": "",
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "search": "Search",
     "not-found": {
       "label": "パレットがありません",
@@ -31,14 +31,14 @@
   },
   "ai-palettes": {
     "title": "AIパレット",
-    "description": ""
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。"
   },
   "ui-checker": {
     "title": "UIチェッカー",
-    "description": ""
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。"
   },
   "palette": {
-    "description": "",
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "create": "色を追加する",
     "edit": {
       "submit": "適用"
@@ -53,7 +53,7 @@
   },
   "generators": {
     "title": "ジェネレーター",
-    "description": "",
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "shades": "シェード",
     "tints": "ティント",
     "tones": "トーン",
@@ -62,20 +62,20 @@
   },
   "contrast-checker": {
     "title": "コントラストチェッカー",
-    "description": "",
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "foreground": "前景色",
     "background": "背景色"
   },
   "history": {
     "title": "履歴",
-    "description": ""
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。"
   },
   "categories": {
     "title": "カテゴリー",
-    "description": ""
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。"
   },
   "colors": {
-    "description": "",
+    "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "shades": {
       "title": "シェード",
       "description": ":label + :base",

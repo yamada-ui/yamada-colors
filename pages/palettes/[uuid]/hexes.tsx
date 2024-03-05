@@ -1,9 +1,12 @@
-import type { MotionProps, MotionVariants } from "@yamada-ui/react"
+import type { ColorMode, MotionProps, MotionVariants } from "@yamada-ui/react"
 import {
   Box,
   Button,
   Center,
+  Grid,
   GridItem,
+  HStack,
+  IconButton,
   Motion,
   Reorder,
   ReorderItem,
@@ -19,21 +22,40 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import { Dots, Plus, Refresh } from "components/media-and-icons"
+import { Dots, Moon, Plus, Refresh, Sun } from "components/media-and-icons"
+import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { blindness, darken, f, isLight, lighten, tone } from "utils/color"
-import { generateUUID } from "utils/storage"
+import { generateUUID, setCookie } from "utils/storage"
 
-const DEFAULT_COLOR: Color = { name: "White", hex: "#ffffff" }
+const DEFAULT_COLOR: PaletteColor = {
+  name: "White",
+  hex: ["#ffffff", "#ffffff"],
+}
 
 export type HexesProps = {}
 
 export const Hexes: FC<HexesProps> = memo(({}) => {
-  const { tab, uuid, name, colors, timestamp, setColors } = usePalette()
+  const {
+    colorMode: colorModeProp,
+    uuid,
+    name,
+    colors,
+    timestamp,
+    setColors,
+  } = usePalette()
   const { t } = useI18n()
   const { changePalette } = useApp()
-  const isHidden = tab === "hidden"
+  const [colorMode, setColorMode] = useState<ColorMode>(colorModeProp)
+  const isLight = colorMode === "light"
+
+  const toggleColorMode = useCallback(() => {
+    const resolvedColorMode: ColorMode = isLight ? "dark" : "light"
+
+    setCookie(CONSTANT.STORAGE.PALETTE_COLOR_MODE, resolvedColorMode)
+    setColorMode(resolvedColorMode)
+  }, [isLight])
 
   const onCreate = () => {
     const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
@@ -116,13 +138,15 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   )
 
   const value = useMemo(
-    () => ({ onClone, onEdit, onDelete }),
-    [onClone, onEdit, onDelete],
+    () => ({ colorMode, onClone, onEdit, onDelete, toggleColorMode }),
+    [colorMode, onClone, onEdit, onDelete, toggleColorMode],
   )
 
   return (
     <HexesProvider value={value}>
-      <Box as="section">
+      <VStack as="section">
+        <HexHeader />
+
         <Reorder
           gap="0"
           variant="unstyled"
@@ -139,26 +163,37 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
                 label={id}
                 display="grid"
                 gridTemplateColumns={{
-                  base: isHidden ? "1fr" : "auto 1fr",
+                  base: "1fr 1fr",
                   xl: "1fr",
+                  lg: "1fr 1fr",
+                  md: "1fr",
                 }}
                 gap="lg"
               >
-                <HexControl
-                  {...{ id, name, hex, isFirst, isLast }}
-                  w={
-                    isHidden ? "full" : { base: "md", "2xl": "sm", xl: "full" }
-                  }
+                <HexToggleItem
+                  display={{
+                    base: "block",
+                    xl: !isLight ? "none" : "block",
+                    lg: "block",
+                    md: !isLight ? "none" : "block",
+                  }}
+                  {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
                 />
 
-                {!isHidden ? (
-                  <HexData {...{ id, name, hex, isFirst, isLast }} />
-                ) : null}
+                <HexToggleItem
+                  display={{
+                    base: "block",
+                    xl: isLight ? "none" : "block",
+                    lg: "block",
+                    md: isLight ? "none" : "block",
+                  }}
+                  {...{ id, name, hex, isFirst, isLast, colorMode: "dark" }}
+                />
               </ReorderItem>
             )
           })}
         </Reorder>
-      </Box>
+      </VStack>
 
       <Center as="section" w="full">
         <Button
@@ -177,79 +212,194 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
 Hexes.displayName = "Hexes"
 
-type HexControlProps = ReorderColor & HexContainerProps
+type HexHeaderProps = {}
 
-const HexControl: FC<HexControlProps> = memo(({ id, name, hex, ...rest }) => {
-  const { format } = useApp()
-  const isEditRef = useRef<boolean>(false)
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const isMobile = useBreakpointValue({ base: false, sm: true })
+const HexHeader: FC<HexHeaderProps> = memo(() => {
+  const { colorMode, toggleColorMode } = useHexes()
 
   return (
-    <HexContainer
-      display="flex"
-      gap="md"
-      bg={hex}
-      h="20"
-      alignItems="center"
-      px="md"
-      onHoverStart={!isMobile ? onOpen : undefined}
-      onHoverEnd={() => {
-        if (isMobile || isEditRef.current) return
-
-        onClose()
-
-        isEditRef.current = false
-      }}
-      onFocus={!isMobile ? onOpen : undefined}
-      onBlur={() => {
-        if (isMobile) return
-
-        onClose()
-      }}
-      {...rest}
-    >
-      <ReorderTrigger
-        color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
-        opacity={{ base: isOpen ? 1 : 0, sm: 0 }}
-        pointerEvents={{ base: "auto", sm: "none" }}
-        transitionProperty="common"
-        transitionDuration="slower"
+    <>
+      <Grid
+        display={{
+          base: "grid",
+          xl: "none",
+          lg: "grid",
+          md: "none",
+        }}
+        gridTemplateColumns="1fr 1fr"
+        gap="lg"
       >
-        <Dots />
-      </ReorderTrigger>
+        <GridItem as={HStack} justifyContent="center" gap="sm">
+          <Sun color="muted" />
 
-      <VStack
-        minW="0"
-        as={Link}
-        gap="0"
-        href={`/colors/${hex.replace("#", "")}`}
-        rounded="md"
-        outline={0}
-        color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
-        _hover={{ color: isLight(hex) ? "black" : "white" }}
-        _focusVisible={{ boxShadow: "outline" }}
-        transitionProperty="common"
-        transitionDuration="slower"
+          <Text textAlign="center" fontSize="2xl" fontWeight="medium">
+            Light
+          </Text>
+        </GridItem>
+
+        <GridItem as={HStack} justifyContent="center" gap="sm">
+          <Moon color="muted" />
+
+          <Text textAlign="center" fontSize="2xl" fontWeight="medium">
+            Dark
+          </Text>
+        </GridItem>
+      </Grid>
+
+      <Center
+        position="relative"
+        display={{
+          base: "none",
+          xl: "flex",
+          lg: "none",
+          md: "flex",
+        }}
       >
-        <Text as="span" lineClamp={1}>
-          {name}
-        </Text>
+        <HStack justifyContent="center" gap="sm">
+          {colorMode === "light" ? (
+            <Sun color="muted" />
+          ) : (
+            <Moon color="muted" />
+          )}
 
-        <Text as="span" fontSize="sm" lineClamp={1}>
-          {f(hex, format)}
-        </Text>
-      </VStack>
+          <Text textAlign="center" fontSize="2xl" fontWeight="medium">
+            {colorMode === "light" ? "Light" : "Dark"}
+          </Text>
+        </HStack>
 
-      <HexControlButtons
-        opacity={{ base: isOpen ? 1 : 0, sm: 1 }}
-        isEditRef={isEditRef}
-        onClose={onClose}
-        {...{ id, name, hex }}
-      />
-    </HexContainer>
+        <IconButton
+          position="absolute"
+          top="50%"
+          right="0"
+          transform="translateY(-50%)"
+          aria-label="Switching color mode"
+          isRounded
+          variant="ghost"
+          _hover={{
+            bg: ["blackAlpha.100", "whiteAlpha.100"],
+          }}
+          colorScheme="neutral"
+          icon={<Refresh color="muted" />}
+          onClick={toggleColorMode}
+        />
+      </Center>
+    </>
   )
 })
+
+HexHeader.displayName = "HexHeader"
+
+type HexToggleItemProps = ReorderColor &
+  HexContainerProps & { colorMode: ColorMode }
+
+const HexToggleItem: FC<HexToggleItemProps> = memo(
+  ({ id, name, hex, colorMode, display, ...rest }) => {
+    const { tab } = usePalette()
+    const resolvedHex = hex[colorMode === "light" ? 0 : 1]
+    const isPalettes = tab === "palettes"
+
+    return (
+      <Box display={display}>
+        <HexControl
+          display={{ base: isPalettes ? "flex" : "none", sm: "flex" }}
+          id={id}
+          hex={hex}
+          name={name}
+          colorMode={colorMode}
+          {...rest}
+        />
+
+        <HexData
+          display={{ base: isPalettes ? "none" : "grid", sm: "none" }}
+          hex={resolvedHex}
+          {...rest}
+        />
+      </Box>
+    )
+  },
+)
+
+HexToggleItem.displayName = "HexToggleItem"
+
+type HexControlProps = ReorderColor &
+  HexContainerProps & { colorMode: ColorMode }
+
+const HexControl: FC<HexControlProps> = memo(
+  ({ id, name, hex, colorMode, ...rest }) => {
+    const { format } = useApp()
+    const isEditRef = useRef<boolean>(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const isMobile = useBreakpointValue({ base: false, sm: true })
+    const resolvedHex = hex[colorMode === "light" ? 0 : 1]
+
+    return (
+      <HexContainer
+        display="flex"
+        gap="md"
+        bg={resolvedHex}
+        alignItems="center"
+        ps={{ base: "md", sm: "normal" }}
+        pe="md"
+        onHoverStart={!isMobile ? onOpen : undefined}
+        onHoverEnd={() => {
+          if (isMobile || isEditRef.current) return
+
+          onClose()
+
+          isEditRef.current = false
+        }}
+        onFocus={!isMobile ? onOpen : undefined}
+        onBlur={() => {
+          if (isMobile) return
+
+          onClose()
+        }}
+        {...rest}
+      >
+        <ReorderTrigger
+          color={isLight(resolvedHex) ? "blackAlpha.500" : "whiteAlpha.500"}
+          display={{ base: "block", sm: "none" }}
+          opacity={{ base: isOpen ? 1 : 0 }}
+          pointerEvents={{ base: "auto", sm: "none" }}
+          transitionProperty="common"
+          transitionDuration="slower"
+        >
+          <Dots />
+        </ReorderTrigger>
+
+        <VStack
+          minW="0"
+          as={Link}
+          gap="0"
+          href={`/colors/${resolvedHex.replace("#", "")}`}
+          rounded="md"
+          outline={0}
+          color={isLight(resolvedHex) ? "blackAlpha.500" : "whiteAlpha.500"}
+          _hover={{ color: isLight(resolvedHex) ? "black" : "white" }}
+          _focusVisible={{ boxShadow: "outline" }}
+          transitionProperty="common"
+          transitionDuration="slower"
+        >
+          <Text as="span" lineClamp={1}>
+            {name}
+          </Text>
+
+          <Text as="span" fontSize="sm" lineClamp={1}>
+            {f(resolvedHex, format)}
+          </Text>
+        </VStack>
+
+        <HexControlButtons
+          colorMode={colorMode}
+          opacity={{ base: isOpen ? 1 : 0, sm: 1 }}
+          isEditRef={isEditRef}
+          onClose={onClose}
+          {...{ id, name, hex }}
+        />
+      </HexContainer>
+    )
+  },
+)
 
 HexControl.displayName = "HexControl"
 
@@ -257,31 +407,30 @@ const getHexes = (hex: string, tab: string) => {
   try {
     switch (tab) {
       case "shades":
-        return darken(hex).slice(1)
+        return darken(hex)
 
       case "tints":
-        return lighten(hex).slice(1)
+        return lighten(hex)
 
       case "tones":
         return tone(hex)
 
       case "blindness":
-        return Object.values(blindness(hex)).slice(1)
+        return Object.values(blindness(hex))
 
       default:
-        return []
+        return [hex]
     }
   } catch {
     return []
   }
 }
 
-type HexDataProps = Color & HexContainerProps
+type HexDataProps = Pick<Color, "hex"> & HexContainerProps
 
-const HexData: FC<HexDataProps> = memo(({ id, name, hex, ...rest }) => {
+const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
   const { tab } = usePalette()
   const [hexes, setHexes] = useState<string[]>(getHexes(hex, tab))
-  const { onEdit } = useHexes()
   const count = hexes.length
 
   useUpdateEffect(() => {
@@ -290,33 +439,14 @@ const HexData: FC<HexDataProps> = memo(({ id, name, hex, ...rest }) => {
 
   return (
     <HexContainer
-      display={{ base: "grid", xl: "none" }}
-      gridTemplateColumns={{ base: `repeat(${count}, 1fr)`, md: "1fr" }}
-      boxSize="full"
+      display="grid"
+      gridTemplateColumns={`repeat(${count}, 1fr)`}
       overflow="hidden"
       {...rest}
     >
       {hexes.map((hex, index) => (
-        <GridItem key={`${hex}-${index}`}>
-          <Center
-            as="button"
-            tabIndex={-1}
-            boxSize="full"
-            bg={hex}
-            _hover={{
-              "& > *": {
-                opacity: 1,
-              },
-            }}
-            onClick={() => onEdit({ id, name, hex })}
-          >
-            <Refresh
-              opacity={0}
-              transitionProperty="common"
-              transitionDuration="slower"
-              color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
-            />
-          </Center>
+        <GridItem key={`${hex}-${index}`} boxSize="full">
+          <Center boxSize="full" bg={hex} />
         </GridItem>
       ))}
     </HexContainer>
@@ -398,7 +528,7 @@ const variants: MotionVariants = {
   },
 }
 
-type HexContainerProps = MotionProps & {
+type HexContainerProps = Omit<MotionProps, "colorMode"> & {
   isFirst: boolean
   isLast: boolean
 }
@@ -411,6 +541,7 @@ const HexContainer: FC<HexContainerProps> = memo(
         animate="animate"
         variants={variants}
         custom={{ isFirst, isLast }}
+        h="20"
         {...rest}
       />
     )

@@ -1,3 +1,4 @@
+import type { ColorMode } from "@yamada-ui/react"
 import { createContext } from "@yamada-ui/react"
 import type { Dispatch, SetStateAction } from "react"
 
@@ -6,6 +7,7 @@ type PaletteContext = {
   uuid: string
   name: string
   colors: ReorderColors
+  colorMode: ColorMode
   timestamp: number
   setTab: Dispatch<SetStateAction<string>>
   setName: Dispatch<SetStateAction<string>>
@@ -15,6 +17,8 @@ type PaletteContext = {
 export const [PaletteProvider, usePalette] = createContext<PaletteContext>()
 
 type HexesContext = {
+  colorMode: ColorMode
+  toggleColorMode: () => void
   onClone: (color: ReorderColor) => void
   onEdit: (color: ReorderColor) => void
   onDelete: (id: string) => void

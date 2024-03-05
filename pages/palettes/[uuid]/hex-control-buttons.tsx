@@ -25,16 +25,20 @@ import {
 import type {
   AutocompleteItem,
   CenterProps,
+  ColorMode,
   InputProps,
   StackProps,
   UseDisclosureProps,
 } from "@yamada-ui/react"
+import Link from "next/link"
 import { memo, useRef, useState } from "react"
 import type { ChangeEvent, FC, MutableRefObject } from "react"
 import { useHexes } from "./context"
 import {
+  Brush,
   Clipboard,
   Clone,
+  Contrast,
   EyeDropper,
   Pen,
   Trash,
@@ -59,13 +63,16 @@ const COLOR_TOKEN_NAMES: AutocompleteItem[] = [
 
 export type HexControlButtonsProps = StackProps &
   ReorderColor & {
+    colorMode: ColorMode
     isEditRef: MutableRefObject<boolean>
     onClose: () => void
   }
 
 export const HexControlButtons: FC<HexControlButtonsProps> = memo(
-  ({ id, name, hex, isEditRef, onClose, ...rest }) => {
+  ({ id, name, hex, colorMode, isEditRef, onClose, ...rest }) => {
     const { onClone, onDelete } = useHexes()
+    const resolvedHex = hex[colorMode === "light" ? 0 : 1]
+    const [lightHex, darkHex] = hex
 
     return (
       <HStack
@@ -78,6 +85,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           id={id}
           name={name}
           hex={hex}
+          colorMode={colorMode}
           onOpen={() => {
             isEditRef.current = true
           }}
@@ -88,13 +96,34 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           }}
         />
 
-        <HexControlButton hex={hex} onClick={() => onClone({ id, name, hex })}>
+        <HexControlButton
+          as={Link}
+          hex={resolvedHex}
+          href={`/generators?hex=${resolvedHex.replace("#", "")}&tab=tones`}
+          display={{ base: "flex", sm: "none" }}
+        >
+          <Brush />
+        </HexControlButton>
+
+        <HexControlButton
+          as={Link}
+          hex={resolvedHex}
+          href={`/contrast-checker?light.fg=${lightHex.replace("#", "")}&dark.fg=${darkHex.replace("#", "")}`}
+          display={{ base: "flex", sm: "none" }}
+        >
+          <Contrast />
+        </HexControlButton>
+
+        <HexControlButton
+          hex={resolvedHex}
+          onClick={() => onClone({ id, name, hex })}
+        >
           <Clone fontSize="1.45em" />
         </HexControlButton>
 
-        <CopyButton hex={hex} />
+        <CopyButton hex={resolvedHex} />
 
-        <HexControlButton hex={hex} onClick={() => onDelete(id)}>
+        <HexControlButton hex={resolvedHex} onClick={() => onDelete(id)}>
           <Trash />
         </HexControlButton>
       </HStack>
@@ -257,90 +286,98 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
 
 EditColorPicker.displayName = "EditColorPicker"
 
-type EditButtonProps = ReorderColor & UseDisclosureProps
+type EditButtonProps = ReorderColor &
+  UseDisclosureProps & { colorMode: ColorMode }
 
-const EditButton: FC<EditButtonProps> = memo(({ id, name, hex, ...rest }) => {
-  const resetRef = useRef<() => void>(noop)
-  const hexRef = useRef<() => string>(() => hex)
-  const isSubmitRef = useRef<boolean>(false)
-  const { isOpen, onOpen, onClose } = useDisclosure({
-    ...rest,
-    onClose: () => {
-      rest.onClose?.()
+const EditButton: FC<EditButtonProps> = memo(
+  ({ id, name, hex, colorMode, ...rest }) => {
+    const resolvedHex = hex[colorMode === "light" ? 0 : 1]
+    const [lightHex, darkHex] = hex
+    const resetRef = useRef<() => void>(noop)
+    const hexRef = useRef<() => string>(() => resolvedHex)
+    const isSubmitRef = useRef<boolean>(false)
+    const { isOpen, onOpen, onClose } = useDisclosure({
+      ...rest,
+      onClose: () => {
+        rest.onClose?.()
 
-      if (!isSubmitRef.current) {
-        resetRef.current()
-        setValue(name)
-      }
+        if (!isSubmitRef.current) {
+          resetRef.current()
+          setValue(name)
+        }
 
-      isSubmitRef.current = false
-    },
-  })
-  const [value, setValue] = useState<string>(name)
-  const { onEdit } = useHexes()
-  const { t } = useI18n()
+        isSubmitRef.current = false
+      },
+    })
+    const [value, setValue] = useState<string>(name)
+    const { onEdit } = useHexes()
+    const { t } = useI18n()
 
-  const onSubmit = () => {
-    isSubmitRef.current = true
+    const onSubmit = () => {
+      isSubmitRef.current = true
 
-    const hex = f(hexRef.current(), "hex")
+      const computedHex = f(hexRef.current(), "hex")
 
-    onEdit({ id, name: value, hex })
+      const hex: [string, string] =
+        colorMode === "light" ? [computedHex, darkHex] : [lightHex, computedHex]
 
-    onClose()
-  }
+      onEdit({ id, name: value, hex })
 
-  return (
-    <Popover
-      isOpen={isOpen}
-      onClose={onClose}
-      closeOnButton={false}
-      restoreFocus={false}
-    >
-      <PopoverTrigger>
-        <HexControlButton hex={hex} onClick={onOpen}>
-          <Pen />
-        </HexControlButton>
-      </PopoverTrigger>
+      onClose()
+    }
 
-      <PopoverContent>
-        <PopoverBody>
-          <Autocomplete
-            value={value}
-            onChange={setValue}
-            items={COLOR_TOKEN_NAMES}
-            allowFree
-          />
+    return (
+      <Popover
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnButton={false}
+        restoreFocus={false}
+      >
+        <PopoverTrigger>
+          <HexControlButton hex={resolvedHex} onClick={onOpen}>
+            <Pen />
+          </HexControlButton>
+        </PopoverTrigger>
 
-          <EditColorPicker
-            hex={hex}
-            resetRef={resetRef}
-            hexRef={hexRef}
-            onKeyDown={(ev) => {
-              if (ev.key !== "Enter") return
+        <PopoverContent>
+          <PopoverBody>
+            <Autocomplete
+              value={value}
+              onChange={setValue}
+              items={COLOR_TOKEN_NAMES}
+              allowFree
+            />
 
-              onSubmit()
-            }}
-          />
-        </PopoverBody>
+            <EditColorPicker
+              hex={resolvedHex}
+              resetRef={resetRef}
+              hexRef={hexRef}
+              onKeyDown={(ev) => {
+                if (ev.key !== "Enter") return
 
-        <PopoverFooter>
-          <Button
-            isDisabled={!value.length}
-            w="full"
-            colorScheme="neutral"
-            borderColor="transparent"
-            bg={["blackAlpha.200", "whiteAlpha.100"]}
-            onClick={onSubmit}
-            _hover={{ _disabled: {} }}
-          >
-            {t("palette.edit.submit")}
-          </Button>
-        </PopoverFooter>
-      </PopoverContent>
-    </Popover>
-  )
-})
+                onSubmit()
+              }}
+            />
+          </PopoverBody>
+
+          <PopoverFooter>
+            <Button
+              isDisabled={!value.length}
+              w="full"
+              colorScheme="neutral"
+              borderColor="transparent"
+              bg={["blackAlpha.200", "whiteAlpha.100"]}
+              onClick={onSubmit}
+              _hover={{ _disabled: {} }}
+            >
+              {t("palette.edit.submit")}
+            </Button>
+          </PopoverFooter>
+        </PopoverContent>
+      </Popover>
+    )
+  },
+)
 
 EditButton.displayName = "EditButton"
 

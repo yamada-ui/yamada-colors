@@ -1,5 +1,5 @@
 import type { Dict } from "@yamada-ui/react"
-import { isObject } from "@yamada-ui/react"
+import { isArray } from "@yamada-ui/react"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { prettier } from "libs/prettier"
 import { f, tone, tones } from "utils/color"
@@ -39,46 +39,116 @@ const handler = async (
 
   let json: string = ""
 
-  const data = colors.reduce((prev, { name, hex }) => {
-    name = parser(name)
+  if (extension === "css") {
+    const data = colors.reduce(
+      (prev, { name, hex }) => {
+        name = generateName(prev.light, name, parser)
 
-    let count = 1
+        if (isTones) {
+          if (isArray(hex)) {
+            const [light, dark] = hex
 
-    while (prev.hasOwnProperty(name)) {
-      name = `${name}${count}`
+            prev.light[name] = tone(light).map(
+              (hex, index) => `--${name}-${tones[index]}: ${f(hex, format)};`,
+            )
 
-      count++
-    }
+            if (light !== dark) {
+              prev.dark[name] = tone(dark).map(
+                (hex, index) => `--${name}-${tones[index]}: ${f(hex, format)};`,
+              )
+            }
+          } else {
+            prev.light[name] = tone(hex).map(
+              (hex, index) => `--${name}-${tones[index]}: ${f(hex, format)};`,
+            )
+          }
+        } else {
+          if (isArray(hex)) {
+            const [light, dark] = hex
 
-    if (isTones) {
-      prev[name] = tone(hex).reduce((prev, hex, index) => {
-        prev[tones[index]] = f(hex, format)
+            prev.light[name] = `--${name}: ${f(light, format)};`
+
+            if (light !== dark) {
+              prev.dark[name] = `--${name}: ${f(dark, format)};`
+            }
+          } else {
+            prev.light[name] = `--${name}: ${f(hex, format)};`
+          }
+        }
 
         return prev
-      }, {} as Dict<string>)
-    } else {
-      prev[name] = f(hex, format)
-    }
+      },
+      { light: {}, dark: {} } as {
+        light: Dict<string | string[]>
+        dark: Dict<string | string[]>
+      },
+    )
 
-    return prev
-  }, {} as Dict)
+    const lightJson = Object.values(data.light).flat().join("\n")
+    const darkJson = Object.values(data.dark).flat().join("\n")
 
-  if (extension === "css") {
-    json = Object.entries(data)
-      .map(([name, value]) => {
-        if (isObject(value)) {
-          return Object.entries(value).map(([tone, value]) => {
-            return `--${name}-${tone}: ${value};`
-          })
-        } else {
-          return `--${name}: ${value};`
-        }
-      })
-      .flat()
-      .join("\n")
-
-    json = `:root {\n${json}\n}`
+    json = `:root {\n${lightJson}\n}\n\n@media (prefers-color-scheme: dark) {\n:root {\n${darkJson}\n}\n}`
   } else {
+    const data = colors.reduce(
+      (prev, { name, hex }) => {
+        name = generateName(prev, name, parser)
+
+        if (isTones) {
+          if (isArray(hex)) {
+            const [light, dark] = hex
+
+            const lightTones = tone(light)
+
+            if (light === dark) {
+              prev[name] = lightTones.reduce(
+                (prev, hex, index) => {
+                  prev[tones[index]] = f(hex, format)
+
+                  return prev
+                },
+                {} as Dict<string | [string, string]>,
+              )
+            } else {
+              const darkTones = tone(dark)
+
+              prev[name] = lightTones.reduce(
+                (prev, hex, index) => {
+                  prev[tones[index]] = [
+                    f(hex, format),
+                    f(darkTones[index], format),
+                  ]
+
+                  return prev
+                },
+                {} as Dict<string | [string, string]>,
+              )
+            }
+          } else {
+            prev[name] = tone(hex).reduce((prev, hex, index) => {
+              prev[tones[index]] = f(hex, format)
+
+              return prev
+            }, {} as Dict<string>)
+          }
+        } else {
+          if (isArray(hex)) {
+            const [light, dark] = hex
+
+            if (light === dark) {
+              prev[name] = f(light, format)
+            } else {
+              prev[name] = [f(light, format), f(dark, format)]
+            }
+          } else {
+            prev[name] = f(hex, format)
+          }
+        }
+
+        return prev
+      },
+      {} as Dict<string | [string, string] | Dict<string | [string, string]>>,
+    )
+
     json = JSON.stringify(data)
   }
 
@@ -88,3 +158,21 @@ const handler = async (
 }
 
 export default handler
+
+const generateName = (
+  values: Dict,
+  name: string,
+  parser?: (value: string & {}) => string,
+) => {
+  if (parser) name = parser(name)
+
+  let count = 1
+
+  while (values.hasOwnProperty(name)) {
+    name = `${name}${count}`
+
+    count++
+  }
+
+  return name
+}

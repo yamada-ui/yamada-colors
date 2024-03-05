@@ -145,6 +145,9 @@
     "color-search": {
       "submit": "適用"
     },
+    "export-modal": {
+      "title": "エクスポート"
+    },
     "palette-menu": {
       "title": "保存するパレット",
       "not-found": "パレットがありません",

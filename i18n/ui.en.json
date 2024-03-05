@@ -142,6 +142,9 @@
     "color-search": {
       "submit": "Apply"
     },
+    "export-modal": {
+      "title": "Export"
+    },
     "palette-menu": {
       "title": "Save to",
       "not-found": "No palettes",

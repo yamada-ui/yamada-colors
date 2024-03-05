@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  ChevronIcon,
   Grid,
   GridItem,
   HStack,
@@ -22,14 +23,7 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import {
-  Arrow,
-  Dots,
-  Moon,
-  Plus,
-  Refresh,
-  Sun,
-} from "components/media-and-icons"
+import { Dots, Moon, Plus, Refresh, Sun } from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -262,6 +256,10 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
     changePalette({ uuid, name, colors: resolvedColors, timestamp })
   }
 
+  useUpdateEffect(() => {
+    setInternalColors(colors)
+  }, [colors])
+
   return (
     <Reorder
       gap="0"
@@ -310,7 +308,13 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                   bg: ["blackAlpha.100", "whiteAlpha.100"],
                 }}
                 colorScheme="neutral"
-                icon={<Arrow color="muted" transform="rotate(90deg)" />}
+                icon={
+                  <ChevronIcon
+                    fontSize="1.5em"
+                    color="muted"
+                    transform="rotate(-90deg)"
+                  />
+                }
                 onClick={() => onEdit({ id, name, hex: [lightHex, lightHex] })}
               />
 
@@ -323,7 +327,13 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                   bg: ["blackAlpha.100", "whiteAlpha.100"],
                 }}
                 colorScheme="neutral"
-                icon={<Arrow color="muted" transform="rotate(-90deg)" />}
+                icon={
+                  <ChevronIcon
+                    fontSize="1.5em"
+                    color="muted"
+                    transform="rotate(90deg)"
+                  />
+                }
                 onClick={() => onEdit({ id, name, hex: [darkHex, darkHex] })}
               />
             </VStack>

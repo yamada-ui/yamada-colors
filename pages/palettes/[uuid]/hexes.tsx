@@ -22,7 +22,14 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import { Dots, Moon, Plus, Refresh, Sun } from "components/media-and-icons"
+import {
+  Arrow,
+  Dots,
+  Moon,
+  Plus,
+  Refresh,
+  Sun,
+} from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -156,6 +163,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
           {colors.map(({ id, name, hex }, index) => {
             const isFirst = !index
             const isLast = index + 1 === colors.length
+            const [lightHex, darkHex] = hex
 
             return (
               <ReorderItem
@@ -163,12 +171,12 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
                 label={id}
                 display="grid"
                 gridTemplateColumns={{
-                  base: "1fr 1fr",
+                  base: "1fr auto 1fr",
                   xl: "1fr",
-                  lg: "1fr 1fr",
+                  lg: "1fr auto 1fr",
                   md: "1fr",
                 }}
-                gap="lg"
+                gap="sm"
               >
                 <HexToggleItem
                   display={{
@@ -179,6 +187,41 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
                   }}
                   {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
                 />
+
+                <VStack
+                  display={{ base: "flex", xl: "none", lg: "flex", md: "none" }}
+                  gap="0"
+                >
+                  <IconButton
+                    right="0"
+                    aria-label="Switching color mode"
+                    isRounded
+                    variant="ghost"
+                    _hover={{
+                      bg: ["blackAlpha.100", "whiteAlpha.100"],
+                    }}
+                    colorScheme="neutral"
+                    icon={<Arrow color="muted" transform="rotate(90deg)" />}
+                    onClick={() =>
+                      onEdit({ id, name, hex: [lightHex, lightHex] })
+                    }
+                  />
+
+                  <IconButton
+                    right="0"
+                    aria-label="Switching color mode"
+                    isRounded
+                    variant="ghost"
+                    _hover={{
+                      bg: ["blackAlpha.100", "whiteAlpha.100"],
+                    }}
+                    colorScheme="neutral"
+                    icon={<Arrow color="muted" transform="rotate(-90deg)" />}
+                    onClick={() =>
+                      onEdit({ id, name, hex: [darkHex, darkHex] })
+                    }
+                  />
+                </VStack>
 
                 <HexToggleItem
                   display={{

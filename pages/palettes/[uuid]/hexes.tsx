@@ -92,16 +92,6 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
     [changePalette, colors, name, setColors, uuid, timestamp],
   )
 
-  const onCompleteChange = (ids: (string | number)[]) => {
-    const resolvedColors = ids.map((id) => {
-      const { name, hex } = colors.find((item) => item.id === id)
-
-      return { name, hex }
-    })
-
-    changePalette({ uuid, name, colors: resolvedColors, timestamp })
-  }
-
   const onClone = useCallback(
     ({ id, ...rest }: ReorderColor) => {
       const index = colors.findIndex((color) => color.id === id)
@@ -150,83 +140,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
       <VStack as="section">
         <HexHeader />
 
-        <Reorder gap="0" variant="unstyled" onCompleteChange={onCompleteChange}>
-          {colors.map(({ id, name, hex }, index) => {
-            const isFirst = !index
-            const isLast = index + 1 === colors.length
-            const [lightHex, darkHex] = hex
-
-            return (
-              <ReorderItem
-                key={id}
-                label={id}
-                display="grid"
-                gridTemplateColumns={{
-                  base: "1fr auto 1fr",
-                  xl: "1fr",
-                  lg: "1fr auto 1fr",
-                  md: "1fr",
-                }}
-                gap="sm"
-              >
-                <HexToggleItem
-                  display={{
-                    base: "block",
-                    xl: !isLight ? "none" : "block",
-                    lg: "block",
-                    md: !isLight ? "none" : "block",
-                  }}
-                  {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
-                />
-
-                <VStack
-                  display={{ base: "flex", xl: "none", lg: "flex", md: "none" }}
-                  gap="0"
-                >
-                  <IconButton
-                    right="0"
-                    aria-label="Switching color mode"
-                    isRounded
-                    variant="ghost"
-                    _hover={{
-                      bg: ["blackAlpha.100", "whiteAlpha.100"],
-                    }}
-                    colorScheme="neutral"
-                    icon={<Arrow color="muted" transform="rotate(90deg)" />}
-                    onClick={() =>
-                      onEdit({ id, name, hex: [lightHex, lightHex] })
-                    }
-                  />
-
-                  <IconButton
-                    right="0"
-                    aria-label="Switching color mode"
-                    isRounded
-                    variant="ghost"
-                    _hover={{
-                      bg: ["blackAlpha.100", "whiteAlpha.100"],
-                    }}
-                    colorScheme="neutral"
-                    icon={<Arrow color="muted" transform="rotate(-90deg)" />}
-                    onClick={() =>
-                      onEdit({ id, name, hex: [darkHex, darkHex] })
-                    }
-                  />
-                </VStack>
-
-                <HexToggleItem
-                  display={{
-                    base: "block",
-                    xl: isLight ? "none" : "block",
-                    lg: "block",
-                    md: isLight ? "none" : "block",
-                  }}
-                  {...{ id, name, hex, isFirst, isLast, colorMode: "dark" }}
-                />
-              </ReorderItem>
-            )
-          })}
-        </Reorder>
+        <HexReorder />
       </VStack>
 
       <Center as="section" w="full">
@@ -322,6 +236,115 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
 })
 
 HexHeader.displayName = "HexHeader"
+
+type HexReorderProps = {}
+
+const HexReorder: FC<HexReorderProps> = memo(() => {
+  const { uuid, name, colors, timestamp, setColors } = usePalette()
+  const { onEdit } = useHexes()
+  const { changePalette } = useApp()
+  const [internalColors, setInternalColors] = useState<ReorderColors>(colors)
+
+  const onChange = (ids: (string | number)[]) => {
+    setInternalColors((prev) =>
+      ids.map((id) => prev.find((item) => item.id === id)),
+    )
+  }
+
+  const onCompleteChange = (ids: (string | number)[]) => {
+    const resolvedColors = ids.map((id) => {
+      const { name, hex } = colors.find((item) => item.id === id)
+
+      return { name, hex }
+    })
+
+    setColors(internalColors)
+    changePalette({ uuid, name, colors: resolvedColors, timestamp })
+  }
+
+  return (
+    <Reorder
+      gap="0"
+      variant="unstyled"
+      onChange={onChange}
+      onCompleteChange={onCompleteChange}
+    >
+      {internalColors.map(({ id, name, hex }, index) => {
+        const isFirst = !index
+        const isLast = index + 1 === colors.length
+        const [lightHex, darkHex] = hex
+
+        return (
+          <ReorderItem
+            key={id}
+            label={id}
+            display="grid"
+            gridTemplateColumns={{
+              base: "1fr auto 1fr",
+              xl: "1fr",
+              lg: "1fr auto 1fr",
+              md: "1fr",
+            }}
+            gap="sm"
+          >
+            <HexToggleItem
+              display={{
+                base: "block",
+                xl: !isLight ? "none" : "block",
+                lg: "block",
+                md: !isLight ? "none" : "block",
+              }}
+              {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
+            />
+
+            <VStack
+              display={{ base: "flex", xl: "none", lg: "flex", md: "none" }}
+              gap="0"
+            >
+              <IconButton
+                right="0"
+                aria-label="Switching color mode"
+                isRounded
+                variant="ghost"
+                _hover={{
+                  bg: ["blackAlpha.100", "whiteAlpha.100"],
+                }}
+                colorScheme="neutral"
+                icon={<Arrow color="muted" transform="rotate(90deg)" />}
+                onClick={() => onEdit({ id, name, hex: [lightHex, lightHex] })}
+              />
+
+              <IconButton
+                right="0"
+                aria-label="Switching color mode"
+                isRounded
+                variant="ghost"
+                _hover={{
+                  bg: ["blackAlpha.100", "whiteAlpha.100"],
+                }}
+                colorScheme="neutral"
+                icon={<Arrow color="muted" transform="rotate(-90deg)" />}
+                onClick={() => onEdit({ id, name, hex: [darkHex, darkHex] })}
+              />
+            </VStack>
+
+            <HexToggleItem
+              display={{
+                base: "block",
+                xl: isLight ? "none" : "block",
+                lg: "block",
+                md: isLight ? "none" : "block",
+              }}
+              {...{ id, name, hex, isFirst, isLast, colorMode: "dark" }}
+            />
+          </ReorderItem>
+        )
+      })}
+    </Reorder>
+  )
+})
+
+HexReorder.displayName = "HexReorder"
 
 type HexToggleItemProps = ReorderColor &
   HexContainerProps & { colorMode: ColorMode }
@@ -423,13 +446,18 @@ const HexControl: FC<HexControlProps> = memo(
           </Text>
         </VStack>
 
-        <HexControlButtons
-          colorMode={colorMode}
+        <Box
           opacity={{ base: isOpen ? 1 : 0, sm: 1 }}
-          isEditRef={isEditRef}
-          onClose={onClose}
-          {...{ id, name, hex }}
-        />
+          transitionProperty="common"
+          transitionDuration="slower"
+        >
+          <HexControlButtons
+            colorMode={colorMode}
+            isEditRef={isEditRef}
+            onClose={onClose}
+            {...{ id, name, hex }}
+          />
+        </Box>
       </HexContainer>
     )
   },

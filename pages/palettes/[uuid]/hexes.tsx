@@ -92,10 +92,6 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
     [changePalette, colors, name, setColors, uuid, timestamp],
   )
 
-  const onChange = (ids: (string | number)[]) => {
-    setColors((prev) => ids.map((id) => prev.find((item) => item.id === id)))
-  }
-
   const onCompleteChange = (ids: (string | number)[]) => {
     const resolvedColors = ids.map((id) => {
       const { name, hex } = colors.find((item) => item.id === id)
@@ -154,12 +150,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
       <VStack as="section">
         <HexHeader />
 
-        <Reorder
-          gap="0"
-          variant="unstyled"
-          onChange={onChange}
-          onCompleteChange={onCompleteChange}
-        >
+        <Reorder gap="0" variant="unstyled" onCompleteChange={onCompleteChange}>
           {colors.map(({ id, name, hex }, index) => {
             const isFirst = !index
             const isLast = index + 1 === colors.length

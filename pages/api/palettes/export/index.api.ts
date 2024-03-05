@@ -85,9 +85,14 @@ const handler = async (
     )
 
     const lightJson = Object.values(data.light).flat().join("\n")
-    const darkJson = Object.values(data.dark).flat().join("\n")
 
-    json = `:root {\n${lightJson}\n}\n\n@media (prefers-color-scheme: dark) {\n:root {\n${darkJson}\n}\n}`
+    json = `:root {\n${lightJson}\n}`
+
+    if (!!Object.values(data.dark).length) {
+      const darkJson = Object.values(data.dark).flat().join("\n")
+
+      json += `\n\n@media (prefers-color-scheme: dark) {\n:root {\n${darkJson}\n}\n}`
+    }
   } else {
     const data = colors.reduce(
       (prev, { name, hex }) => {
@@ -152,7 +157,10 @@ const handler = async (
     json = JSON.stringify(data)
   }
 
-  json = await prettier(json, { parser: extension })
+  json = await prettier(json, {
+    parser: extension,
+    ...(isJson ? { printWidth: 0 } : {}),
+  })
 
   res.status(200).json(json)
 }

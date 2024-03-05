@@ -1,3 +1,4 @@
+import type { ColorMode } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -21,6 +22,7 @@ const Page: NextPage<PageProps> = ({
   palettes,
   palette,
   tab: tabProp,
+  colorMode,
 }) => {
   const { t } = useI18n()
   const [name, setName] = useState<string>(palette.name)
@@ -31,8 +33,18 @@ const Page: NextPage<PageProps> = ({
   const { uuid, timestamp } = palette
 
   const value = useMemo(
-    () => ({ tab, uuid, name, colors, timestamp, setTab, setName, setColors }),
-    [tab, uuid, colors, name, timestamp],
+    () => ({
+      tab,
+      colorMode,
+      uuid,
+      name,
+      colors,
+      timestamp,
+      setTab,
+      setName,
+      setColors,
+    }),
+    [tab, colorMode, uuid, colors, name, timestamp],
   )
 
   return (
@@ -65,7 +77,16 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
     null,
   )
-  const tab = getCookie<string>(cookies, CONSTANT.STORAGE.PALETTE_TAB, "tones")
+  const tab = getCookie<string>(
+    cookies,
+    CONSTANT.STORAGE.PALETTE_TAB,
+    "palettes",
+  )
+  const colorMode = getCookie<ColorMode>(
+    cookies,
+    CONSTANT.STORAGE.PALETTE_COLOR_MODE,
+    "light",
+  )
 
   if (!palette) return { notFound: true }
 
@@ -77,6 +98,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     hex,
     palettes,
     palette,
+    colorMode,
     tab,
   }
 

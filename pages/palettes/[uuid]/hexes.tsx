@@ -44,7 +44,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
     name,
     colors,
     timestamp,
-    setColors,
+    changeColors,
   } = usePalette()
   const { t } = useI18n()
   const { changePalette } = useApp()
@@ -61,7 +61,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
   const onCreate = () => {
     const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
 
-    setColors((prev) => [...prev, { id: generateUUID(), ...DEFAULT_COLOR }])
+    changeColors((prev) => [...prev, { id: generateUUID(), ...DEFAULT_COLOR }])
 
     changePalette({
       uuid,
@@ -77,13 +77,13 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
         targetId === id ? rest : { name, hex },
       )
 
-      setColors((prev) =>
+      changeColors((prev) =>
         prev.map((color) => (color.id === id ? { id, ...rest } : color)),
       )
 
       changePalette({ uuid, name, colors: computedColors, timestamp })
     },
-    [changePalette, colors, name, setColors, uuid, timestamp],
+    [changePalette, colors, name, changeColors, uuid, timestamp],
   )
 
   const onClone = useCallback(
@@ -92,7 +92,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
       const computedColors = colors.map(({ name, hex }) => ({ name, hex }))
 
-      setColors((prev) => [
+      changeColors((prev) => [
         ...prev.slice(0, index),
         { id: generateUUID(), ...rest },
         ...prev.slice(index),
@@ -106,7 +106,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
 
       changePalette({ uuid, name, colors: resolvedColors, timestamp })
     },
-    [changePalette, colors, name, setColors, uuid, timestamp],
+    [changePalette, colors, name, changeColors, uuid, timestamp],
   )
 
   const onDelete = useCallback(
@@ -117,11 +117,11 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
         )
         .filter(Boolean)
 
-      setColors((prev) => prev.filter(({ id }) => id !== targetId))
+      changeColors((prev) => prev.filter(({ id }) => id !== targetId))
 
       changePalette({ uuid, name, colors: resolvedColors, timestamp })
     },
-    [changePalette, colors, name, setColors, uuid, timestamp],
+    [changePalette, colors, name, changeColors, uuid, timestamp],
   )
 
   const value = useMemo(
@@ -234,7 +234,7 @@ HexHeader.displayName = "HexHeader"
 type HexReorderProps = {}
 
 const HexReorder: FC<HexReorderProps> = memo(() => {
-  const { uuid, name, colors, timestamp, setColors } = usePalette()
+  const { uuid, name, colors, timestamp, changeColors } = usePalette()
   const { onEdit } = useHexes()
   const { changePalette } = useApp()
   const [internalColors, setInternalColors] = useState<ReorderColors>(colors)
@@ -252,7 +252,7 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
       return { name, hex }
     })
 
-    setColors(internalColors)
+    changeColors(internalColors)
     changePalette({ uuid, name, colors: resolvedColors, timestamp })
   }
 

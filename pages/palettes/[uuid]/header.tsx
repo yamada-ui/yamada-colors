@@ -23,6 +23,7 @@ import {
   GridItem,
   SegmentedControl,
   SegmentedControlButton,
+  ChevronIcon,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
 import { useRouter } from "next/router"
@@ -117,6 +118,8 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
         justifyContent="space-between"
       >
         <HStack gap="sm">
+          <RollbackButtons />
+
           <DownloadButton />
 
           <EditButton name={name} onEdit={onEdit} />
@@ -145,6 +148,70 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
 })
 
 Header.displayName = "Header"
+
+type RollbackButtonsProps = {}
+
+const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
+  const { uuid, name, timestamp, indexRef, colorsMapRef, changeColors } =
+    usePalette()
+  const { changePalette } = useApp()
+  const index = indexRef.current
+  const colors = colorsMapRef.current
+
+  const rollbackColors = (index: number) => {
+    indexRef.current = index
+
+    const colors = [...colorsMapRef.current[index]]
+
+    changeColors(colors, true)
+
+    const resolvedColors = colors.map(({ name, hex }) => ({ name, hex }))
+
+    changePalette({ uuid, name, colors: resolvedColors, timestamp })
+  }
+
+  return (
+    <>
+      <IconButton
+        display={{ base: "inline-flex", sm: "none" }}
+        bg={["blackAlpha.100", "whiteAlpha.100"]}
+        colorScheme="neutral"
+        icon={
+          <ChevronIcon
+            fontSize="1.75em"
+            color="muted"
+            transform="rotate(90deg)"
+          />
+        }
+        borderColor="transparent"
+        isRounded
+        disabled={!index}
+        onClick={() => rollbackColors(index - 1)}
+        _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
+      />
+
+      <IconButton
+        display={{ base: "inline-flex", sm: "none" }}
+        bg={["blackAlpha.100", "whiteAlpha.100"]}
+        colorScheme="neutral"
+        icon={
+          <ChevronIcon
+            fontSize="1.75em"
+            color="muted"
+            transform="rotate(-90deg)"
+          />
+        }
+        borderColor="transparent"
+        isRounded
+        disabled={index === colors.length - 1}
+        onClick={() => rollbackColors(index + 1)}
+        _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
+      />
+    </>
+  )
+})
+
+RollbackButtons.displayName = "RollbackButtons"
 
 type DownloadButtonProps = IconButtonProps & {
   menuProps?: MenuProps

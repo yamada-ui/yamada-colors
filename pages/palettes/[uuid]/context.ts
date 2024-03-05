@@ -1,6 +1,6 @@
 import type { ColorMode } from "@yamada-ui/react"
 import { createContext } from "@yamada-ui/react"
-import type { Dispatch, SetStateAction } from "react"
+import type { Dispatch, MutableRefObject, SetStateAction } from "react"
 
 type PaletteContext = {
   tab: string
@@ -11,7 +11,12 @@ type PaletteContext = {
   timestamp: number
   setTab: Dispatch<SetStateAction<string>>
   setName: Dispatch<SetStateAction<string>>
-  setColors: Dispatch<SetStateAction<ReorderColors>>
+  changeColors: (
+    valOrFunc: SetStateAction<ReorderColors>,
+    isRollback?: boolean,
+  ) => void
+  indexRef: MutableRefObject<number>
+  colorsMapRef: MutableRefObject<ReorderColors[]>
 }
 
 export const [PaletteProvider, usePalette] = createContext<PaletteContext>()

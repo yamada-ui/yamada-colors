@@ -1,10 +1,11 @@
-import type { ColorMode } from "@yamada-ui/react"
+import { runIfFunc, type ColorMode } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import { useMemo, useState } from "react"
+import type { SetStateAction } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { PaletteProvider } from "./context"
 import { Header } from "./header"
 import { Hexes } from "./hexes"
@@ -29,8 +30,32 @@ const Page: NextPage<PageProps> = ({
   const [colors, setColors] = useState<ReorderColors>(
     palette.colors.map((color) => ({ id: generateUUID(), ...color })),
   )
+
   const [tab, setTab] = useState<string>(tabProp)
   const { uuid, timestamp } = palette
+  const indexRef = useRef<number>(0)
+  const colorsMapRef = useRef<ReorderColors[]>([colors])
+
+  const changeColors = useCallback(
+    (valOrFunc: SetStateAction<ReorderColors>, isRollback: boolean = false) =>
+      setColors((prev) => {
+        const next = runIfFunc(valOrFunc, prev)
+
+        if (!isRollback) {
+          if (indexRef.current !== colorsMapRef.current.length - 1) {
+            colorsMapRef.current = colorsMapRef.current.slice(
+              0,
+              indexRef.current + 1,
+            )
+          }
+
+          colorsMapRef.current.push(next)
+          indexRef.current = colorsMapRef.current.length - 1
+        }
+        return next
+      }),
+    [],
+  )
 
   const value = useMemo(
     () => ({
@@ -42,9 +67,11 @@ const Page: NextPage<PageProps> = ({
       timestamp,
       setTab,
       setName,
-      setColors,
+      changeColors,
+      colorsMapRef,
+      indexRef,
     }),
-    [tab, colorMode, uuid, colors, name, timestamp],
+    [tab, changeColors, colorMode, uuid, colors, name, timestamp],
   )
 
   return (

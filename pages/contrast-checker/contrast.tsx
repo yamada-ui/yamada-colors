@@ -111,7 +111,7 @@ const ColorInput: FC<ColorInputProps> = ({
   const [value, setValue] = useState<string>(f(valueProp, format))
 
   useUpdateEffect(() => {
-    setValue(valueProp)
+    setValue(f(valueProp, format))
   }, [valueProp])
 
   return (

@@ -36,7 +36,7 @@ import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { setCookie } from "utils/storage"
 
-const TABS = ["blindness", "shades", "tints", "tones", "hidden"]
+const TABS = ["palettes", "blindness", "shades", "tints", "tones"]
 
 export type HeaderProps = StackProps & {}
 
@@ -127,7 +127,7 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
         <SegmentedControl
           variant="tabs"
           value={tab}
-          display={{ base: "inline-flex", xl: "none" }}
+          display={{ base: "inline-flex", sm: "none" }}
           size="sm"
           onChange={onChange}
         >

@@ -41,11 +41,11 @@
       "submit": "Apply"
     },
     "tab": {
+      "palettes": "Palettes",
       "blindness": "Blindness",
       "tones": "Tones",
       "shades": "Shades",
-      "tints": "Tints",
-      "hidden": "Hidden"
+      "tints": "Tints"
     }
   },
   "generators": {

@@ -44,11 +44,11 @@
       "submit": "適用"
     },
     "tab": {
+      "palettes": "パレット",
       "blindness": "色覚",
       "tones": "トーン",
       "shades": "シェード",
-      "tints": "ティント",
-      "hidden": "非表示"
+      "tints": "ティント"
     }
   },
   "generators": {

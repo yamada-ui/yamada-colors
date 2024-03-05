@@ -51,7 +51,7 @@ export const PaletteMenu = memo(
       const onSelect = useCallback(
         ({ colors, ...rest }: ColorPalette) => {
           changePalette({
-            colors: [...colors, { hex, name }],
+            colors: [...colors, { hex: [hex, hex], name }],
             ...rest,
           })
 

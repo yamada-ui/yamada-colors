@@ -1,5 +1,4 @@
 import {
-  Autocomplete,
   Box,
   Button,
   Center,
@@ -23,7 +22,6 @@ import {
   useNotice,
 } from "@yamada-ui/react"
 import type {
-  AutocompleteItem,
   CenterProps,
   ColorMode,
   InputProps,
@@ -46,20 +44,6 @@ import {
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f, isLight } from "utils/color"
-
-const COLOR_TOKEN_NAMES: AutocompleteItem[] = [
-  { label: "primary", value: "primary" },
-  { label: "secondary", value: "secondary" },
-  { label: "tertiary", value: "tertiary" },
-  { label: "quaternary", value: "quaternary" },
-  { label: "success", value: "success" },
-  { label: "info", value: "info" },
-  { label: "danger", value: "danger" },
-  { label: "warning", value: "warning" },
-  { label: "link", value: "link" },
-  { label: "focus", value: "focus" },
-  { label: "border", value: "border" },
-]
 
 export type HexControlButtonsProps = StackProps &
   ReorderColor & {
@@ -336,12 +320,7 @@ const EditButton: FC<EditButtonProps> = memo(
 
         <PopoverContent>
           <PopoverBody>
-            <Autocomplete
-              value={value}
-              onChange={setValue}
-              items={COLOR_TOKEN_NAMES}
-              allowFree
-            />
+            <Input value={value} onChange={(ev) => setValue(ev.target.value)} />
 
             <EditColorPicker
               hex={resolvedHex}

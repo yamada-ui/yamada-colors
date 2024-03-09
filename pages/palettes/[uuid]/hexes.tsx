@@ -23,7 +23,15 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import { Dots, Moon, Plus, Refresh, Sun } from "components/media-and-icons"
+import type { Color } from "components/media-and-icons"
+import {
+  Dots,
+  Moon,
+  Plus,
+  Refresh,
+  Share,
+  Sun,
+} from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -510,17 +518,32 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
   }, [hex, tab])
 
   return (
-    <HexContainer
-      display="grid"
-      gridTemplateColumns={`repeat(${count}, 1fr)`}
-      overflow="hidden"
-      {...rest}
-    >
-      {hexes.map((hex, index) => (
-        <GridItem key={`${hex}-${index}`} boxSize="full">
-          <Center boxSize="full" bg={hex} />
-        </GridItem>
-      ))}
+    <HexContainer as="nav" overflow="hidden" {...rest}>
+      <Grid as="ul" templateColumns={`repeat(${count}, 1fr)`}>
+        {hexes.map((hex, index) => (
+          <GridItem key={`${hex}-${index}`} as="li" boxSize="full">
+            <Center
+              as={Link}
+              href={`/colors/${hex.replace("#", "")}`}
+              tabIndex={-1}
+              boxSize="full"
+              bg={hex}
+              _hover={{
+                "& > *": {
+                  opacity: "1",
+                },
+              }}
+            >
+              <Share
+                color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
+                opacity="0"
+                transitionProperty="common"
+                transitionDuration="slower"
+              />
+            </Center>
+          </GridItem>
+        ))}
+      </Grid>
     </HexContainer>
   )
 })

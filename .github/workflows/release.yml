@@ -1,10 +1,10 @@
-name: Sync
+name: Release
 
 on: [workflow_dispatch]
 
 jobs:
-  Sync:
-    name: Sync
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,3 +28,4 @@ jobs:
           title: "Version Packages"
           branch: changeset-release/main
           assignees: "hirotomoyamada"
+          reviewers: "hirotomoyamada"

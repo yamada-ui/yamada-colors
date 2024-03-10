@@ -15,13 +15,13 @@ import {
   DrawerHeader,
   HStack,
   IconButton,
+  Image,
   Menu,
   MenuButton,
   MenuList,
   MenuOptionGroup,
   MenuOptionItem,
   Spacer,
-  Text,
   VStack,
   forwardRef,
   isString,
@@ -99,7 +99,7 @@ export const Header = memo(
               shadow={isScroll ? ["base", "dark-sm"] : undefined}
             >
               <HStack gap={{ base: "md", sm: "sm" }}>
-                <Box
+                <Center
                   as={Link}
                   href="/"
                   aria-label="Yamada UI"
@@ -109,11 +109,23 @@ export const Header = memo(
                   _focus={{ outline: "none" }}
                   _focusVisible={{ boxShadow: "outline" }}
                   rounded="md"
+                  fontSize="xl"
                 >
-                  <Text as="span" fontSize="xl" fontWeight="semibold">
-                    Yamada Colors
-                  </Text>
-                </Box>
+                  <Image
+                    src="/logo-black.png"
+                    alt=""
+                    w="auto"
+                    h="8"
+                    _dark={{ display: "none" }}
+                  />
+                  <Image
+                    src="/logo-white.png"
+                    alt=""
+                    w="auto"
+                    h={{ base: "8", sm: "7" }}
+                    _light={{ display: "none" }}
+                  />
+                </Center>
 
                 <Spacer />
 

@@ -113,14 +113,14 @@ export const Header = memo(
                 >
                   <Image
                     src="/logo-black.png"
-                    alt=""
+                    alt="Yamada Colors"
                     w="auto"
-                    h="8"
+                    h={{ base: "8", sm: "7" }}
                     _dark={{ display: "none" }}
                   />
                   <Image
                     src="/logo-white.png"
-                    alt=""
+                    alt="Yamada Colors"
                     w="auto"
                     h={{ base: "8", sm: "7" }}
                     _light={{ display: "none" }}

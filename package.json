@@ -15,7 +15,8 @@
     "format:write": "prettier --write --cache .",
     "quality": "pnpm format:check && pnpm lint && pnpm typecheck",
     "clean": "rimraf .next",
-    "clean:all": "rimraf .next node_modules"
+    "clean:all": "rimraf .next node_modules",
+    "observe:pr": "tsx scripts/observe-pull-requests"
   },
   "dependencies": {
     "@commitlint/cli": "^19.0.3",

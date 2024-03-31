@@ -21,6 +21,18 @@ import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 import { toCamelCase } from "utils/string"
 
+export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+  const {
+    props: { cookies, hex, format, palettes },
+  } = await getServerSideCommonProps(req)
+  const category = req.query.category as string
+  const colors = getRandomColors({ category, count: 120 })
+
+  const props = { cookies, hex, format, palettes, category, categories, colors }
+
+  return { props }
+}
+
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({
@@ -104,15 +116,3 @@ const Page: NextPage<PageProps> = ({
 }
 
 export default Page
-
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
-  const {
-    props: { cookies, hex, format, palettes },
-  } = await getServerSideCommonProps(req)
-  const category = req.query.category as string
-  const colors = getRandomColors({ category, count: 120 })
-
-  const props = { cookies, hex, format, palettes, category, categories, colors }
-
-  return { props }
-}

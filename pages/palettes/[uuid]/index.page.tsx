@@ -15,6 +15,44 @@ import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 import { generateUUID, getCookie } from "utils/storage"
 
+export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+  const {
+    props: { cookies, format, hex, palettes },
+  } = await getServerSideCommonProps(req)
+  const uuid = req.query.uuid as string
+  let palette = getCookie<ColorPalette | null>(
+    cookies,
+    `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
+    null,
+  )
+  const tab = getCookie<string>(
+    cookies,
+    CONSTANT.STORAGE.PALETTE_TAB,
+    "palettes",
+  )
+  const colorMode = getCookie<ColorMode>(
+    cookies,
+    CONSTANT.STORAGE.PALETTE_COLOR_MODE,
+    "light",
+  )
+
+  if (!palette) return { notFound: true }
+
+  palette.name = decodeURIComponent(palette.name)
+
+  const props = {
+    cookies,
+    format,
+    hex,
+    palettes,
+    palette,
+    colorMode,
+    tab,
+  }
+
+  return { props }
+}
+
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({
@@ -93,41 +131,3 @@ const Page: NextPage<PageProps> = ({
 }
 
 export default Page
-
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
-  const {
-    props: { cookies, format, hex, palettes },
-  } = await getServerSideCommonProps(req)
-  const uuid = req.query.uuid as string
-  let palette = getCookie<ColorPalette | null>(
-    cookies,
-    `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
-    null,
-  )
-  const tab = getCookie<string>(
-    cookies,
-    CONSTANT.STORAGE.PALETTE_TAB,
-    "palettes",
-  )
-  const colorMode = getCookie<ColorMode>(
-    cookies,
-    CONSTANT.STORAGE.PALETTE_COLOR_MODE,
-    "light",
-  )
-
-  if (!palette) return { notFound: true }
-
-  palette.name = decodeURIComponent(palette.name)
-
-  const props = {
-    cookies,
-    format,
-    hex,
-    palettes,
-    palette,
-    colorMode,
-    tab,
-  }
-
-  return { props }
-}

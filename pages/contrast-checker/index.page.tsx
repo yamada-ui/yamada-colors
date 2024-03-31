@@ -15,59 +15,6 @@ import { isReadable, readability } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
 import { getCookie } from "utils/storage"
 
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
-
-const Page: NextPage<PageProps> = ({
-  level,
-  hexes,
-  palettes,
-  format,
-  light,
-  dark,
-}) => {
-  const { t } = useI18n()
-  const [{ aa, aaa }, setLevel] = useState(level)
-  const queries = new URLSearchParams({
-    "light.fg": light.fg.replace("#", ""),
-    "light.bg": light.bg.replace("#", ""),
-    "dark.fg": dark.fg.replace("#", ""),
-    "dark.bg": dark.bg.replace("#", ""),
-  })
-
-  return (
-    <AppLayout
-      title={t("contrast-checker.title")}
-      description={t("contrast-checker.description")}
-      hex={hexes}
-      format={format}
-      palettes={palettes}
-      gap={{ base: "lg", sm: "normal" }}
-    >
-      <Header {...{ hexes, aa, aaa, setLevel }} />
-
-      <Grid
-        templateColumns={{
-          base: "repeat(2, 1fr)",
-          xl: "1fr",
-          lg: "repeat(2, 1fr)",
-          md: "1fr",
-        }}
-        gap="lg"
-      >
-        <Contrast
-          mode="light"
-          {...light}
-          level={{ aa, aaa }}
-          queries={queries}
-        />
-        <Contrast mode="dark" {...dark} level={{ aa, aaa }} queries={queries} />
-      </Grid>
-    </AppLayout>
-  )
-}
-
-export default Page
-
 const getContrast = (
   mode: "light" | "dark",
   query: GetServerSidePropsContext["query"],
@@ -124,3 +71,56 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     return { notFound: true }
   }
 }
+
+type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+const Page: NextPage<PageProps> = ({
+  level,
+  hexes,
+  palettes,
+  format,
+  light,
+  dark,
+}) => {
+  const { t } = useI18n()
+  const [{ aa, aaa }, setLevel] = useState(level)
+  const queries = new URLSearchParams({
+    "light.fg": light.fg.replace("#", ""),
+    "light.bg": light.bg.replace("#", ""),
+    "dark.fg": dark.fg.replace("#", ""),
+    "dark.bg": dark.bg.replace("#", ""),
+  })
+
+  return (
+    <AppLayout
+      title={t("contrast-checker.title")}
+      description={t("contrast-checker.description")}
+      hex={hexes}
+      format={format}
+      palettes={palettes}
+      gap={{ base: "lg", sm: "normal" }}
+    >
+      <Header {...{ hexes, aa, aaa, setLevel }} />
+
+      <Grid
+        templateColumns={{
+          base: "repeat(2, 1fr)",
+          xl: "1fr",
+          lg: "repeat(2, 1fr)",
+          md: "1fr",
+        }}
+        gap="lg"
+      >
+        <Contrast
+          mode="light"
+          {...light}
+          level={{ aa, aaa }}
+          queries={queries}
+        />
+        <Contrast mode="dark" {...dark} level={{ aa, aaa }} queries={queries} />
+      </Grid>
+    </AppLayout>
+  )
+}
+
+export default Page

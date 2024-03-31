@@ -9,6 +9,32 @@ import { getRandomColors } from "functions/get-random-colors"
 import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 
+export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+  const {
+    props: { cookies, hex, format, palettes },
+  } = await getServerSideCommonProps(req)
+
+  const omittedCategories = (categories as unknown as string[])
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 8)
+
+  const computedCategories = omittedCategories.map((category) => {
+    const colors = getRandomColors({ category })
+
+    return { category, colors }
+  })
+
+  const props = {
+    cookies,
+    hex,
+    format,
+    categories: computedCategories,
+    palettes,
+  }
+
+  return { props }
+}
+
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({ hex, format, categories, palettes }) => {
@@ -42,29 +68,3 @@ const Page: NextPage<PageProps> = ({ hex, format, categories, palettes }) => {
 }
 
 export default Page
-
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
-  const {
-    props: { cookies, hex, format, palettes },
-  } = await getServerSideCommonProps(req)
-
-  const omittedCategories = (categories as unknown as string[])
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 8)
-
-  const computedCategories = omittedCategories.map((category) => {
-    const colors = getRandomColors({ category })
-
-    return { category, colors }
-  })
-
-  const props = {
-    cookies,
-    hex,
-    format,
-    categories: computedCategories,
-    palettes,
-  }
-
-  return { props }
-}

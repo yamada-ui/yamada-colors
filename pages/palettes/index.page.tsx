@@ -13,6 +13,23 @@ import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 import { deleteCookie, getCookie } from "utils/storage"
 
+export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+  const {
+    props: { cookies, format, hex, palettes },
+  } = await getServerSideCommonProps(req)
+  const query = getCookie<string>(cookies, CONSTANT.STORAGE.PALETTE_QUERY, "")
+
+  const props = {
+    cookies,
+    format,
+    hex,
+    palettes,
+    query,
+  }
+
+  return { props }
+}
+
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({ palettes, hex, format, query }) => {
@@ -49,20 +66,3 @@ const Page: NextPage<PageProps> = ({ palettes, hex, format, query }) => {
 }
 
 export default Page
-
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
-  const {
-    props: { cookies, format, hex, palettes },
-  } = await getServerSideCommonProps(req)
-  const query = getCookie<string>(cookies, CONSTANT.STORAGE.PALETTE_QUERY, "")
-
-  const props = {
-    cookies,
-    format,
-    hex,
-    palettes,
-    query,
-  }
-
-  return { props }
-}

@@ -12,31 +12,6 @@ import { AppLayout } from "layouts/app-layout"
 import { alternative, darken, hue, lighten, tone } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
 
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
-
-const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
-  const { t } = useI18n()
-
-  return (
-    <AppLayout
-      title={t("generators.title")}
-      description={t("generators.description")}
-      hex={hex}
-      format={format}
-      palettes={palettes}
-      gap={{ base: "lg", sm: "normal" }}
-    >
-      <Header {...{ hex, tab }} />
-
-      <Tabs {...{ tab, hex }} />
-
-      <Hexes {...{ hexes }} />
-    </AppLayout>
-  )
-}
-
-export default Page
-
 const getTabData = (hex: string, tab: string) => {
   switch (tab) {
     case "alternatives":
@@ -85,3 +60,28 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     return { notFound: true }
   }
 }
+
+type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
+  const { t } = useI18n()
+
+  return (
+    <AppLayout
+      title={t("generators.title")}
+      description={t("generators.description")}
+      hex={hex}
+      format={format}
+      palettes={palettes}
+      gap={{ base: "lg", sm: "normal" }}
+    >
+      <Header {...{ hex, tab }} />
+
+      <Tabs {...{ tab, hex }} />
+
+      <Hexes {...{ hexes }} />
+    </AppLayout>
+  )
+}
+
+export default Page

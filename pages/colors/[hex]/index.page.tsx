@@ -36,66 +36,6 @@ import {
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 
-type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
-
-export type ColorData = PageProps["data"]
-
-const Page: NextPage<PageProps> = ({
-  cookies,
-  format,
-  hex,
-  palettes,
-  name,
-  data,
-  shadeColors,
-  tintColors,
-  toneColors,
-  complementaryColors,
-  hueColors,
-  alternativeColors,
-  triadicColors,
-  squareColors,
-  splitComplementaryColors,
-  blind,
-  contrast,
-}) => {
-  useHistory({ cookies, hex })
-  const { t } = useI18n()
-
-  return (
-    <AppLayout
-      title={hex}
-      description={t("colors.description")}
-      hex={hex}
-      format={format}
-      palettes={palettes}
-      gap={{ base: "lg", sm: "normal" }}
-    >
-      <Header {...{ hex, name }} />
-
-      <Data {...data} />
-
-      <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
-
-      <A11y {...{ hex, blind, contrast }} />
-
-      <Others
-        {...{
-          hex,
-          complementaryColors,
-          hueColors,
-          alternativeColors,
-          triadicColors,
-          squareColors,
-          splitComplementaryColors,
-        }}
-      />
-    </AppLayout>
-  )
-}
-
-export default Page
-
 const getColorData = (hex: string) => {
   const name = getColorName(hex)
   const rgb = toRgb(hex)
@@ -199,3 +139,63 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     return { notFound: true }
   }
 }
+
+type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+export type ColorData = PageProps["data"]
+
+const Page: NextPage<PageProps> = ({
+  cookies,
+  format,
+  hex,
+  palettes,
+  name,
+  data,
+  shadeColors,
+  tintColors,
+  toneColors,
+  complementaryColors,
+  hueColors,
+  alternativeColors,
+  triadicColors,
+  squareColors,
+  splitComplementaryColors,
+  blind,
+  contrast,
+}) => {
+  useHistory({ cookies, hex })
+  const { t } = useI18n()
+
+  return (
+    <AppLayout
+      title={hex}
+      description={t("colors.description")}
+      hex={hex}
+      format={format}
+      palettes={palettes}
+      gap={{ base: "lg", sm: "normal" }}
+    >
+      <Header {...{ hex, name }} />
+
+      <Data {...data} />
+
+      <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
+
+      <A11y {...{ hex, blind, contrast }} />
+
+      <Others
+        {...{
+          hex,
+          complementaryColors,
+          hueColors,
+          alternativeColors,
+          triadicColors,
+          squareColors,
+          splitComplementaryColors,
+        }}
+      />
+    </AppLayout>
+  )
+}
+
+export default Page

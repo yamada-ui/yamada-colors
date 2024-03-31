@@ -12,6 +12,19 @@ import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 import { getCookie } from "utils/storage"
 
+export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+  const {
+    props: { hex, cookies, format, palettes },
+  } = await getServerSideCommonProps(req)
+
+  const hexes = getCookie<string[]>(cookies, CONSTANT.STORAGE.HISTORY, "[]")
+  const history = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+
+  const props = { cookies, hex, format, history, palettes }
+
+  return { props }
+}
+
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({ hex, history, format, palettes }) => {
@@ -46,16 +59,3 @@ const Page: NextPage<PageProps> = ({ hex, history, format, palettes }) => {
 }
 
 export default Page
-
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
-  const {
-    props: { hex, cookies, format, palettes },
-  } = await getServerSideCommonProps(req)
-
-  const hexes = getCookie<string[]>(cookies, CONSTANT.STORAGE.HISTORY, "[]")
-  const history = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
-
-  const props = { cookies, hex, format, history, palettes }
-
-  return { props }
-}

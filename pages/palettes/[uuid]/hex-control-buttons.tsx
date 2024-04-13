@@ -307,67 +307,69 @@ const EditButton: FC<EditButtonProps> = memo(
     }
 
     return (
-      <RemoveScroll allowPinchZoom={false} enabled={isOpen}>
-        <Popover
-          isOpen={isOpen}
-          onClose={onClose}
-          closeOnButton={false}
-          restoreFocus={false}
-          modifiers={[
-            {
-              name: "preventOverflow",
-              options: {
-                padding: {
-                  top: 16,
-                  bottom: 16,
-                  left: 16,
-                  right: 16,
-                },
+      <Popover
+        isOpen={isOpen}
+        onClose={onClose}
+        closeOnButton={false}
+        restoreFocus={false}
+        modifiers={[
+          {
+            name: "preventOverflow",
+            options: {
+              padding: {
+                top: 16,
+                bottom: 16,
+                left: 16,
+                right: 16,
               },
             },
-          ]}
-        >
-          <PopoverTrigger>
-            <HexControlButton hex={resolvedHex} onClick={onOpen}>
-              <Pen />
-            </HexControlButton>
-          </PopoverTrigger>
+          },
+        ]}
+      >
+        <PopoverTrigger>
+          <HexControlButton hex={resolvedHex} onClick={onOpen}>
+            <Pen />
+          </HexControlButton>
+        </PopoverTrigger>
 
-          <PopoverContent>
-            <PopoverBody>
-              <Input
-                value={value}
-                onChange={(ev) => setValue(ev.target.value)}
-              />
+        <PopoverContent>
+          <PopoverBody>
+            <RemoveScroll allowPinchZoom={false} enabled={isOpen}>
+              <>
+                <Input
+                  value={value}
+                  onChange={(ev) => setValue(ev.target.value)}
+                />
 
-              <EditColorPicker
-                hex={resolvedHex}
-                resetRef={resetRef}
-                hexRef={hexRef}
-                onKeyDown={(ev) => {
-                  if (ev.key !== "Enter") return
+                <EditColorPicker
+                  hex={resolvedHex}
+                  resetRef={resetRef}
+                  hexRef={hexRef}
+                  onKeyDown={(ev) => {
+                    if (ev.key !== "Enter") return
 
-                  onSubmit()
-                }}
-              />
-            </PopoverBody>
+                    onSubmit()
+                  }}
+                />
+              </>
+            </RemoveScroll>
+          </PopoverBody>
 
-            <PopoverFooter>
-              <Button
-                isDisabled={!value.length}
-                w="full"
-                colorScheme="neutral"
-                borderColor="transparent"
-                bg={["blackAlpha.200", "whiteAlpha.100"]}
-                onClick={onSubmit}
-                _hover={{ _disabled: {} }}
-              >
-                {t("palette.edit.submit")}
-              </Button>
-            </PopoverFooter>
-          </PopoverContent>
-        </Popover>
-      </RemoveScroll>
+          <PopoverFooter>
+            <Button
+              isDisabled={!value.length}
+              w="full"
+              colorScheme="neutral"
+              borderColor="transparent"
+              bg={["blackAlpha.200", "whiteAlpha.100"]}
+              onClick={onSubmit}
+              _hover={{ _disabled: {} }}
+            >
+              {t("palette.edit.submit")}
+            </Button>
+          </PopoverFooter>
+        </PopoverContent>
+      </Popover>
     )
   },
 )

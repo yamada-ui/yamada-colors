@@ -23,7 +23,6 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import type { Color } from "components/media-and-icons"
 import {
   Dots,
   Moon,

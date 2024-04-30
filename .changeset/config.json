@@ -7,5 +7,7 @@
     }
   ],
   "commit": true,
-  "linked": []
+  "linked": [],
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch"
 }

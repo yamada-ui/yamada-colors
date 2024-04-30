@@ -23,3 +23,5 @@ jobs:
           pnpm release
           git add .
           git diff --staged --exit-code || (git commit -m 'ci(changelog): added changelog' && git push)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -21,6 +21,8 @@ jobs:
       - name: Create changelog
         run: |
           pnpm release
+          git config --global user.email "hirotomo.yamada@avap.co.jp"
+          git config --global user.name "hirotomoyamada"
           git add .
           git diff --staged --exit-code || (git commit -m 'ci(changelog): added changelog' && git push)
         env:

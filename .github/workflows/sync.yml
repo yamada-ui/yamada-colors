@@ -1,0 +1,40 @@
+name: Sync
+
+on: [workflow_dispatch]
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: main
+
+      - name: Install
+        uses: ./.github/composite-actions/install
+
+      - name: Update Yamada UI
+        run: pnpm up '@yamada-ui/*' --latest
+
+      - name: Create changeset file
+        run: |
+          UUID=$(uuidgen)
+          CHANGESET_PATH=".changeset/${UUID}.md"
+          echo "---" > $CHANGESET_PATH
+          echo "\"yamada-colors\": patch" >> $CHANGESET_PATH
+          echo "---\n" >> $CHANGESET_PATH
+          echo "Updated dependencies." >> $CHANGESET_PATH
+
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          delete-branch: true
+          commit-message: "ci(changesets): version packages"
+          title: "Updated dependencies"
+          branch: changeset-release/main
+          assignees: "hirotomoyamada"
+          reviewers: "hirotomoyamada"

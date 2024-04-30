@@ -1,15 +1,18 @@
 import type { ButtonProps } from "@yamada-ui/react"
 import {
+  Box,
   Button,
   ChevronIcon,
   HStack,
   Spacer,
+  Tooltip,
   useColorModeValue,
 } from "@yamada-ui/react"
 import type { Dispatch, SetStateAction, FC } from "react"
 import { Check } from "components/media-and-icons"
 import { NextLinkIconButton } from "components/navigation"
 import { CONSTANT } from "constant"
+import { useI18n } from "contexts/i18n-context"
 import { setCookie } from "utils/storage"
 
 export type HeaderProps = {
@@ -20,22 +23,28 @@ export type HeaderProps = {
 }
 
 export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
+  const { t } = useI18n()
+
   return (
     <HStack as="section" gap="sm">
-      <NextLinkIconButton
-        href={`/colors/${hexes[0].replace("#", "")}`}
-        bg={["blackAlpha.100", "whiteAlpha.100"]}
-        borderColor="transparent"
-        colorScheme="neutral"
-        icon={
-          <ChevronIcon
-            color="muted"
-            fontSize="1.5em"
-            transform="rotate(90deg)"
+      <Tooltip label={t("contrast-checker.back")} placement="top">
+        <Box>
+          <NextLinkIconButton
+            href={`/colors/${hexes[0].replace("#", "")}`}
+            bg={["blackAlpha.100", "whiteAlpha.100"]}
+            borderColor="transparent"
+            colorScheme="neutral"
+            icon={
+              <ChevronIcon
+                color="muted"
+                fontSize="1.5em"
+                transform="rotate(90deg)"
+              />
+            }
+            isRounded
           />
-        }
-        isRounded
-      />
+        </Box>
+      </Tooltip>
 
       <Spacer />
 

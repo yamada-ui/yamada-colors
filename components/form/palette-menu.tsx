@@ -22,6 +22,7 @@ import {
   Center,
   Motion,
   PopoverFooter,
+  Tooltip,
 } from "@yamada-ui/react"
 import type { FC, MutableRefObject, RefObject } from "react"
 import { memo, useCallback, useRef, useState } from "react"
@@ -62,22 +63,31 @@ export const PaletteMenu = memo(
 
       return (
         <Popover
+          restoreFocus={false}
           placement="bottom-end"
           isOpen={isOpen}
           onClose={onClose}
           {...rest}
         >
           <PopoverTrigger>
-            <IconButton
-              ref={ref}
-              icon={<ColorPalette color="muted" />}
-              bg={["blackAlpha.100", "whiteAlpha.100"]}
-              borderColor="transparent"
-              colorScheme="neutral"
-              isRounded
-              {...buttonProps}
-              onClick={handlerAll(buttonProps?.onClick, onOpen)}
-            />
+            <Box>
+              <Tooltip
+                isDisabled={isOpen}
+                label={t("component.palette-menu.tooltip")}
+                placement="top"
+              >
+                <IconButton
+                  ref={ref}
+                  icon={<ColorPalette color="muted" />}
+                  bg={["blackAlpha.100", "whiteAlpha.100"]}
+                  borderColor="transparent"
+                  colorScheme="neutral"
+                  isRounded
+                  {...buttonProps}
+                  onClick={handlerAll(buttonProps?.onClick, onOpen)}
+                />
+              </Tooltip>
+            </Box>
           </PopoverTrigger>
 
           <PopoverContent w="sm">

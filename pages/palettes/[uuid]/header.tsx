@@ -24,13 +24,15 @@ import {
   SegmentedControl,
   SegmentedControlButton,
   ChevronIcon,
+  Tooltip,
+  funcAll,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
 import { useRouter } from "next/router"
 import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
 import { usePalette } from "./context"
-import { Download, Pen, Trash } from "components/media-and-icons"
+import { Export, Pen, Trash } from "components/media-and-icons"
 import { ExportModal } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
@@ -154,6 +156,7 @@ type RollbackButtonsProps = {}
 const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
   const { uuid, name, timestamp, indexRef, colorsMapRef, changeColors } =
     usePalette()
+  const { t } = useI18n()
   const { changePalette } = useApp()
   const index = indexRef.current
   const colors = colorsMapRef.current
@@ -172,41 +175,45 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
 
   return (
     <>
-      <IconButton
-        display={{ base: "inline-flex", sm: "none" }}
-        bg={["blackAlpha.100", "whiteAlpha.100"]}
-        colorScheme="neutral"
-        icon={
-          <ChevronIcon
-            fontSize="1.75em"
-            color="muted"
-            transform="rotate(90deg)"
-          />
-        }
-        borderColor="transparent"
-        isRounded
-        disabled={!index}
-        onClick={() => rollbackColors(index - 1)}
-        _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
-      />
+      <Tooltip label={t("palette.redo")} placement="top">
+        <IconButton
+          display={{ base: "inline-flex", sm: "none" }}
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          colorScheme="neutral"
+          icon={
+            <ChevronIcon
+              fontSize="1.75em"
+              color="muted"
+              transform="rotate(90deg)"
+            />
+          }
+          borderColor="transparent"
+          isRounded
+          disabled={!index}
+          onClick={() => rollbackColors(index - 1)}
+          _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
+        />
+      </Tooltip>
 
-      <IconButton
-        display={{ base: "inline-flex", sm: "none" }}
-        bg={["blackAlpha.100", "whiteAlpha.100"]}
-        colorScheme="neutral"
-        icon={
-          <ChevronIcon
-            fontSize="1.75em"
-            color="muted"
-            transform="rotate(-90deg)"
-          />
-        }
-        borderColor="transparent"
-        isRounded
-        disabled={index === colors.length - 1}
-        onClick={() => rollbackColors(index + 1)}
-        _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
-      />
+      <Tooltip label={t("palette.undo")} placement="top">
+        <IconButton
+          display={{ base: "inline-flex", sm: "none" }}
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          colorScheme="neutral"
+          icon={
+            <ChevronIcon
+              fontSize="1.75em"
+              color="muted"
+              transform="rotate(-90deg)"
+            />
+          }
+          borderColor="transparent"
+          isRounded
+          disabled={index === colors.length - 1}
+          onClick={() => rollbackColors(index + 1)}
+          _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
+        />
+      </Tooltip>
     </>
   )
 })
@@ -220,69 +227,88 @@ type DownloadButtonProps = IconButtonProps & {
 const DownloadButton: FC<DownloadButtonProps> = memo(
   ({ menuProps, ...rest }) => {
     const { colors } = usePalette()
+    const { t } = useI18n()
     const typeRef = useRef<ColorExport>("json.token")
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const tooltipControl = useDisclosure()
+    const menuControl = useDisclosure()
+    const modalControl = useDisclosure()
     const padding = useBreakpointValue({ base: 32, md: 16 })
 
     const onSelect = (type: ColorExport) => {
       typeRef.current = type
-      onOpen()
+      modalControl.onOpen()
     }
 
     return (
       <>
-        <Menu
-          placement="bottom"
-          modifiers={[
-            {
-              name: "preventOverflow",
-              options: {
-                padding: {
-                  top: padding,
-                  bottom: padding,
-                  left: padding,
-                  right: padding,
-                },
-              },
-            },
-          ]}
-          restoreFocus={false}
-          {...menuProps}
+        <Tooltip
+          {...tooltipControl}
+          isDisabled={menuControl.isOpen}
+          label={t("palette.export")}
+          placement="top"
         >
-          <MenuButton
-            as={IconButton}
-            aria-label="Open color download menu"
-            isRounded
-            bg={["blackAlpha.100", "whiteAlpha.100"]}
-            borderColor="transparent"
-            colorScheme="neutral"
-            icon={<Download color="muted" />}
-            {...rest}
-          />
+          <Box>
+            <Menu
+              placement="bottom"
+              modifiers={[
+                {
+                  name: "preventOverflow",
+                  options: {
+                    padding: {
+                      top: padding,
+                      bottom: padding,
+                      left: padding,
+                      right: padding,
+                    },
+                  },
+                },
+              ]}
+              restoreFocus={false}
+              {...menuControl}
+              {...menuProps}
+              onOpen={funcAll(
+                menuProps?.onOpen,
+                menuControl.onOpen,
+                tooltipControl.onClose,
+              )}
+            >
+              <MenuButton as="div">
+                <IconButton
+                  aria-label="Open color download menu"
+                  isRounded
+                  bg={["blackAlpha.100", "whiteAlpha.100"]}
+                  borderColor="transparent"
+                  colorScheme="neutral"
+                  icon={<Export color="muted" />}
+                  {...rest}
+                />
+              </MenuButton>
 
-          <MenuList>
-            <MenuItem onClick={() => onSelect("json.token")}>
-              JSON
-              <Tag size="sm" variant="muted">
-                Tones
-              </Tag>
-            </MenuItem>
-            <MenuItem onClick={() => onSelect("json")}>JSON</MenuItem>
-            <MenuItem onClick={() => onSelect("css.token")}>
-              CSS
-              <Tag size="sm" variant="muted">
-                Tones
-              </Tag>
-            </MenuItem>
-            <MenuItem onClick={() => onSelect("css")}>CSS</MenuItem>
-          </MenuList>
-        </Menu>
+              <MenuList>
+                <MenuItem onClick={() => onSelect("json.token")}>
+                  JSON
+                  <Tag size="sm" variant="muted">
+                    Tones
+                  </Tag>
+                </MenuItem>
+                <MenuItem onClick={() => onSelect("json")}>JSON</MenuItem>
+                <MenuItem onClick={() => onSelect("css.token")}>
+                  CSS
+                  <Tag size="sm" variant="muted">
+                    Tones
+                  </Tag>
+                </MenuItem>
+                <MenuItem onClick={() => onSelect("css")}>CSS</MenuItem>
+              </MenuList>
+            </Menu>{" "}
+          </Box>
+        </Tooltip>
 
         <ExportModal
           type={typeRef.current}
           colors={colors}
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={modalControl.isOpen}
+          onClose={modalControl.onClose}
         />
       </>
     )
@@ -308,14 +334,16 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
 
   return (
     <>
-      <IconButton
-        bg={["blackAlpha.100", "whiteAlpha.100"]}
-        colorScheme="neutral"
-        icon={<Pen color="muted" />}
-        borderColor="transparent"
-        isRounded
-        onClick={onOpen}
-      />
+      <Tooltip label={t("palette.rename")} placement="top">
+        <IconButton
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          colorScheme="neutral"
+          icon={<Pen color="muted" />}
+          borderColor="transparent"
+          isRounded
+          onClick={onOpen}
+        />
+      </Tooltip>
 
       <Dialog isOpen={isOpen} onClose={onClose} withCloseButton={false}>
         <DialogHeader>{t("palettes.rename.title")}</DialogHeader>
@@ -376,14 +404,16 @@ const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
 
   return (
     <>
-      <IconButton
-        bg={["blackAlpha.100", "whiteAlpha.100"]}
-        colorScheme="neutral"
-        icon={<Trash color="danger" />}
-        borderColor="transparent"
-        isRounded
-        onClick={onOpen}
-      />
+      <Tooltip label={t("palette.delete")} placement="top">
+        <IconButton
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          colorScheme="neutral"
+          icon={<Trash color="danger" />}
+          borderColor="transparent"
+          isRounded
+          onClick={onOpen}
+        />
+      </Tooltip>
 
       <Dialog
         isOpen={isOpen}

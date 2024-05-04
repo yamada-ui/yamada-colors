@@ -18,15 +18,6 @@ jobs:
       - name: Update Yamada UI
         run: pnpm up '@yamada-ui/*' --latest
 
-      - name: Create changeset file
-        run: |
-          UUID=$(uuidgen)
-          CHANGESET_PATH=".changeset/${UUID}.md"
-          echo "---" > $CHANGESET_PATH
-          echo "\"yamada-colors\": patch" >> $CHANGESET_PATH
-          echo "---\n" >> $CHANGESET_PATH
-          echo "Updated dependencies." >> $CHANGESET_PATH
-
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:

@@ -21,8 +21,8 @@ importers:
         specifier: ^1.0.10
         version: 1.0.10(next@14.2.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       '@yamada-ui/carousel':
-        specifier: ^1.0.28
-        version: 1.0.28(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: ^1.0.29
+        version: 1.0.29(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@yamada-ui/react':
         specifier: 1.3.9
         version: 1.3.9(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(react@18.2.0))(@types/react@18.2.79)(framer-motion@11.1.7(@emotion/is-prop-valid@1.2.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -988,8 +988,8 @@ packages:
     peerDependencies:
       react: '>=18'
 
-  '@yamada-ui/carousel@1.0.28':
-    resolution: {integrity: sha512-t1ljH/O4qjTE5kI3tFnOFlnoH+TKCyWXFilr2OiHurZLVB22LVa5/P2jz4G2gkVQy4gN3qoZTm6eCMYFyXZYxA==, tarball: https://registry.npmjs.org/@yamada-ui/carousel/-/carousel-1.0.28.tgz}
+  '@yamada-ui/carousel@1.0.29':
+    resolution: {integrity: sha512-aEdMfiD9Bz+RHrv0DuqTy+v8xfNr81EQRiDl3e9H1e6eL+JyNwK+rbH4Q7FdKjVsijt1l2VmzTDZ7J8VAJvb7A==, tarball: https://registry.npmjs.org/@yamada-ui/carousel/-/carousel-1.0.29.tgz}
     peerDependencies:
       react: '>=18'
 
@@ -4137,7 +4137,7 @@ snapshots:
       - '@types/react'
       - react-dom
 
-  '@yamada-ui/carousel@1.0.28(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+  '@yamada-ui/carousel@1.0.29(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@yamada-ui/button': 1.0.28(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@yamada-ui/core': 1.6.7(@types/react@18.2.79)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)

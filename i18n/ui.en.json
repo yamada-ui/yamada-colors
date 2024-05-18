@@ -89,17 +89,17 @@
     "description": "All-in-one color tool for creator and developer.",
     "shades": {
       "title": "Shades",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "See All"
     },
     "tints": {
       "title": "Tints",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "See All"
     },
     "tones": {
       "title": "Tones",
-      "description": "Tones of :label",
+      "description": "Tones of {label}",
       "more": "See All"
     },
     "color-blindness": {
@@ -120,7 +120,7 @@
     },
     "alternatives": {
       "title": "Alternatives",
-      "description": "Alternatives to :label",
+      "description": "Alternatives to {label}",
       "more": "See on Generator"
     },
     "hues": {

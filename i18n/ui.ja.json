@@ -92,17 +92,17 @@
     "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "shades": {
       "title": "シェード",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "すべて見る"
     },
     "tints": {
       "title": "ティント",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "すべて見る"
     },
     "tones": {
       "title": "トーン",
-      "description": ":label のトーン",
+      "description": "{label} のトーン",
       "more": "すべて見る"
     },
     "color-blindness": {
@@ -123,7 +123,7 @@
     },
     "alternatives": {
       "title": "代替",
-      "description": ":label の代替",
+      "description": "{label} の代替",
       "more": "ジェネレーターで見る"
     },
     "hues": {

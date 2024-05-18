@@ -67,11 +67,11 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
       if (!replaceValue) return value
 
       if (isString(replaceValue)) {
-        value = value.replace(new RegExp(`:${pattern}`, "g"), replaceValue)
+        value = value.replace(new RegExp(`{${pattern}}`, "g"), replaceValue)
       } else {
         value = Object.entries(replaceValue).reduce(
           (prev, [pattern, value]) =>
-            prev.replace(new RegExp(`:${pattern}`, "g"), value),
+            prev.replace(new RegExp(`{${pattern}}`, "g"), value),
           value,
         )
       }

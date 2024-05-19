@@ -5,6 +5,7 @@ import {
   Text,
   noop,
   isObject,
+  isUndefined
 } from "@yamada-ui/react"
 import { useRouter } from "next/router"
 import {
@@ -65,7 +66,7 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
     ) => {
       let value = get<string>(uiData[locale], path, "")
 
-      if (!replaceValue) return value
+      if (isUndefined(replaceValue)) return value
 
       if (!isObject(replaceValue)) {
         value = value.replace(

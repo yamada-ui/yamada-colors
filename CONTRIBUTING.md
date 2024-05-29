@@ -30,7 +30,7 @@ To improve our development process, we have set up tools and systems.
 
 ### Tooling
 
-- [Next.js](https://nextjs.org/) Framework for web sites.
+- [Next.js](https://nextjs.org/) Framework for website.
 
 ### Commands
 

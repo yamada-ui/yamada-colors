@@ -24,14 +24,23 @@ cd yamada-colors
 
 4. Run `pnpm dev` to start the local server.
 
-## Commands
+## Development
+
+To improve our development process, we have set up tools and systems.
+
+### Tooling
+
+- [Next.js](https://nextjs.org/) Framework for the website.
+
+### Commands
 
 - **`pnpm install`**: Sets up all dependencies and packages.
 - **`pnpm dev`**: Launches the local server.
+- **`pnpm start`**: Launches the production server.
 - **`pnpm build`**: Builds the site.
 - **`pnpm lint`**: Checks for code issues.
 
-## Update the Document
+## Making a Pull Request?
 
 ### Commit Convention
 
@@ -59,9 +68,9 @@ the following categories:
 
 1. Fork and clone the [repository](https://github.com/yamada-ui/yamada-colors).
 
-2. Create a new branch from the `main` branch, following the [type/scope] naming convention. For example, `fix/accordion-hook` or `menu-typo`. `Type` is one of the standard commit types such as `docs`, `fix`, `feat`, `build`, etc. `Scope` is a short word that represents the scope of work.
+2. Create a new branch from the `main` branch, following the [type/scope] naming convention. For example, `fix/palettes` or `docs/contributing`. `Type` is one of the standard commit types such as `docs`, `fix`, `feat`, `build`, etc. `Scope` is a short word that represents the scope of work.
 
-3. Make changes and commit according to the [commit convention](https://github.com/yamada-ui/yamada-ui/blob/main/README.md#commit-convention).
+3. Make changes and commit according to the [commit convention](#commit-convention).
 
 4. Once all the tasks above are completed, push your changes. After pushing, a pull request URL will be generated. Please submit your request following the template. Also, check the checks within the pull request and make sure the build has completed successfully. If there are any issues, this pull request will not be merged.
 

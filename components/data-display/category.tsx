@@ -2,6 +2,7 @@ import type { CarouselProps } from "@yamada-ui/carousel"
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel"
 import type { GridProps, StackProps, StringLiteral } from "@yamada-ui/react"
 import {
+  Box,
   Grid,
   GridItem,
   HStack,
@@ -173,8 +174,7 @@ type CategoryCarouselProps = CarouselProps & {
 const CategoryCarousel: FC<CategoryCarouselProps> = memo(
   ({ size = "md", colors, ...rest }) => {
     return (
-      <Carousel
-        innerProps={{ as: "ul", h: "auto" }}
+      <Box
         var={[
           {
             name: "slide-size",
@@ -185,17 +185,21 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
             },
           },
         ]}
-        slideSize="var(--ui-slide-size)"
-        align="start"
-        withIndicators={false}
-        {...rest}
       >
-        {colors.map(({ name, hex }, index) => (
-          <CarouselSlide key={`${hex}-${index}`} as="li">
-            <ColorCard hex={hex} name={size === "md" ? name : undefined} />
-          </CarouselSlide>
-        ))}
-      </Carousel>
+        <Carousel
+          innerProps={{ as: "ul", h: "auto" }}
+          slideSize="var(--ui-slide-size)"
+          align="start"
+          withIndicators={false}
+          {...rest}
+        >
+          {colors.map(({ name, hex }, index) => (
+            <CarouselSlide key={`${hex}-${index}`} as="li">
+              <ColorCard hex={hex} name={size === "md" ? name : undefined} />
+            </CarouselSlide>
+          ))}
+        </Carousel>
+      </Box>
     )
   },
 )

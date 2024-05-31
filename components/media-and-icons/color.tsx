@@ -3,7 +3,7 @@ import { Icon } from "@yamada-ui/react"
 import { forwardRef } from "react"
 
 export const Color = forwardRef<SVGSVGElement, IconProps>(
-  ({ boxSize = "1.2em", ...rest }, ref) => {
+  ({ boxSize = "1.35em", ...rest }, ref) => {
     return (
       <Icon
         ref={ref}
@@ -11,7 +11,7 @@ export const Color = forwardRef<SVGSVGElement, IconProps>(
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        strokeWidth="1.5"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"

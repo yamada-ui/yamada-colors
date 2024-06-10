@@ -9,6 +9,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Tooltip,
   assignRef,
   useDisclosure,
 } from "@yamada-ui/react"
@@ -74,14 +75,16 @@ const CreateButton: FC<CreateButtonProps> = memo(
 
     return (
       <>
-        <IconButton
-          isRounded
-          icon={<Plus color="muted" />}
-          bg={["blackAlpha.100", "whiteAlpha.100"]}
-          borderColor="transparent"
-          colorScheme="neutral"
-          onClick={onOpen}
-        />
+        <Tooltip label={t("palette.create")} placement="top">
+          <IconButton
+            isRounded
+            icon={<Plus color="muted" />}
+            bg={["blackAlpha.100", "whiteAlpha.100"]}
+            borderColor="transparent"
+            colorScheme="neutral"
+            onClick={onOpen}
+          />
+        </Tooltip>
 
         <Dialog isOpen={isOpen} onClose={onClose} withCloseButton={false}>
           <DialogHeader>{t("palettes.create.title")}</DialogHeader>

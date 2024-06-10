@@ -5,22 +5,22 @@ Please read the following before submitting:
 - PRs that adds new external dependencies might take a while to review.
 - Keep your PR as small as possible.
 - Limit your PR to one type (docs, feature, refactoring, ci, or bugfix)
-- If a PR is not merged within one week of its creation, core members may intervene.
+- If a PR is not merged within one week of its creation, maintainers may intervene.
 -->
 
 Closes # <!-- Github issue # here -->
 
 ## Description
 
-> Add a brief description
+<!-- Add a brief description. -->
 
 ## Current behavior (updates)
 
-> Please describe the current behavior that you are modifying
+<!-- Please describe the current behavior that you are modifying. -->
 
 ## New behavior
 
-> Please describe the behavior or changes this PR adds
+<!-- Please describe the behavior or changes this PR adds. -->
 
 ## Is this a breaking change (Yes/No):
 

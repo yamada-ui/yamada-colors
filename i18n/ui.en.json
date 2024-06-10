@@ -37,6 +37,17 @@
   "palette": {
     "description": "All-in-one color tool for creator and developer.",
     "create": "Add a color",
+    "redo": "Redo",
+    "undo": "Undo",
+    "export": "Export",
+    "rename": "Rename",
+    "delete": "Delete",
+    "light": "Light",
+    "dark": "Dark",
+    "apply": {
+      "light": "Apply to Light",
+      "dark": "Apply to Dark"
+    },
     "edit": {
       "submit": "Apply"
     },
@@ -49,6 +60,7 @@
     }
   },
   "generators": {
+    "back": "Back to color",
     "title": "Generators",
     "description": "All-in-one color tool for creator and developer.",
     "shades": "Shades",
@@ -58,10 +70,12 @@
     "hues": "Hues"
   },
   "contrast-checker": {
+    "back": "Back to color",
     "title": "Contrast Checker",
     "description": "All-in-one color tool for creator and developer.",
     "foreground": "Foreground",
-    "background": "Background"
+    "background": "Background",
+    "invert": "Invert colors"
   },
   "history": {
     "title": "History",
@@ -75,17 +89,17 @@
     "description": "All-in-one color tool for creator and developer.",
     "shades": {
       "title": "Shades",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "See All"
     },
     "tints": {
       "title": "Tints",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "See All"
     },
     "tones": {
       "title": "Tones",
-      "description": "Tones of :label",
+      "description": "Tones of {label}",
       "more": "See All"
     },
     "color-blindness": {
@@ -106,7 +120,7 @@
     },
     "alternatives": {
       "title": "Alternatives",
-      "description": "Alternatives to :label",
+      "description": "Alternatives to {label}",
       "more": "See on Generator"
     },
     "hues": {
@@ -146,6 +160,7 @@
       "title": "Export"
     },
     "palette-menu": {
+      "tooltip": "Save to palette",
       "title": "Save to",
       "not-found": "No palettes",
       "create": "Create"

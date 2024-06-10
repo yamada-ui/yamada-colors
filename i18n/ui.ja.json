@@ -18,9 +18,9 @@
       "cancel": "キャンセル"
     },
     "rename": {
-      "title": "名前を変更",
+      "title": "名前を変更する",
       "placeholder": "パレット名",
-      "submit": "名前を変更",
+      "submit": "名前を変更する",
       "cancel": "キャンセル"
     },
     "delete": {
@@ -40,6 +40,17 @@
   "palette": {
     "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "create": "色を追加する",
+    "redo": "元に戻す",
+    "undo": "やり直す",
+    "export": "エクスポート",
+    "rename": "名前を変更する",
+    "delete": "パレットを削除する",
+    "light": "ライト",
+    "dark": "ダーク",
+    "apply": {
+      "light": "ライトに反映する",
+      "dark": "ダークに反映する"
+    },
     "edit": {
       "submit": "適用"
     },
@@ -52,6 +63,7 @@
     }
   },
   "generators": {
+    "back": "カラーに戻る",
     "title": "ジェネレーター",
     "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "shades": "シェード",
@@ -61,10 +73,12 @@
     "hues": "色相"
   },
   "contrast-checker": {
+    "back": "カラーに戻る",
     "title": "コントラストチェッカー",
     "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "foreground": "前景色",
-    "background": "背景色"
+    "background": "背景色",
+    "invert": "色を反転する"
   },
   "history": {
     "title": "履歴",
@@ -78,17 +92,17 @@
     "description": "クリエイターとデベロッパーのための オールインワン カラーツール。",
     "shades": {
       "title": "シェード",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "すべて見る"
     },
     "tints": {
       "title": "ティント",
-      "description": ":label + :base",
+      "description": "{label} + {base}",
       "more": "すべて見る"
     },
     "tones": {
       "title": "トーン",
-      "description": ":label のトーン",
+      "description": "{label} のトーン",
       "more": "すべて見る"
     },
     "color-blindness": {
@@ -109,7 +123,7 @@
     },
     "alternatives": {
       "title": "代替",
-      "description": ":label の代替",
+      "description": "{label} の代替",
       "more": "ジェネレーターで見る"
     },
     "hues": {
@@ -149,6 +163,7 @@
       "title": "エクスポート"
     },
     "palette-menu": {
+      "tooltip": "パレットに保存する",
       "title": "保存するパレット",
       "not-found": "パレットがありません",
       "create": "作成"

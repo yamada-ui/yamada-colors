@@ -13,6 +13,7 @@ import {
   ReorderItem,
   ReorderTrigger,
   Text,
+  Tooltip,
   VStack,
   useBreakpointValue,
   useDisclosure,
@@ -164,6 +165,7 @@ Hexes.displayName = "Hexes"
 type HexHeaderProps = {}
 
 const HexHeader: FC<HexHeaderProps> = memo(() => {
+  const { t } = useI18n()
   const { colorMode, toggleColorMode } = useHexes()
 
   return (
@@ -182,7 +184,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
           <Sun color="muted" />
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
-            Light
+            {t("palette.light")}
           </Text>
         </GridItem>
 
@@ -190,7 +192,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
           <Moon color="muted" />
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
-            Dark
+            {t("palette.dark")}
           </Text>
         </GridItem>
       </Grid>
@@ -242,6 +244,7 @@ type HexReorderProps = {}
 
 const HexReorder: FC<HexReorderProps> = memo(() => {
   const { uuid, name, colors, timestamp, changeColors } = usePalette()
+  const { t } = useI18n()
   const { onEdit } = useHexes()
   const { changePalette } = useApp()
   const [internalColors, setInternalColors] = useState<ReorderColors>(colors)
@@ -306,43 +309,49 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
               display={{ base: "flex", xl: "none", lg: "flex", md: "none" }}
               gap="0"
             >
-              <IconButton
-                right="0"
-                aria-label="Switching color mode"
-                isRounded
-                variant="ghost"
-                _hover={{
-                  bg: ["blackAlpha.100", "whiteAlpha.100"],
-                }}
-                colorScheme="neutral"
-                icon={
-                  <ChevronIcon
-                    fontSize="1.5em"
-                    color="muted"
-                    transform="rotate(-90deg)"
-                  />
-                }
-                onClick={() => onEdit({ id, name, hex: [lightHex, lightHex] })}
-              />
+              <Tooltip label={t("palette.apply.dark")} placement="top">
+                <IconButton
+                  right="0"
+                  aria-label="Sync with dark"
+                  isRounded
+                  variant="ghost"
+                  _hover={{
+                    bg: ["blackAlpha.100", "whiteAlpha.100"],
+                  }}
+                  colorScheme="neutral"
+                  icon={
+                    <ChevronIcon
+                      fontSize="1.5em"
+                      color="muted"
+                      transform="rotate(-90deg)"
+                    />
+                  }
+                  onClick={() =>
+                    onEdit({ id, name, hex: [lightHex, lightHex] })
+                  }
+                />
+              </Tooltip>
 
-              <IconButton
-                right="0"
-                aria-label="Switching color mode"
-                isRounded
-                variant="ghost"
-                _hover={{
-                  bg: ["blackAlpha.100", "whiteAlpha.100"],
-                }}
-                colorScheme="neutral"
-                icon={
-                  <ChevronIcon
-                    fontSize="1.5em"
-                    color="muted"
-                    transform="rotate(90deg)"
-                  />
-                }
-                onClick={() => onEdit({ id, name, hex: [darkHex, darkHex] })}
-              />
+              <Tooltip label={t("palette.apply.light")} placement="top">
+                <IconButton
+                  right="0"
+                  aria-label="Sync with light"
+                  isRounded
+                  variant="ghost"
+                  _hover={{
+                    bg: ["blackAlpha.100", "whiteAlpha.100"],
+                  }}
+                  colorScheme="neutral"
+                  icon={
+                    <ChevronIcon
+                      fontSize="1.5em"
+                      color="muted"
+                      transform="rotate(90deg)"
+                    />
+                  }
+                  onClick={() => onEdit({ id, name, hex: [darkHex, darkHex] })}
+                />
+              </Tooltip>
             </VStack>
 
             <HexToggleItem

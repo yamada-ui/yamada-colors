@@ -12,6 +12,7 @@ import {
   getMemoizedObject as get,
   GridItem,
   Tag,
+  Tooltip,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -197,29 +198,33 @@ const SwitchButton: FC<SwitchButtonProps> = ({
   bg,
   queries: queriesProp,
 }) => {
+  const { t } = useI18n()
+
   const queries = new URLSearchParams(queriesProp)
 
   queries.set(`${mode}.fg`, bg.replace("#", ""))
   queries.set(`${mode}.bg`, fg.replace("#", ""))
 
   return (
-    <IconButton
-      as={Link}
-      href={`/contrast-checker?${queries}`}
-      icon={<Refresh boxSize={{ base: "1.3em", sm: "1em" }} />}
-      border="none"
-      minW={{ base: "8", sm: "6" }}
-      h={{ base: "8", sm: "6" }}
-      position="absolute"
-      isRounded
-      color={isLight(bg) ? "white" : "black"}
-      bg={isLight(bg) ? "blackAlpha.800" : "whiteAlpha.800"}
-      _hover={{
-        bg: isLight(bg) ? "black" : "white",
-      }}
-      top={{ base: "md", sm: "md" }}
-      right={{ base: "md", sm: "md" }}
-    />
+    <Tooltip label={t("contrast-checker.invert")} placement="top">
+      <IconButton
+        as={Link}
+        href={`/contrast-checker?${queries}`}
+        icon={<Refresh boxSize={{ base: "1.3em", sm: "1em" }} />}
+        border="none"
+        minW={{ base: "8", sm: "6" }}
+        h={{ base: "8", sm: "6" }}
+        position="absolute"
+        isRounded
+        color={isLight(bg) ? "white" : "black"}
+        bg={isLight(bg) ? "blackAlpha.800" : "whiteAlpha.800"}
+        _hover={{
+          bg: isLight(bg) ? "black" : "white",
+        }}
+        top={{ base: "md", sm: "md" }}
+        right={{ base: "md", sm: "md" }}
+      />
+    </Tooltip>
   )
 }
 

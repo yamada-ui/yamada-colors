@@ -5,7 +5,7 @@ import {
   Text,
   noop,
   isObject,
-  isUndefined
+  isUndefined,
 } from "@yamada-ui/react"
 import { useRouter } from "next/router"
 import {

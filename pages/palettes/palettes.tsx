@@ -1,3 +1,4 @@
+import { Plus } from "@yamada-ui/lucide"
 import {
   Box,
   Button,
@@ -15,7 +16,6 @@ import { matchSorter } from "match-sorter"
 import Link from "next/link"
 import { memo, useRef, useState } from "react"
 import type { FC, MutableRefObject } from "react"
-import { Plus } from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -161,7 +161,7 @@ export const Palettes: FC<PalettesProps> = memo(
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
           colorScheme="neutral"
-          leftIcon={<Plus />}
+          leftIcon={<Plus fontSize="2xl" />}
           isRounded
           onClick={onCreate}
         >

@@ -1,3 +1,4 @@
+import { Check, Clipboard } from "@yamada-ui/lucide"
 import {
   HStack,
   IconButton,
@@ -16,7 +17,6 @@ import {
 import type { ModalProps, SelectItem } from "@yamada-ui/react"
 import { memo, useState } from "react"
 import type { FC } from "react"
-import { Check, Clipboard } from "components/media-and-icons"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 
@@ -100,7 +100,13 @@ export const ExportModal: FC<ExportModalProps> = memo(
             <IconButton
               bg={hasCopied ? "success" : ["blackAlpha.800", "whiteAlpha.800"]}
               colorScheme="neutral"
-              icon={hasCopied ? <Check /> : <Clipboard />}
+              icon={
+                hasCopied ? (
+                  <Check fontSize="2xl" />
+                ) : (
+                  <Clipboard fontSize="2xl" />
+                )
+              }
               pointerEvents={hasCopied ? "none" : "auto"}
               color={["whiteAlpha.900", "blackAlpha.900"]}
               _hover={{

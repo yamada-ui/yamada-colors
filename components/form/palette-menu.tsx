@@ -1,3 +1,4 @@
+import { Palette, Plus } from "@yamada-ui/lucide"
 import type { IconButtonProps, PopoverProps } from "@yamada-ui/react"
 import {
   Popover,
@@ -26,7 +27,6 @@ import {
 } from "@yamada-ui/react"
 import type { FC, MutableRefObject, RefObject } from "react"
 import { memo, useCallback, useRef, useState } from "react"
-import { ColorPalette, Plus } from "components/media-and-icons"
 import { RemoveScroll } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -78,7 +78,7 @@ export const PaletteMenu = memo(
               >
                 <IconButton
                   ref={ref}
-                  icon={<ColorPalette color="muted" />}
+                  icon={<Palette color="muted" fontSize="2xl" />}
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
                   colorScheme="neutral"
@@ -285,7 +285,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
           colorScheme="neutral"
           bg={["blackAlpha.200", "whiteAlpha.100"]}
           borderColor="transparent"
-          leftIcon={<Plus />}
+          leftIcon={<Plus fontSize="2xl" />}
           disabled={isOpen && !value.length}
           onClick={!isOpen ? onOpen : onCreate}
           _hover={{ _disabled: {} }}

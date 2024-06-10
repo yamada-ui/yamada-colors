@@ -1,4 +1,13 @@
 import {
+  Paintbrush,
+  Pencil,
+  Clipboard,
+  Contrast,
+  Trash2,
+  Pipette,
+  Copy,
+} from "@yamada-ui/lucide"
+import {
   Box,
   Button,
   Center,
@@ -32,15 +41,6 @@ import Link from "next/link"
 import { memo, useRef, useState } from "react"
 import type { ChangeEvent, FC, MutableRefObject } from "react"
 import { useHexes } from "./context"
-import {
-  Brush,
-  Clipboard,
-  Clone,
-  Contrast,
-  EyeDropper,
-  Pen,
-  Trash,
-} from "components/media-and-icons"
 import { RemoveScroll } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -82,7 +82,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           href={`/generators?hex=${resolvedHex.replace("#", "")}&tab=tones`}
           display={{ base: "flex", sm: "none" }}
         >
-          <Brush />
+          <Paintbrush fontSize="2xl" />
         </HexControlButton>
 
         <HexControlButton
@@ -91,20 +91,20 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           href={`/contrast-checker?light.fg=${lightHex.replace("#", "")}&dark.fg=${darkHex.replace("#", "")}`}
           display={{ base: "flex", sm: "none" }}
         >
-          <Contrast />
+          <Contrast fontSize="2xl" />
         </HexControlButton>
 
         <HexControlButton
           hex={resolvedHex}
           onClick={() => onClone({ id, name, hex })}
         >
-          <Clone fontSize="1.45em" />
+          <Copy fontSize="1.45em" />
         </HexControlButton>
 
         <CopyButton hex={resolvedHex} />
 
         <HexControlButton hex={resolvedHex} onClick={() => onDelete(id)}>
-          <Trash />
+          <Trash2 fontSize="2xl" />
         </HexControlButton>
       </HStack>
     )
@@ -247,7 +247,7 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
               }}
               onClick={onEyeDropperClick}
             >
-              <EyeDropper />
+              <Pipette fontSize="2xl" />
             </Box>
           ) : null}
         </Box>
@@ -328,7 +328,7 @@ const EditButton: FC<EditButtonProps> = memo(
       >
         <PopoverTrigger>
           <HexControlButton hex={resolvedHex} onClick={onOpen}>
-            <Pen />
+            <Pencil fontSize="2xl" />
           </HexControlButton>
         </PopoverTrigger>
 
@@ -415,7 +415,7 @@ const CopyButton: FC<CopyButtonProps> = memo(({ hex }) => {
         })
       }}
     >
-      <Clipboard />
+      <Clipboard fontSize="2xl" />
     </HexControlButton>
   )
 })

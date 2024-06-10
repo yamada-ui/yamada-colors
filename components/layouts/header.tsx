@@ -1,3 +1,10 @@
+import {
+  Menu as MenuIcon,
+  Moon,
+  Sun,
+  Languages,
+  Search as SearchIcon,
+} from "@yamada-ui/lucide"
 import type {
   CenterProps,
   ColorMode,
@@ -40,16 +47,7 @@ import { useRouter } from "next/router"
 import type { FC } from "react"
 import { memo, useEffect, useRef, useState } from "react"
 import { SearchColor } from "components/form"
-import {
-  Color,
-  Discord,
-  Github,
-  Hamburger,
-  MagnifyingGlass,
-  Moon,
-  Sun,
-  Translate,
-} from "components/media-and-icons"
+import { Color, Discord, Github } from "components/media-and-icons"
 import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
@@ -141,7 +139,7 @@ export const Header = memo(
                     display={{ base: "none", sm: "inline-flex" }}
                     color="muted"
                     onClick={searchControls.onToggle}
-                    icon={<MagnifyingGlass />}
+                    icon={<SearchIcon fontSize="2xl" />}
                   />
                 </>
 
@@ -292,7 +290,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
             display={{ base: "none", lg: "inline-flex" }}
             color="muted"
             onClick={onOpen}
-            icon={<Hamburger />}
+            icon={<MenuIcon fontSize="2xl" />}
             _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           />
         ) : (
@@ -346,7 +344,7 @@ const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
         isRounded
         variant="ghost"
         color="muted"
-        icon={<Translate />}
+        icon={<Languages fontSize="2xl" />}
         _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />
@@ -404,7 +402,13 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
           isRounded
           variant="ghost"
           color="muted"
-          icon={colorMode === "dark" ? <Sun /> : <Moon />}
+          icon={
+            colorMode === "dark" ? (
+              <Sun fontSize="2xl" />
+            ) : (
+              <Moon fontSize="2xl" />
+            )
+          }
           _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           {...rest}
         />

@@ -1,3 +1,10 @@
+import {
+  Palette,
+  Compass,
+  Paintbrush,
+  Contrast,
+  History,
+} from "@yamada-ui/lucide"
 import type { BoxProps, StackProps } from "@yamada-ui/react"
 import {
   Box,
@@ -11,13 +18,6 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import type { ReactNode } from "react"
 import { memo } from "react"
-import {
-  ColorPalette,
-  Compass,
-  Brush,
-  Contrast,
-  History,
-} from "components/media-and-icons"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 
@@ -47,14 +47,14 @@ export const Tree = memo(
           </TreeItem>
           <TreeItem
             href="/palettes"
-            icon={<ColorPalette boxSize="1.2em" />}
+            icon={<Palette boxSize="1.2em" fontSize="2xl" />}
             isAside={isAside}
           >
             {t("palettes.title")}
           </TreeItem>
           <TreeItem
-            href={`/generators?hex=${hexes.light?.replace("#", "")}`}
-            icon={<Brush boxSize="1.2em" />}
+            href={`/generators?hex=${hexes.light.replace("#", "")}`}
+            icon={<Paintbrush boxSize="1.2em" fontSize="2xl" />}
             isAside={isAside}
           >
             {t("generators.title")}

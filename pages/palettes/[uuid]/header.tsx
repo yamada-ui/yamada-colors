@@ -1,3 +1,4 @@
+import { Pencil, Upload, Trash2 } from "@yamada-ui/lucide"
 import {
   Box,
   Grid,
@@ -32,7 +33,6 @@ import { useRouter } from "next/router"
 import { memo, useCallback, useRef, useState } from "react"
 import type { FC } from "react"
 import { usePalette } from "./context"
-import { Export, Pen, Trash } from "components/media-and-icons"
 import { ExportModal } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
@@ -279,7 +279,7 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
                   colorScheme="neutral"
-                  icon={<Export color="muted" />}
+                  icon={<Upload color="muted" fontSize="2xl" />}
                   {...rest}
                 />
               </MenuButton>
@@ -338,7 +338,7 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Pen color="muted" />}
+          icon={<Pencil color="muted" fontSize="2xl" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}
@@ -408,7 +408,7 @@ const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Trash color="danger" />}
+          icon={<Trash2 color="danger" fontSize="2xl" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}

@@ -1,3 +1,4 @@
+import { GripVertical, Moon, Plus, RefreshCcw, Sun } from "@yamada-ui/lucide"
 import type { ColorMode, MotionProps, MotionVariants } from "@yamada-ui/react"
 import {
   Box,
@@ -24,14 +25,7 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import {
-  Dots,
-  Moon,
-  Plus,
-  Refresh,
-  Share,
-  Sun,
-} from "components/media-and-icons"
+import { Share } from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -181,7 +175,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         gap="lg"
       >
         <GridItem as={HStack} justifyContent="center" gap="sm">
-          <Sun color="muted" />
+          <Sun color="muted" fontSize="2xl" />
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {t("palette.light")}
@@ -189,7 +183,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         </GridItem>
 
         <GridItem as={HStack} justifyContent="center" gap="sm">
-          <Moon color="muted" />
+          <Moon color="muted" fontSize="2xl" />
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {t("palette.dark")}
@@ -208,9 +202,9 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
       >
         <HStack justifyContent="center" gap="sm">
           {colorMode === "light" ? (
-            <Sun color="muted" />
+            <Sun color="muted" fontSize="2xl" />
           ) : (
-            <Moon color="muted" />
+            <Moon color="muted" fontSize="2xl" />
           )}
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
@@ -230,7 +224,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
             bg: ["blackAlpha.100", "whiteAlpha.100"],
           }}
           colorScheme="neutral"
-          icon={<Refresh color="muted" />}
+          icon={<RefreshCcw color="muted" />}
           onClick={toggleColorMode}
         />
       </Center>
@@ -447,7 +441,7 @@ const HexControl: FC<HexControlProps> = memo(
           transitionProperty="common"
           transitionDuration="slower"
         >
-          <Dots />
+          <GripVertical fontSize="2xl" />
         </ReorderTrigger>
 
         <VStack

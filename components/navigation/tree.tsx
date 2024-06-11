@@ -47,14 +47,14 @@ export const Tree = memo(
           </TreeItem>
           <TreeItem
             href="/palettes"
-            icon={<Palette boxSize="1.2em" fontSize="2xl" />}
+            icon={<Palette boxSize="1.2em" />}
             isAside={isAside}
           >
             {t("palettes.title")}
           </TreeItem>
           <TreeItem
             href={`/generators?hex=${hexes.light.replace("#", "")}`}
-            icon={<Paintbrush boxSize="1.2em" fontSize="2xl" />}
+            icon={<Paintbrush boxSize="1.2em" />}
             isAside={isAside}
           >
             {t("generators.title")}

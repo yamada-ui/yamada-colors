@@ -4,6 +4,7 @@ import {
   Sun,
   Languages,
   Search as SearchIcon,
+  Box as BoxIcon,
 } from "@yamada-ui/lucide"
 import type {
   CenterProps,
@@ -47,7 +48,7 @@ import { useRouter } from "next/router"
 import type { FC } from "react"
 import { memo, useEffect, useRef, useState } from "react"
 import { SearchColor } from "components/form"
-import { Color, Discord, Github } from "components/media-and-icons"
+import { Discord, Github } from "components/media-and-icons"
 import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
@@ -470,7 +471,7 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
         isRounded
         variant="ghost"
         color="muted"
-        icon={<Color />}
+        icon={<BoxIcon fontSize="2xl" />}
         _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />

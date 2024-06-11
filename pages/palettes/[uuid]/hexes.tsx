@@ -1,4 +1,11 @@
-import { GripVertical, Moon, Plus, RefreshCcw, Sun } from "@yamada-ui/lucide"
+import {
+  Forward,
+  GripVertical,
+  Moon,
+  Plus,
+  RefreshCcw,
+  Sun,
+} from "@yamada-ui/lucide"
 import type { ColorMode, MotionProps, MotionVariants } from "@yamada-ui/react"
 import {
   Box,
@@ -25,7 +32,6 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import { Share } from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -536,7 +542,8 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
                 },
               }}
             >
-              <Share
+              <Forward
+                fontSize="2xl"
                 color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
                 opacity="0"
                 transitionProperty="common"

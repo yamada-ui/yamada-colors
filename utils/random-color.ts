@@ -10,13 +10,23 @@ export type RandomColorOptionsMultiple = RandomColorOptionsSingle & {
   count: number
 }
 
-let seed = null
+export type RandomColorDictionary = Record<
+  string,
+  {
+    hueRange: [number, number] | null
+    lowerBounds: [number, number][]
+    saturationRange: [number, number]
+    brightnessRange: [number, number]
+  }
+>
 
-const colorDictionary = {}
+let seed: string | number | null = null
+
+const colorDictionary: RandomColorDictionary = {}
 
 loadColorBounds()
 
-const colorRanges = []
+const colorRanges: boolean[] = []
 
 function randomColor<
   T extends RandomColorOptionsSingle | RandomColorOptionsMultiple,
@@ -43,6 +53,7 @@ function randomColor<
     for (var i = 0; i < options.count; i++) {
       colorRanges.push(false)
     }
+    // @ts-ignore
     delete options.count
 
     while (totalColors > colors.length) {
@@ -123,8 +134,8 @@ function pickSaturation(hue: number, options: RandomColorOptionsSingle) {
 
   var saturationRange = getSaturationRange(hue)
 
-  var sMin = saturationRange[0],
-    sMax = saturationRange[1]
+  var sMin = saturationRange?.[0] ?? 0,
+    sMax = saturationRange?.[1] ?? 0
 
   switch (options.luminosity) {
     case "bright":
@@ -208,7 +219,7 @@ function setFormat(
 }
 
 function getMinimumBrightness(H: number, S: number) {
-  var lowerBounds = getColorInfo(H).lowerBounds
+  var lowerBounds = getColorInfo(H)?.lowerBounds ?? []
 
   for (var i = 0; i < lowerBounds.length - 1; i++) {
     var s1 = lowerBounds[i][0],
@@ -228,9 +239,11 @@ function getMinimumBrightness(H: number, S: number) {
   return 0
 }
 
-function getHueRange(colorInput: string | number) {
-  if (typeof parseInt(colorInput.toString()) === "number") {
-    var number = parseInt(colorInput.toString())
+function getHueRange(
+  colorInput: string | number | undefined,
+): [number, number] | null | undefined {
+  if (typeof parseInt(colorInput?.toString() ?? "0") === "number") {
+    var number = parseInt(colorInput?.toString() ?? "0")
 
     if (number < 360 && number > 0) {
       return [number, number]
@@ -244,8 +257,9 @@ function getHueRange(colorInput: string | number) {
         return color.hueRange
       }
     } else if (colorInput.match(/^#?([0-9A-F]{3}|[0-9A-F]{6})$/i)) {
-      var hue = HexToHSB(colorInput)[0]
-      return [hue, hue]
+      var hue = HexToHSB(colorInput)?.[0]
+
+      return typeof hue === "number" ? [hue, hue] : null
     }
   }
 
@@ -253,16 +267,17 @@ function getHueRange(colorInput: string | number) {
 }
 
 function getSaturationRange(hue: number) {
-  return getColorInfo(hue).saturationRange
+  return getColorInfo(hue)?.saturationRange
 }
 
-function getColorInfo(hue: number) {
+function getColorInfo(hue: number | undefined = 0) {
   if (hue >= 334 && hue <= 360) {
     hue -= 360
   }
 
   for (var colorName in colorDictionary) {
     var color = colorDictionary[colorName]
+
     if (
       color.hueRange &&
       hue >= color.hueRange[0] &&
@@ -271,10 +286,9 @@ function getColorInfo(hue: number) {
       return colorDictionary[colorName]
     }
   }
-  return "Color not found"
 }
 
-function randomWithin(range: [number, number]) {
+function randomWithin(range: [number, number] | null | undefined) {
   if (seed === null) {
     if (!range) return 0
     var golden_ratio = 0.618033988749895
@@ -283,9 +297,9 @@ function randomWithin(range: [number, number]) {
     r %= 1
     return Math.floor(range[0] + r * (range[1] + 1 - range[0]))
   } else {
-    var max = range[1] || 1
-    var min = range[0] || 0
-    seed = (seed * 9301 + 49297) % 233280
+    var max = range?.[1] || 1
+    var min = range?.[0] || 0
+    seed = (Number(seed) * 9301 + 49297) % 233280
     var rnd = seed / 233280.0
     return Math.floor(min + rnd * (max - min))
   }
@@ -543,12 +557,14 @@ function stringToInteger(string: string) {
   return total
 }
 
-function getRealHueRange(colorHue: string | number) {
+function getRealHueRange(
+  colorHue: string | number | undefined,
+): [number, number] | null | undefined {
   if (!isNaN(Number(colorHue))) {
-    var number = parseInt(colorHue.toString())
+    var number = parseInt(colorHue?.toString() ?? "0")
 
     if (number < 360 && number > 0) {
-      return getColorInfo(number).hueRange
+      return getColorInfo(number)?.hueRange
     }
   } else if (typeof colorHue === "string") {
     if (colorDictionary[colorHue]) {
@@ -558,8 +574,8 @@ function getRealHueRange(colorHue: string | number) {
         return color.hueRange
       }
     } else if (colorHue.match(/^#?([0-9A-F]{3}|[0-9A-F]{6})$/i)) {
-      var hue = HexToHSB(colorHue)[0]
-      return getColorInfo(hue).hueRange
+      var hue = HexToHSB(colorHue)?.[0]
+      return getColorInfo(hue)?.hueRange
     }
   }
 

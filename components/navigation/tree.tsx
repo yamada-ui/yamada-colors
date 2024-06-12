@@ -31,8 +31,8 @@ export const Tree = memo(
     const { t } = useI18n()
 
     const hexes = {
-      light: isString(hex) ? hex : hex[0],
-      dark: isString(hex) ? hex : hex[1],
+      light: isString(hex) ? hex : hex?.[0],
+      dark: isString(hex) ? hex : hex?.[1],
     }
 
     return (
@@ -53,14 +53,14 @@ export const Tree = memo(
             {t("palettes.title")}
           </TreeItem>
           <TreeItem
-            href={`/generators?hex=${hexes.light.replace("#", "")}`}
+            href={`/generators?hex=${hexes.light?.replace("#", "")}`}
             icon={<Brush boxSize="1.2em" />}
             isAside={isAside}
           >
             {t("generators.title")}
           </TreeItem>
           <TreeItem
-            href={`/contrast-checker?light.fg=${hexes.light.replace("#", "")}&dark.fg=${hexes.dark.replace("#", "")}`}
+            href={`/contrast-checker?light.fg=${hexes.light?.replace("#", "")}&dark.fg=${hexes.dark?.replace("#", "")}`}
             icon={<Contrast boxSize="1.2em" />}
             isAside={isAside}
           >

@@ -230,7 +230,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
             bg: ["blackAlpha.100", "whiteAlpha.100"],
           }}
           colorScheme="neutral"
-          icon={<RefreshCcw color="muted" />}
+          icon={<RefreshCcw color="muted" size="2xl" />}
           onClick={toggleColorMode}
         />
       </Center>

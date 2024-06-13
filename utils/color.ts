@@ -19,8 +19,8 @@ export const toCielab = (hex: string) => convert.hex.lab(hex)
 
 export const toCielch = (hex: string) => convert.hex.lch(hex)
 
-export const f = (hex: string, format: ColorFormat = "hex") =>
-  convertColor(hex)(format)
+export const f = (hex: string | undefined, format: ColorFormat = "hex") =>
+  convertColor(hex ?? "#ffffff")(format)!
 
 export const darken = (hex: string) => {
   const [h, s, l] = toHsl(hex)
@@ -187,7 +187,7 @@ export const mostReadable = (
     size: "small",
   },
 ): string => {
-  let result: string
+  let result: string | undefined = undefined
   let bestScore = 0
   let score = 0
 
@@ -200,8 +200,8 @@ export const mostReadable = (
     }
   }
 
-  if (isReadable(hex, result, { level, size }) || !includeFallbackColors) {
-    return result
+  if (isReadable(hex, result!, { level, size }) || !includeFallbackColors) {
+    return result!
   } else {
     includeFallbackColors = false
 

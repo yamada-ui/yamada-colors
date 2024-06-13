@@ -13,7 +13,7 @@ import { deleteCookie, generateUUID, getCookie, setCookie } from "utils/storage"
 
 type AppContext = {
   hex?: string | [string, string]
-  format?: ColorFormat
+  format: ColorFormat
   palettes: ColorPalettes
   changeFormat: (format: ColorFormat) => void
   createPalette: (name: string) => void
@@ -23,7 +23,7 @@ type AppContext = {
 
 const AppContext = createContext<AppContext>({
   hex: undefined,
-  format: undefined,
+  format: "hex",
   palettes: [],
   changeFormat: noop,
   createPalette: noop,
@@ -39,7 +39,7 @@ export type AppProviderProps = PropsWithChildren<{
 
 export const AppProvider: FC<AppProviderProps> = ({
   hex,
-  format: formatProp,
+  format: formatProp = "hex",
   palettes: palettesProp = [],
   children,
 }) => {

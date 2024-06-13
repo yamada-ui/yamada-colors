@@ -23,7 +23,7 @@ export type SearchColorProps = Omit<
   ColorPickerProps,
   "value" | "onChange" | "onSubmit"
 > &
-  Required<Pick<ColorPickerProps, "value" | "onChange">> & {
+  Pick<ColorPickerProps, "value" | "onChange"> & {
     isRemoveScroll?: boolean
     onSubmit?: (value: string) => void
     containerProps?: BoxProps
@@ -50,15 +50,15 @@ export const SearchColor = memo(
 
       const onSubmit = () => {
         try {
-          value = c.toHex(value)
+          value = c.toHex(value ?? "#ffffff")
         } catch {
           value = "#ffffff"
 
-          onChange(value)
+          onChange?.(value)
         }
 
         onClose()
-        onSubmitProp(value)
+        onSubmitProp?.(value)
       }
 
       return (

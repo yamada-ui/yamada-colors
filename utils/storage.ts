@@ -1,7 +1,7 @@
 export const getCookie = <T extends any>(
   cookie: string,
   key: string,
-  fallback: string = "{}",
+  fallback: any = "{}",
 ) => {
   const match = cookie.match(new RegExp(`(^| )${key}=([^;]+)`))
   const value = match?.[2] ?? fallback

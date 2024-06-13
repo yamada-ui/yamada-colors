@@ -1,5 +1,6 @@
 import type {
   CenterProps,
+  ColorMode,
   DrawerProps,
   IconButtonProps,
   MenuProps,
@@ -54,6 +55,7 @@ import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
+import type { Locale } from "utils/i18n"
 
 export type HeaderProps = CenterProps
 
@@ -184,7 +186,7 @@ const Search: FC<SearchProps> = memo(({ isScroll, isMobile }) => {
   useUpdateEffect(() => {
     if (disableDefaultValue(router.asPath)) return
 
-    setValue(f(isString(hex) ? hex : hex[0], format))
+    setValue(f(isString(hex) ? hex : hex?.[0], format))
   }, [hex])
 
   return (
@@ -350,7 +352,7 @@ const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
       />
 
       <MenuList>
-        <MenuOptionGroup<string>
+        <MenuOptionGroup<Locale>
           value={locale}
           onChange={changeLocale}
           type="radio"
@@ -408,7 +410,7 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
         />
 
         <MenuList>
-          <MenuOptionGroup<string>
+          <MenuOptionGroup<ColorMode | "system">
             value={internalColorMode}
             onChange={changeColorMode}
             type="radio"
@@ -500,14 +502,14 @@ const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
   const breakpoint = useBreakpoint()
 
   useEffect(() => {
-    if (!["lg", "md", "sm"].includes(breakpoint)) onClose()
+    if (!["lg", "md", "sm"].includes(breakpoint)) onClose?.()
   }, [breakpoint, onClose])
 
   useEffect(() => {
-    events.on("routeChangeComplete", onClose)
+    events.on("routeChangeComplete", () => onClose?.())
 
     return () => {
-      events.off("routeChangeComplete", onClose)
+      events.off("routeChangeComplete", () => onClose?.())
     }
   }, [events, onClose])
 

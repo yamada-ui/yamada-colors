@@ -123,7 +123,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
         .map(({ id, name, hex }) =>
           targetId !== id ? { name, hex } : undefined,
         )
-        .filter(Boolean)
+        .filter(Boolean) as PaletteColors
 
       changeColors((prev) => prev.filter(({ id }) => id !== targetId))
 
@@ -245,19 +245,19 @@ type HexReorderProps = {}
 const HexReorder: FC<HexReorderProps> = memo(() => {
   const { uuid, name, colors, timestamp, changeColors } = usePalette()
   const { t } = useI18n()
-  const { onEdit } = useHexes()
+  const { onEdit, colorMode } = useHexes()
   const { changePalette } = useApp()
   const [internalColors, setInternalColors] = useState<ReorderColors>(colors)
 
   const onChange = (ids: (string | number)[]) => {
     setInternalColors((prev) =>
-      ids.map((id) => prev.find((item) => item.id === id)),
+      ids.map((id) => prev.find((item) => item.id === id)!),
     )
   }
 
   const onCompleteChange = (ids: (string | number)[]) => {
     const resolvedColors = ids.map((id) => {
-      const { name, hex } = colors.find((item) => item.id === id)
+      const { name, hex } = colors.find((item) => item.id === id)!
 
       return { name, hex }
     })
@@ -298,9 +298,9 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
             <HexToggleItem
               display={{
                 base: "block",
-                xl: !isLight ? "none" : "block",
+                xl: colorMode !== "light" ? "none" : "block",
                 lg: "block",
-                md: !isLight ? "none" : "block",
+                md: colorMode !== "light" ? "none" : "block",
               }}
               {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
             />
@@ -357,9 +357,9 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
             <HexToggleItem
               display={{
                 base: "block",
-                xl: isLight ? "none" : "block",
+                xl: colorMode === "light" ? "none" : "block",
                 lg: "block",
-                md: isLight ? "none" : "block",
+                md: colorMode === "light" ? "none" : "block",
               }}
               {...{ id, name, hex, isFirst, isLast, colorMode: "dark" }}
             />

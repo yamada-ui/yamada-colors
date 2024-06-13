@@ -82,7 +82,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           href={`/generators?hex=${resolvedHex.replace("#", "")}&tab=tones`}
           display={{ base: "flex", sm: "none" }}
         >
-          <Paintbrush fontSize="2xl" />
+          <Paintbrush fontSize="1.45em" />
         </HexControlButton>
 
         <HexControlButton
@@ -91,7 +91,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           href={`/contrast-checker?light.fg=${lightHex.replace("#", "")}&dark.fg=${darkHex.replace("#", "")}`}
           display={{ base: "flex", sm: "none" }}
         >
-          <Contrast fontSize="2xl" />
+          <Contrast fontSize="1.45em" />
         </HexControlButton>
 
         <HexControlButton
@@ -104,7 +104,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
         <CopyButton hex={resolvedHex} />
 
         <HexControlButton hex={resolvedHex} onClick={() => onDelete(id)}>
-          <Trash2 fontSize="2xl" />
+          <Trash2 fontSize="1.45em" />
         </HexControlButton>
       </HStack>
     )

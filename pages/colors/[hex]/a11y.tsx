@@ -217,7 +217,7 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
           {data.large ? (
             <Check color="success" fontSize="2xl" />
           ) : (
-            <X color="danger" />
+            <X color="danger" fontSize="2xl" />
           )}
 
           <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -235,7 +235,7 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
           {data.small ? (
             <Check color="success" fontSize="2xl" />
           ) : (
-            <X color="danger" />
+            <X color="danger" fontSize="2xl" />
           )}
 
           <Text

@@ -210,9 +210,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
       <IconButton
         as={Link}
         href={`/contrast-checker?${queries}`}
-        icon={
-          <RefreshCcw boxSize={{ base: "1.3em", sm: "1em" }} fontSize="2xl" />
-        }
+        icon={<RefreshCcw boxSize={{ base: "1.3em", sm: "1em" }} />}
         border="none"
         minW={{ base: "8", sm: "6" }}
         h={{ base: "8", sm: "6" }}

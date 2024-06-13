@@ -150,7 +150,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
           colorScheme="neutral"
-          leftIcon={<Plus />}
+          leftIcon={<Plus fontSize="2xl" />}
           onClick={onCreate}
         >
           {t("palette.create")}

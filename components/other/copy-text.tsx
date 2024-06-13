@@ -91,16 +91,16 @@ export const CopyText = memo(
             hasCopied ? (
               <Check
                 ms="1"
-                mb="0.5"
-                fontSize="0.75em"
+                mb="-1"
+                fontSize="1.2em"
                 color="success"
                 {...iconProps}
                 {...checkIconProps}
               />
             ) : (
               <Clipboard
-                fontSize="0.875em"
-                mb="0.5"
+                fontSize="1.2em"
+                mb="-1"
                 ms="1"
                 color="muted"
                 {...iconProps}

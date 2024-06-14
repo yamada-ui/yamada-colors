@@ -279,7 +279,7 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
                   colorScheme="neutral"
-                  icon={<Upload color="muted" fontSize="2xl" />}
+                  icon={<Upload color="muted" fontSize="xl" />}
                   {...rest}
                 />
               </MenuButton>
@@ -338,7 +338,7 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Pencil color="muted" fontSize="2xl" />}
+          icon={<Pencil color="muted" fontSize="xl" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}
@@ -408,7 +408,7 @@ const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Trash2 color="danger" fontSize="2xl" />}
+          icon={<Trash2 color="danger" fontSize="xl" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}

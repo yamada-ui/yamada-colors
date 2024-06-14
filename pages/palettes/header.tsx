@@ -78,7 +78,7 @@ const CreateButton: FC<CreateButtonProps> = memo(
         <Tooltip label={t("palette.create")} placement="top">
           <IconButton
             isRounded
-            icon={<Plus fontSize="2xl" color="muted" />}
+            icon={<Plus fontSize="lg" color="muted" />}
             bg={["blackAlpha.100", "whiteAlpha.100"]}
             borderColor="transparent"
             colorScheme="neutral"

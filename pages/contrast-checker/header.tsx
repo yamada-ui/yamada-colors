@@ -93,7 +93,7 @@ const LevelButton: FC<LevelButtonProps> = ({ isSelected, ...rest }) => {
   return (
     <Button
       size="sm"
-      leftIcon={<Check fontSize="0.9em" />}
+      leftIcon={<Check fontSize="md" />}
       gap="1"
       variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "success" : colorScheme}

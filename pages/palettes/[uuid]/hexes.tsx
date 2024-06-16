@@ -150,7 +150,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
           colorScheme="neutral"
-          leftIcon={<Plus fontSize="2xl" />}
+          leftIcon={<Plus fontSize="lg" />}
           onClick={onCreate}
         >
           {t("palette.create")}
@@ -230,7 +230,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
             bg: ["blackAlpha.100", "whiteAlpha.100"],
           }}
           colorScheme="neutral"
-          icon={<RefreshCcw color="muted" size="2xl" />}
+          icon={<RefreshCcw color="muted" size="lg" />}
           onClick={toggleColorMode}
         />
       </Center>
@@ -321,8 +321,8 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                   colorScheme="neutral"
                   icon={
                     <ChevronIcon
-                      fontSize="1.5em"
-                      color="muted"
+                      fontSize="2xl"
+                      color={["blackAlpha.500", "whiteAlpha.500"]}
                       transform="rotate(-90deg)"
                     />
                   }
@@ -344,8 +344,8 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                   colorScheme="neutral"
                   icon={
                     <ChevronIcon
-                      fontSize="1.5em"
-                      color="muted"
+                      fontSize="2xl"
+                      color={["blackAlpha.500", "whiteAlpha.500"]}
                       transform="rotate(90deg)"
                     />
                   }
@@ -543,7 +543,7 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
               }}
             >
               <Forward
-                fontSize="2xl"
+                fontSize="lg"
                 color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
                 opacity="0"
                 transitionProperty="common"

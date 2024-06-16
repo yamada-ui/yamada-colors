@@ -82,7 +82,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           href={`/generators?hex=${resolvedHex.replace("#", "")}&tab=tones`}
           display={{ base: "flex", sm: "none" }}
         >
-          <Paintbrush fontSize="1.45em" />
+          <Paintbrush fontSize="lg" />
         </HexControlButton>
 
         <HexControlButton
@@ -91,20 +91,20 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           href={`/contrast-checker?light.fg=${lightHex.replace("#", "")}&dark.fg=${darkHex.replace("#", "")}`}
           display={{ base: "flex", sm: "none" }}
         >
-          <Contrast fontSize="1.45em" />
+          <Contrast fontSize="lg" />
         </HexControlButton>
 
         <HexControlButton
           hex={resolvedHex}
           onClick={() => onClone({ id, name, hex })}
         >
-          <Copy fontSize="1.45em" />
+          <Copy fontSize="lg" />
         </HexControlButton>
 
         <CopyButton hex={resolvedHex} />
 
         <HexControlButton hex={resolvedHex} onClick={() => onDelete(id)}>
-          <Trash2 fontSize="1.45em" />
+          <Trash2 fontSize="lg" />
         </HexControlButton>
       </HStack>
     )
@@ -247,7 +247,7 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
               }}
               onClick={onEyeDropperClick}
             >
-              <Pipette fontSize="2xl" />
+              <Pipette fontSize="md" />
             </Box>
           ) : null}
         </Box>
@@ -328,7 +328,7 @@ const EditButton: FC<EditButtonProps> = memo(
       >
         <PopoverTrigger>
           <HexControlButton hex={resolvedHex} onClick={onOpen}>
-            <Pencil fontSize="2xl" />
+            <Pencil fontSize="lg" />
           </HexControlButton>
         </PopoverTrigger>
 
@@ -415,7 +415,7 @@ const CopyButton: FC<CopyButtonProps> = memo(({ hex }) => {
         })
       }}
     >
-      <Clipboard fontSize="2xl" />
+      <Clipboard fontSize="lg" />
     </HexControlButton>
   )
 })

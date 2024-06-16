@@ -285,7 +285,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
           colorScheme="neutral"
           bg={["blackAlpha.200", "whiteAlpha.100"]}
           borderColor="transparent"
-          leftIcon={<Plus fontSize="2xl" />}
+          leftIcon={<Plus fontSize="lg" />}
           disabled={isOpen && !value.length}
           onClick={!isOpen ? onOpen : onCreate}
           _hover={{ _disabled: {} }}

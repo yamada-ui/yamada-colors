@@ -35,7 +35,7 @@ export const Header: FC<HeaderProps> = memo(
       <HStack as="section" gap="sm" {...rest}>
         <InputGroup>
           <InputLeftElement ms="1">
-            <Search color="muted" fontSize="2xl" />
+            <Search color="muted" fontSize="lg" />
           </InputLeftElement>
 
           <Input

@@ -182,7 +182,7 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
           colorScheme="neutral"
           icon={
             <ChevronIcon
-              fontSize="1.75em"
+              fontSize="2xl"
               color="muted"
               transform="rotate(90deg)"
             />
@@ -202,7 +202,7 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
           colorScheme="neutral"
           icon={
             <ChevronIcon
-              fontSize="1.75em"
+              fontSize="2xl"
               color="muted"
               transform="rotate(-90deg)"
             />
@@ -279,7 +279,7 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
                   colorScheme="neutral"
-                  icon={<Upload color="muted" fontSize="xl" />}
+                  icon={<Upload color="muted" fontSize="lg" />}
                   {...rest}
                 />
               </MenuButton>
@@ -338,7 +338,7 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Pencil color="muted" fontSize="xl" />}
+          icon={<Pencil color="muted" fontSize="lg" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}
@@ -408,7 +408,7 @@ const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Trash2 color="danger" fontSize="xl" />}
+          icon={<Trash2 color="danger" fontSize="lg" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}

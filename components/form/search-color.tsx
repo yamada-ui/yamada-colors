@@ -102,7 +102,7 @@ export const SearchColor = memo(
               borderColor="transparent"
               icon={
                 <ChevronIcon
-                  fontSize="1.3em"
+                  fontSize="lg"
                   color="muted"
                   transform="rotate(-90deg)"
                 />

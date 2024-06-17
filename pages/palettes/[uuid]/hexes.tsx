@@ -1,3 +1,11 @@
+import {
+  Forward,
+  GripVertical,
+  Moon,
+  Plus,
+  RefreshCcw,
+  Sun,
+} from "@yamada-ui/lucide"
 import type { ColorMode, MotionProps, MotionVariants } from "@yamada-ui/react"
 import {
   Box,
@@ -24,14 +32,6 @@ import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
 import { HexesProvider, useHexes, usePalette } from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
-import {
-  Dots,
-  Moon,
-  Plus,
-  Refresh,
-  Share,
-  Sun,
-} from "components/media-and-icons"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -150,7 +150,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
           colorScheme="neutral"
-          leftIcon={<Plus />}
+          leftIcon={<Plus fontSize="lg" />}
           onClick={onCreate}
         >
           {t("palette.create")}
@@ -181,7 +181,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         gap="lg"
       >
         <GridItem as={HStack} justifyContent="center" gap="sm">
-          <Sun color="muted" />
+          <Sun color="muted" fontSize="2xl" />
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {t("palette.light")}
@@ -189,7 +189,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         </GridItem>
 
         <GridItem as={HStack} justifyContent="center" gap="sm">
-          <Moon color="muted" />
+          <Moon color="muted" fontSize="2xl" />
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {t("palette.dark")}
@@ -208,9 +208,9 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
       >
         <HStack justifyContent="center" gap="sm">
           {colorMode === "light" ? (
-            <Sun color="muted" />
+            <Sun color="muted" fontSize="2xl" />
           ) : (
-            <Moon color="muted" />
+            <Moon color="muted" fontSize="2xl" />
           )}
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
@@ -230,7 +230,7 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
             bg: ["blackAlpha.100", "whiteAlpha.100"],
           }}
           colorScheme="neutral"
-          icon={<Refresh color="muted" />}
+          icon={<RefreshCcw color="muted" size="lg" />}
           onClick={toggleColorMode}
         />
       </Center>
@@ -321,8 +321,8 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                   colorScheme="neutral"
                   icon={
                     <ChevronIcon
-                      fontSize="1.5em"
-                      color="muted"
+                      fontSize="2xl"
+                      color={["blackAlpha.500", "whiteAlpha.500"]}
                       transform="rotate(-90deg)"
                     />
                   }
@@ -344,8 +344,8 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                   colorScheme="neutral"
                   icon={
                     <ChevronIcon
-                      fontSize="1.5em"
-                      color="muted"
+                      fontSize="2xl"
+                      color={["blackAlpha.500", "whiteAlpha.500"]}
                       transform="rotate(90deg)"
                     />
                   }
@@ -447,7 +447,7 @@ const HexControl: FC<HexControlProps> = memo(
           transitionProperty="common"
           transitionDuration="slower"
         >
-          <Dots />
+          <GripVertical fontSize="2xl" />
         </ReorderTrigger>
 
         <VStack
@@ -542,7 +542,8 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
                 },
               }}
             >
-              <Share
+              <Forward
+                fontSize="lg"
                 color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
                 opacity="0"
                 transitionProperty="common"

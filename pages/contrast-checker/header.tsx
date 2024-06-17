@@ -1,3 +1,4 @@
+import { Check } from "@yamada-ui/lucide"
 import type { ButtonProps } from "@yamada-ui/react"
 import {
   Box,
@@ -9,7 +10,6 @@ import {
   useColorModeValue,
 } from "@yamada-ui/react"
 import type { Dispatch, SetStateAction, FC } from "react"
-import { Check } from "components/media-and-icons"
 import { NextLinkIconButton } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
@@ -93,7 +93,7 @@ const LevelButton: FC<LevelButtonProps> = ({ isSelected, ...rest }) => {
   return (
     <Button
       size="sm"
-      leftIcon={<Check fontSize="0.9em" />}
+      leftIcon={<Check fontSize="lg" />}
       gap="1"
       variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "success" : colorScheme}

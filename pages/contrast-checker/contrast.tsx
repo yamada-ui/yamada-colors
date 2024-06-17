@@ -1,3 +1,4 @@
+import { Check, X, RefreshCcw } from "@yamada-ui/lucide"
 import type { CenterProps, ColorMode } from "@yamada-ui/react"
 import {
   Center,
@@ -18,7 +19,6 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState, type FC } from "react"
 import { SearchColor } from "components/form"
-import { Check, Fail, Refresh } from "components/media-and-icons"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -210,7 +210,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
       <IconButton
         as={Link}
         href={`/contrast-checker?${queries}`}
-        icon={<Refresh boxSize={{ base: "1.3em", sm: "1em" }} />}
+        icon={<RefreshCcw fontSize={{ base: "lg", sm: "sm" }} />}
         border="none"
         minW={{ base: "8", sm: "6" }}
         h={{ base: "8", sm: "6" }}
@@ -273,7 +273,11 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                   Large Text
                 </Text>
 
-                {aa.large ? <Check color="success" /> : <Fail color="danger" />}
+                {aa.large ? (
+                  <Check color="success" fontSize="2xl" />
+                ) : (
+                  <X color="danger" fontSize="2xl" />
+                )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
                   {aa.large ? "Pass" : "Fail"}
@@ -283,7 +287,11 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                   Small Text
                 </Text>
 
-                {aa.small ? <Check color="success" /> : <Fail color="danger" />}
+                {aa.small ? (
+                  <Check color="success" fontSize="2xl" />
+                ) : (
+                  <X color="danger" fontSize="2xl" />
+                )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
                   {aa.small ? "Pass" : "Fail"}
@@ -294,9 +302,9 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aa.component ? (
-                  <Check color="success" />
+                  <Check color="success" fontSize="2xl" />
                 ) : (
-                  <Fail color="danger" />
+                  <X color="danger" fontSize="2xl" />
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -327,9 +335,9 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aaa.large ? (
-                  <Check color="success" />
+                  <Check color="success" fontSize="2xl" />
                 ) : (
-                  <Fail color="danger" />
+                  <X color="danger" fontSize="2xl" />
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -341,9 +349,9 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aaa.small ? (
-                  <Check color="success" />
+                  <Check color="success" fontSize="2xl" />
                 ) : (
-                  <Fail color="danger" />
+                  <X color="danger" fontSize="2xl" />
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -355,9 +363,9 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aaa.component ? (
-                  <Check color="success" />
+                  <Check color="success" fontSize="2xl" />
                 ) : (
-                  <Fail color="danger" />
+                  <X color="danger" fontSize="2xl" />
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">

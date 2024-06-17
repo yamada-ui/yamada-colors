@@ -1,3 +1,4 @@
+import { Check, X } from "@yamada-ui/lucide"
 import type { GridItemProps } from "@yamada-ui/react"
 import {
   Box,
@@ -12,7 +13,6 @@ import {
   Wrap,
 } from "@yamada-ui/react"
 import type { FC } from "react"
-import { Check, Fail } from "components/media-and-icons"
 import { NextLink } from "components/navigation"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -214,7 +214,11 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
             Large Text
           </Text>
 
-          {data.large ? <Check color="success" /> : <Fail color="danger" />}
+          {data.large ? (
+            <Check color="success" fontSize="2xl" />
+          ) : (
+            <X color="danger" fontSize="2xl" />
+          )}
 
           <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
             {data.large ? "Pass" : "Fail"}
@@ -228,7 +232,11 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
             Small Text
           </Text>
 
-          {data.small ? <Check color="success" /> : <Fail color="danger" />}
+          {data.small ? (
+            <Check color="success" fontSize="2xl" />
+          ) : (
+            <X color="danger" fontSize="2xl" />
+          )}
 
           <Text
             minW="4ch"

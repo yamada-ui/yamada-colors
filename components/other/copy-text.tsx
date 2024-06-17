@@ -1,3 +1,4 @@
+import { Check, Clipboard } from "@yamada-ui/lucide"
 import {
   Center,
   ColorSwatch,
@@ -12,7 +13,6 @@ import {
 import type { IconProps, TextProps } from "@yamada-ui/react"
 import type { MouseEvent } from "react"
 import { memo } from "react"
-import { Check, Clipboard } from "components/media-and-icons"
 
 export type CopyTextProps = TextProps & {
   value?: string
@@ -91,17 +91,17 @@ export const CopyText = memo(
             hasCopied ? (
               <Check
                 ms="1"
-                mb="0.5"
-                fontSize="0.75em"
+                mb="-0.5"
+                fontSize="1em"
                 color="success"
                 {...iconProps}
                 {...checkIconProps}
               />
             ) : (
               <Clipboard
-                fontSize="0.875em"
-                mb="0.5"
                 ms="1"
+                mb="-0.5"
+                fontSize="1em"
                 color="muted"
                 {...iconProps}
                 {...copyIconProps}

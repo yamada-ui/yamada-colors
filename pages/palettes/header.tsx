@@ -1,3 +1,4 @@
+import { Search, Plus } from "@yamada-ui/lucide"
 import {
   Button,
   Dialog,
@@ -16,7 +17,6 @@ import {
 import type { StackProps } from "@yamada-ui/react"
 import { memo, useRef, useState } from "react"
 import type { FC, MutableRefObject } from "react"
-import { MagnifyingGlass, Plus } from "components/media-and-icons"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 
@@ -35,7 +35,7 @@ export const Header: FC<HeaderProps> = memo(
       <HStack as="section" gap="sm" {...rest}>
         <InputGroup>
           <InputLeftElement ms="1">
-            <MagnifyingGlass color="muted" />
+            <Search color="muted" fontSize="lg" />
           </InputLeftElement>
 
           <Input
@@ -78,7 +78,7 @@ const CreateButton: FC<CreateButtonProps> = memo(
         <Tooltip label={t("palette.create")} placement="top">
           <IconButton
             isRounded
-            icon={<Plus color="muted" />}
+            icon={<Plus fontSize="lg" color="muted" />}
             bg={["blackAlpha.100", "whiteAlpha.100"]}
             borderColor="transparent"
             colorScheme="neutral"

@@ -24,8 +24,8 @@ importers:
         specifier: ^1.0.32
         version: 1.0.32(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@yamada-ui/lucide':
-        specifier: ^1.1.0
-        version: 1.1.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.0.1
+        version: 1.0.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@yamada-ui/react':
         specifier: ^1.4.1
         version: 1.4.1(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(framer-motion@9.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -882,6 +882,11 @@ packages:
     peerDependencies:
       react: '>=18'
 
+  '@yamada-ui/core@1.7.1':
+    resolution: {integrity: sha512-/k0z2zzBneMfvlWlsx70JSpTdn9Zs+HKtAvklQgswI2kcCQIPfg1u0iRzi092ra1hXZ3YGa9MyQ+qcedEeub3w==, tarball: https://registry.npmjs.org/@yamada-ui/core/-/core-1.7.1.tgz}
+    peerDependencies:
+      react: '>=18'
+
   '@yamada-ui/core@1.7.2':
     resolution: {integrity: sha512-nukH2OEsarlb49T36Qe5zMfXyZgvBI8o4ac9C4BGeQikO/F3PiEDhquS3/jx0iFJkWqmsQ6xC/aBCbaS87gUAw==, tarball: https://registry.npmjs.org/@yamada-ui/core/-/core-1.7.2.tgz}
     peerDependencies:
@@ -914,6 +919,11 @@ packages:
 
   '@yamada-ui/highlight@1.0.28':
     resolution: {integrity: sha512-8rip7rOKvA5R2s20c7hnCLwtQ/HIa1dHSy1b98s5In+vMloNN18LdR/iVGsfj8OciAAL6pjPUet2qgVUXeNoXA==, tarball: https://registry.npmjs.org/@yamada-ui/highlight/-/highlight-1.0.28.tgz}
+    peerDependencies:
+      react: '>=18'
+
+  '@yamada-ui/icon@1.0.27':
+    resolution: {integrity: sha512-Nna/HDJuWgoDSAY0ut64PtN2p35s6DhHdnRdrUibFvTnFAo72RvoK8JzI4wl1LYcYJ+t7FJFdeofFZkAbkjIqg==, tarball: https://registry.npmjs.org/@yamada-ui/icon/-/icon-1.0.27.tgz}
     peerDependencies:
       react: '>=18'
 
@@ -967,8 +977,8 @@ packages:
     peerDependencies:
       react: '>=18'
 
-  '@yamada-ui/lucide@1.1.0':
-    resolution: {integrity: sha512-F8cuVYDza0b+NiuqhiBJxIgwX3h6A3mylvZZqc2MfX3ofcOVGm3lhvGSoHnxTCTgtY1+yTqTrgxC8C+bZ33PTw==, tarball: https://registry.npmjs.org/@yamada-ui/lucide/-/lucide-1.1.0.tgz}
+  '@yamada-ui/lucide@1.0.1':
+    resolution: {integrity: sha512-m6X1jFPD8zvhZoDc4b9IlF7p53CCg+fkVktZkVcJr7Tbi7wFA3KBruMFX6ZsN/ZTV/onhntaoNbKpB2gyUJQ9Q==, tarball: https://registry.npmjs.org/@yamada-ui/lucide/-/lucide-1.0.1.tgz}
     peerDependencies:
       react: '>=18'
 
@@ -1298,6 +1308,11 @@ packages:
 
   '@yamada-ui/use-timeout@1.0.14':
     resolution: {integrity: sha512-xWHMWzJgBTcBojhUy/I7OPLWWtfI4pByq8YJbeK3CIcLitmgcnzQ+imZ+tU6JLHSpmKPn+orMDBmV11HWWWx/w==, tarball: https://registry.npmjs.org/@yamada-ui/use-timeout/-/use-timeout-1.0.14.tgz}
+    peerDependencies:
+      react: '>=18'
+
+  '@yamada-ui/use-token@1.1.15':
+    resolution: {integrity: sha512-BEpPbIQ8uLdw+u2oPnzuu2cHQSlLMawowAyJQtqUo0DvIEBEo4CnGNnn2LnE+rOumV0kU5CASouIBPfQYNCpTA==, tarball: https://registry.npmjs.org/@yamada-ui/use-token/-/use-token-1.1.15.tgz}
     peerDependencies:
       react: '>=18'
 
@@ -2419,8 +2434,8 @@ packages:
     resolution: {integrity: sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==, tarball: https://registry.npmjs.org/lru-cache/-/lru-cache-10.2.2.tgz}
     engines: {node: 14 || >=16.14}
 
-  lucide-react@0.394.0:
-    resolution: {integrity: sha512-PzTbJ0bsyXRhH59k5qe7MpTd5MxlpYZUcM9kGSwvPGAfnn0J6FElDwu2EX6Vuh//F7y60rcVJiFQ7EK9DCMgfw==, tarball: https://registry.npmjs.org/lucide-react/-/lucide-react-0.394.0.tgz}
+  lucide-react@0.390.0:
+    resolution: {integrity: sha512-APqbfEcVuHnZbiy3E97gYWLeBdkE4e6NbY6AuVETZDZVn/bQCHYUoHyxcUHyvRopfPOHhFUEvDyyQzHwM+S9/w==, tarball: https://registry.npmjs.org/lucide-react/-/lucide-react-0.390.0.tgz}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
 
@@ -4051,6 +4066,22 @@ snapshots:
       - react-dom
       - supports-color
 
+  '@yamada-ui/core@1.7.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@emotion/css': 11.11.2
+      '@emotion/react': 11.11.4(@types/react@18.3.3)(react@18.3.1)
+      '@emotion/sheet': 1.2.2
+      '@emotion/styled': 11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
+      '@yamada-ui/portal': 1.0.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@yamada-ui/utils': 1.2.1(react@18.3.1)
+      csstype: 3.1.3
+      react: 18.3.1
+      react-fast-compare: 3.2.2
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+      - supports-color
+
   '@yamada-ui/core@1.7.2(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@emotion/css': 11.11.2
@@ -4126,6 +4157,17 @@ snapshots:
     dependencies:
       '@yamada-ui/core': 1.7.2(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@yamada-ui/typography': 1.0.28(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@yamada-ui/utils': 1.2.1(react@18.3.1)
+      react: 18.3.1
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+      - supports-color
+
+  '@yamada-ui/icon@1.0.27(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@yamada-ui/core': 1.7.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@yamada-ui/use-token': 1.1.15(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@yamada-ui/utils': 1.2.1(react@18.3.1)
       react: 18.3.1
     transitivePeerDependencies:
@@ -4246,12 +4288,12 @@ snapshots:
       - react-dom
       - supports-color
 
-  '@yamada-ui/lucide@1.1.0(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@yamada-ui/lucide@1.0.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@yamada-ui/core': 1.7.2(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@yamada-ui/icon': 1.0.28(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@yamada-ui/core': 1.7.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@yamada-ui/icon': 1.0.27(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@yamada-ui/utils': 1.2.1(react@18.3.1)
-      lucide-react: 0.394.0(react@18.3.1)
+      lucide-react: 0.390.0(react@18.3.1)
       react: 18.3.1
     transitivePeerDependencies:
       - '@types/react'
@@ -5011,6 +5053,16 @@ snapshots:
     dependencies:
       '@yamada-ui/utils': 1.2.1(react@18.3.1)
       react: 18.3.1
+
+  '@yamada-ui/use-token@1.1.15(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@yamada-ui/core': 1.7.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@yamada-ui/utils': 1.2.1(react@18.3.1)
+      react: 18.3.1
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
+      - supports-color
 
   '@yamada-ui/use-token@1.1.16(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -6343,7 +6395,7 @@ snapshots:
 
   lru-cache@10.2.2: {}
 
-  lucide-react@0.394.0(react@18.3.1):
+  lucide-react@0.390.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 

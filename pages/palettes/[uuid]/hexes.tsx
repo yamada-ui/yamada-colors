@@ -150,7 +150,7 @@ export const Hexes: FC<HexesProps> = memo(({}) => {
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
           colorScheme="neutral"
-          leftIcon={<Plus fontSize="lg" />}
+          leftIcon={<Plus fontSize="1.125rem" />}
           onClick={onCreate}
         >
           {t("palette.create")}
@@ -181,7 +181,9 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         gap="lg"
       >
         <GridItem as={HStack} justifyContent="center" gap="sm">
-          <Sun color="muted" fontSize="2xl" />
+          <Box display="inline-flex" color="muted">
+            <Sun fontSize="1.5rem" />
+          </Box>
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {t("palette.light")}
@@ -189,7 +191,9 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         </GridItem>
 
         <GridItem as={HStack} justifyContent="center" gap="sm">
-          <Moon color="muted" fontSize="2xl" />
+          <Box display="inline-flex" color="muted">
+            <Moon fontSize="1.5rem" />
+          </Box>
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {t("palette.dark")}
@@ -207,11 +211,13 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
         }}
       >
         <HStack justifyContent="center" gap="sm">
-          {colorMode === "light" ? (
-            <Sun color="muted" fontSize="2xl" />
-          ) : (
-            <Moon color="muted" fontSize="2xl" />
-          )}
+          <Box display="inline-flex" color="muted">
+            {colorMode === "light" ? (
+              <Sun fontSize="1.5rem" />
+            ) : (
+              <Moon fontSize="1.5rem" />
+            )}
+          </Box>
 
           <Text textAlign="center" fontSize="2xl" fontWeight="medium">
             {colorMode === "light" ? "Light" : "Dark"}
@@ -230,7 +236,8 @@ const HexHeader: FC<HexHeaderProps> = memo(() => {
             bg: ["blackAlpha.100", "whiteAlpha.100"],
           }}
           colorScheme="neutral"
-          icon={<RefreshCcw color="muted" size="lg" />}
+          color="muted"
+          icon={<RefreshCcw size="1.125rem" />}
           onClick={toggleColorMode}
         />
       </Center>
@@ -319,12 +326,9 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                     bg: ["blackAlpha.100", "whiteAlpha.100"],
                   }}
                   colorScheme="neutral"
+                  color={["blackAlpha.500", "whiteAlpha.500"]}
                   icon={
-                    <ChevronIcon
-                      fontSize="2xl"
-                      color={["blackAlpha.500", "whiteAlpha.500"]}
-                      transform="rotate(-90deg)"
-                    />
+                    <ChevronIcon fontSize="1.5rem" transform="rotate(-90deg)" />
                   }
                   onClick={() =>
                     onEdit({ id, name, hex: [lightHex, lightHex] })
@@ -342,12 +346,9 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
                     bg: ["blackAlpha.100", "whiteAlpha.100"],
                   }}
                   colorScheme="neutral"
+                  color={["blackAlpha.500", "whiteAlpha.500"]}
                   icon={
-                    <ChevronIcon
-                      fontSize="2xl"
-                      color={["blackAlpha.500", "whiteAlpha.500"]}
-                      transform="rotate(90deg)"
-                    />
+                    <ChevronIcon fontSize="1.5rem" transform="rotate(90deg)" />
                   }
                   onClick={() => onEdit({ id, name, hex: [darkHex, darkHex] })}
                 />
@@ -447,7 +448,7 @@ const HexControl: FC<HexControlProps> = memo(
           transitionProperty="common"
           transitionDuration="slower"
         >
-          <GripVertical fontSize="2xl" />
+          <GripVertical fontSize="1.5rem" />
         </ReorderTrigger>
 
         <VStack
@@ -541,10 +542,10 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
                   opacity: "1",
                 },
               }}
+              color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
             >
               <Forward
-                fontSize="lg"
-                color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
+                fontSize="1.125rem"
                 opacity="0"
                 transitionProperty="common"
                 transitionDuration="slower"

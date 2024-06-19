@@ -180,13 +180,8 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
           display={{ base: "inline-flex", sm: "none" }}
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={
-            <ChevronIcon
-              fontSize="2xl"
-              color="muted"
-              transform="rotate(90deg)"
-            />
-          }
+          color="muted"
+          icon={<ChevronIcon fontSize="2xl" transform="rotate(90deg)" />}
           borderColor="transparent"
           isRounded
           disabled={!index}
@@ -200,13 +195,8 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
           display={{ base: "inline-flex", sm: "none" }}
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={
-            <ChevronIcon
-              fontSize="2xl"
-              color="muted"
-              transform="rotate(-90deg)"
-            />
-          }
+          color="muted"
+          icon={<ChevronIcon fontSize="2xl" transform="rotate(-90deg)" />}
           borderColor="transparent"
           isRounded
           disabled={index === colors.length - 1}
@@ -279,7 +269,8 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
                   colorScheme="neutral"
-                  icon={<Upload color="muted" fontSize="lg" />}
+                  color="muted"
+                  icon={<Upload fontSize="1.125rem" />}
                   {...rest}
                 />
               </MenuButton>
@@ -338,7 +329,8 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Pencil color="muted" fontSize="lg" />}
+          color="muted"
+          icon={<Pencil fontSize="1.125rem" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}
@@ -408,7 +400,8 @@ const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
         <IconButton
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          icon={<Trash2 color="danger" fontSize="lg" />}
+          color="danger"
+          icon={<Trash2 fontSize="1.125rem" />}
           borderColor="transparent"
           isRounded
           onClick={onOpen}

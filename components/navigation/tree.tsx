@@ -40,35 +40,35 @@ export const Tree = memo(
         <VStack as="ul" w="full" gap="sm">
           <TreeItem
             href="/"
-            icon={<Compass fontSize="2xl" />}
+            icon={<Compass fontSize="1.5rem" />}
             isAside={isAside}
           >
             {t("app.title")}
           </TreeItem>
           <TreeItem
             href="/palettes"
-            icon={<Palette fontSize="2xl" />}
+            icon={<Palette fontSize="1.5rem" />}
             isAside={isAside}
           >
             {t("palettes.title")}
           </TreeItem>
           <TreeItem
             href={`/generators?hex=${hexes.light?.replace("#", "")}`}
-            icon={<Paintbrush fontSize="2xl" />}
+            icon={<Paintbrush fontSize="1.5rem" />}
             isAside={isAside}
           >
             {t("generators.title")}
           </TreeItem>
           <TreeItem
             href={`/contrast-checker?light.fg=${hexes.light?.replace("#", "")}&dark.fg=${hexes.dark?.replace("#", "")}`}
-            icon={<Contrast fontSize="2xl" />}
+            icon={<Contrast fontSize="1.5rem" />}
             isAside={isAside}
           >
             {t("contrast-checker.title")}
           </TreeItem>
           <TreeItem
             href="/history"
-            icon={<History fontSize="2xl" />}
+            icon={<History fontSize="1.5rem" />}
             isAside={isAside}
           >
             {t("history.title")}

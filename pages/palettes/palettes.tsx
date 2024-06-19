@@ -161,7 +161,7 @@ export const Palettes: FC<PalettesProps> = memo(
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
           colorScheme="neutral"
-          leftIcon={<Plus fontSize="2xl" />}
+          leftIcon={<Plus fontSize="1.5rem" />}
           isRounded
           onClick={onCreate}
         >

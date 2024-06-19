@@ -34,8 +34,8 @@ export const Header: FC<HeaderProps> = memo(
     return (
       <HStack as="section" gap="sm" {...rest}>
         <InputGroup>
-          <InputLeftElement ms="1">
-            <Search color="muted" fontSize="lg" />
+          <InputLeftElement color="muted" ms="1">
+            <Search fontSize="1.125rem" />
           </InputLeftElement>
 
           <Input
@@ -78,7 +78,8 @@ const CreateButton: FC<CreateButtonProps> = memo(
         <Tooltip label={t("palette.create")} placement="top">
           <IconButton
             isRounded
-            icon={<Plus fontSize="lg" color="muted" />}
+            color="muted"
+            icon={<Plus fontSize="1.125rem" />}
             bg={["blackAlpha.100", "whiteAlpha.100"]}
             borderColor="transparent"
             colorScheme="neutral"

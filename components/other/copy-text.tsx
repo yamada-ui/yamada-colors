@@ -88,25 +88,23 @@ export const CopyText = memo(
           {children}
 
           {!hiddenIcon ? (
-            hasCopied ? (
-              <Check
-                ms="1"
-                mb="-0.5"
-                fontSize="1em"
-                color="success"
-                {...iconProps}
-                {...checkIconProps}
-              />
-            ) : (
-              <Clipboard
-                ms="1"
-                mb="-0.5"
-                fontSize="1em"
-                color="muted"
-                {...iconProps}
-                {...copyIconProps}
-              />
-            )
+            <Text as="span" ms="1">
+              {hasCopied ? (
+                <Check
+                  fontSize="1em"
+                  color="success"
+                  {...iconProps}
+                  {...checkIconProps}
+                />
+              ) : (
+                <Clipboard
+                  fontSize="1em"
+                  color="muted"
+                  {...iconProps}
+                  {...copyIconProps}
+                />
+              )}
+            </Text>
           ) : null}
         </Text>
       )

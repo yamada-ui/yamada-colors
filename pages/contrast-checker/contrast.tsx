@@ -14,6 +14,7 @@ import {
   GridItem,
   Tag,
   Tooltip,
+  Box,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -210,7 +211,7 @@ const SwitchButton: FC<SwitchButtonProps> = ({
       <IconButton
         as={Link}
         href={`/contrast-checker?${queries}`}
-        icon={<RefreshCcw fontSize={{ base: "lg", sm: "sm" }} />}
+        icon={<RefreshCcw fontSize={{ base: "1.125rem", sm: "0.875rem" }} />}
         border="none"
         minW={{ base: "8", sm: "6" }}
         h={{ base: "8", sm: "6" }}
@@ -274,9 +275,13 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aa.large ? (
-                  <Check color="success" fontSize="2xl" />
+                  <Box color="success">
+                    <Check fontSize="1.5rem" />
+                  </Box>
                 ) : (
-                  <X color="danger" fontSize="2xl" />
+                  <Box color="danger">
+                    <X fontSize="1.5rem" />
+                  </Box>
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -288,9 +293,13 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aa.small ? (
-                  <Check color="success" fontSize="2xl" />
+                  <Box color="success">
+                    <Check fontSize="1.5rem" />
+                  </Box>
                 ) : (
-                  <X color="danger" fontSize="2xl" />
+                  <Box color="danger">
+                    <X fontSize="1.5rem" />
+                  </Box>
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -302,9 +311,13 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aa.component ? (
-                  <Check color="success" fontSize="2xl" />
+                  <Box color="success">
+                    <Check fontSize="1.5rem" />
+                  </Box>
                 ) : (
-                  <X color="danger" fontSize="2xl" />
+                  <Box color="danger">
+                    <X fontSize="1.5rem" />
+                  </Box>
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -335,9 +348,13 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aaa.large ? (
-                  <Check color="success" fontSize="2xl" />
+                  <Box color="success">
+                    <Check fontSize="1.5rem" />
+                  </Box>
                 ) : (
-                  <X color="danger" fontSize="2xl" />
+                  <Box color="danger">
+                    <X fontSize="1.5rem" />
+                  </Box>
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -349,9 +366,13 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aaa.small ? (
-                  <Check color="success" fontSize="2xl" />
+                  <Box color="success">
+                    <Check fontSize="1.5rem" />
+                  </Box>
                 ) : (
-                  <X color="danger" fontSize="2xl" />
+                  <Box color="danger">
+                    <X fontSize="1.5rem" />
+                  </Box>
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">
@@ -363,9 +384,13 @@ const ContrastScore: FC<ContrastScoreProps> = ({ score, aa, aaa, level }) => {
                 </Text>
 
                 {aaa.component ? (
-                  <Check color="success" fontSize="2xl" />
+                  <Box color="success">
+                    <Check fontSize="1.5rem" />
+                  </Box>
                 ) : (
-                  <X color="danger" fontSize="2xl" />
+                  <Box color="danger">
+                    <X fontSize="1.5rem" />
+                  </Box>
                 )}
 
                 <Text fontSize={{ base: "md", sm: "sm" }} fontWeight="semibold">

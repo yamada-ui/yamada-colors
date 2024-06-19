@@ -78,7 +78,8 @@ export const PaletteMenu = memo(
               >
                 <IconButton
                   ref={ref}
-                  icon={<Palette color="muted" fontSize="2xl" />}
+                  color="muted"
+                  icon={<Palette fontSize="1.5rem" />}
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
                   colorScheme="neutral"
@@ -285,7 +286,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
           colorScheme="neutral"
           bg={["blackAlpha.200", "whiteAlpha.100"]}
           borderColor="transparent"
-          leftIcon={<Plus fontSize="lg" />}
+          leftIcon={<Plus fontSize="1.125rem" />}
           disabled={isOpen && !value.length}
           onClick={!isOpen ? onOpen : onCreate}
           _hover={{ _disabled: {} }}

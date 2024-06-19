@@ -102,9 +102,9 @@ export const ExportModal: FC<ExportModalProps> = memo(
               colorScheme="neutral"
               icon={
                 hasCopied ? (
-                  <Check fontSize="xl" />
+                  <Check fontSize="1.25rem" />
                 ) : (
-                  <Clipboard fontSize="xl" />
+                  <Clipboard fontSize="1.25rem" />
                 )
               }
               pointerEvents={hasCopied ? "none" : "auto"}

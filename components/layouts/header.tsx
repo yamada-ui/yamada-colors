@@ -110,7 +110,6 @@ export const Header = memo(
                   _focus={{ outline: "none" }}
                   _focusVisible={{ boxShadow: "outline" }}
                   rounded="md"
-                  fontSize="xl"
                 >
                   <Image
                     src="/logo-black.png"
@@ -140,7 +139,7 @@ export const Header = memo(
                     display={{ base: "none", sm: "inline-flex" }}
                     color="muted"
                     onClick={searchControls.onToggle}
-                    icon={<SearchIcon fontSize="2xl" />}
+                    icon={<SearchIcon fontSize="1.5rem" />}
                   />
                 </>
 
@@ -291,7 +290,7 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
             display={{ base: "none", lg: "inline-flex" }}
             color="muted"
             onClick={onOpen}
-            icon={<MenuIcon fontSize="2xl" />}
+            icon={<MenuIcon fontSize="1.5rem" />}
             _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           />
         ) : (
@@ -345,7 +344,7 @@ const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
         isRounded
         variant="ghost"
         color="muted"
-        icon={<Languages fontSize="2xl" />}
+        icon={<Languages fontSize="1.5rem" />}
         _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />
@@ -405,9 +404,9 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
           color="muted"
           icon={
             colorMode === "dark" ? (
-              <Sun fontSize="2xl" />
+              <Sun fontSize="1.5rem" />
             ) : (
-              <Moon fontSize="2xl" />
+              <Moon fontSize="1.5rem" />
             )
           }
           _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
@@ -471,7 +470,7 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
         isRounded
         variant="ghost"
         color="muted"
-        icon={<BoxIcon fontSize="2xl" />}
+        icon={<BoxIcon fontSize="1.5rem" />}
         _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />

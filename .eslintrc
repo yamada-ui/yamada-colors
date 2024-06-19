@@ -8,7 +8,11 @@
     "plugin:import/typescript",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint/eslint-plugin", "unused-imports", "import"],
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "unused-imports",
+    "import"
+  ],
   "rules": {
     "import/order": [
       "error",
@@ -24,5 +28,16 @@
     "unused-imports/no-unused-imports": "error",
     "react/jsx-curly-brace-presence": "error",
     "@typescript-eslint/consistent-type-imports": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.js",
+        "*.mjs"
+      ],
+      "rules": {
+        "@typescript-eslint/consistent-type-imports": "off"
+      }
+    }
+  ]
 }

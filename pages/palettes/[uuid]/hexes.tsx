@@ -292,7 +292,7 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
         return (
           <ReorderItem
             key={id}
-            label={id}
+            value={id}
             display="grid"
             gridTemplateColumns={{
               base: "1fr auto 1fr",

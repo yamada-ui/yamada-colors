@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server"
 
 export const middleware = ({ headers, ip }: NextRequest) => {
   const blockedIps = [
+    // facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)
     "31.13.24.0/21",
     "31.13.64.0/18",
     "31.13.64.0/19",
@@ -875,6 +876,13 @@ export const middleware = ({ headers, ip }: NextRequest) => {
     "2a03:2887:ff2d::/48",
     "2a03:83e0::/32",
     "2a10:f781:10:cee0::/64",
+    // Mozilla/5.0 (compatible; DataForSeoBot/1.0; +https://dataforseo.com/dataforseo-bot)
+    "136.243.220.208/29",
+    "136.243.228.176/29",
+    "136.243.228.192/29",
+    "2a01:4f8:2b03:38b::2/64",
+    "2a01:4f8:2b03:38c::2/64",
+    "2a01:4f8:2b03:38d::2/64",
   ]
 
   ip = headers.get("x-forwarded-for") || ip

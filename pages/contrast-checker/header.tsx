@@ -1,5 +1,5 @@
 import { Check } from "@yamada-ui/lucide"
-import type { ButtonProps } from "@yamada-ui/react"
+import type { ButtonProps, ColorMode } from "@yamada-ui/react"
 import {
   Box,
   Button,
@@ -9,7 +9,8 @@ import {
   Tooltip,
   useColorModeValue,
 } from "@yamada-ui/react"
-import type { Dispatch, SetStateAction, FC } from "react"
+import { useState, type FC, type MutableRefObject } from "react"
+import type { ContrastLevel } from "./index.page"
 import { NextLinkIconButton } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
@@ -17,12 +18,12 @@ import { setCookie } from "utils/storage"
 
 export type HeaderProps = {
   hexes: [string, string]
-  aa: boolean
-  aaa: boolean
-  setLevel: Dispatch<SetStateAction<{ aa: boolean; aaa: boolean }>>
+  level: ContrastLevel
+  setLevelRef: MutableRefObject<Map<ColorMode, (level: ContrastLevel) => void>>
 }
 
-export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
+export const Header: FC<HeaderProps> = ({ hexes, level, setLevelRef }) => {
+  const [{ aa, aaa }, setLevel] = useState(level)
   const { t } = useI18n()
 
   return (
@@ -56,6 +57,9 @@ export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
           setLevel(({ aa, aaa }) => {
             const value = { aa: !aa, aaa }
 
+            for (const func of setLevelRef.current.values()) {
+              func(value)
+            }
             setCookie(CONSTANT.STORAGE.LEVEL, JSON.stringify(value))
 
             return value
@@ -73,6 +77,9 @@ export const Header: FC<HeaderProps> = ({ hexes, aa, aaa, setLevel }) => {
           setLevel(({ aa, aaa }) => {
             const value = { aa, aaa: !aaa }
 
+            for (const func of setLevelRef.current.values()) {
+              func(value)
+            }
             setCookie(CONSTANT.STORAGE.LEVEL, JSON.stringify(value))
 
             return value

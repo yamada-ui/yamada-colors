@@ -1,9 +1,11 @@
+import { noop } from "@yamada-ui/react"
 import * as c from "color2k"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
+import { useRef } from "react"
 import { Header } from "./header"
 import { Hexes } from "./hexes"
 import { Tabs } from "./tabs"
@@ -12,7 +14,7 @@ import { AppLayout } from "layouts/app-layout"
 import { alternative, darken, hue, lighten, tone } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
 
-const getTabData = (hex: string, tab: string) => {
+export const getHexes = (tab: string, hex: string) => {
   switch (tab) {
     case "alternatives":
       return alternative(hex)
@@ -38,13 +40,13 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format, palettes },
   } = await getServerSideCommonProps(req)
-  let hex = `#${req.query.hex}`
   let tab = (req.query.tab ?? "alternatives") as string
+  let hex = `#${req.query.hex}`
 
   try {
     hex = c.toHex(hex)
 
-    const hexes = getTabData(hex, tab)
+    const hexes = getHexes(tab, hex)
 
     const props = {
       cookies,
@@ -64,6 +66,7 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
+  const onSelectRef = useRef<(tab: string, hex: string) => void>(noop)
   const { t } = useI18n()
 
   return (
@@ -77,9 +80,9 @@ const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
     >
       <Header {...{ hex, tab }} />
 
-      <Tabs {...{ tab, hex }} />
+      <Tabs {...{ tab, hex, onSelectRef }} />
 
-      <Hexes {...{ hexes }} />
+      <Hexes {...{ hexes, hex, onSelectRef }} />
     </AppLayout>
   )
 }

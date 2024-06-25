@@ -1,15 +1,46 @@
-import { Box, Center, Grid, GridItem, Motion } from "@yamada-ui/react"
+import {
+  Box,
+  Center,
+  Grid,
+  GridItem,
+  Motion,
+  assignRef,
+} from "@yamada-ui/react"
 import Link from "next/link"
-import type { FC } from "react"
+import { useRouter } from "next/router"
+import { useCallback, useState, type FC, type MutableRefObject } from "react"
+import { getHexes } from "./index.page"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
 import { f } from "utils/color"
 
-export type HexesProps = { hexes: string[] }
+export type HexesProps = {
+  hexes: string[]
+  onSelectRef: MutableRefObject<(tab: string, hex: string) => void>
+}
 
-export const Hexes: FC<HexesProps> = ({ hexes }) => {
+export const Hexes: FC<HexesProps> = ({ hexes: hexesProp, onSelectRef }) => {
+  const router = useRouter()
+  const [hexes, setHexes] = useState(hexesProp)
   const { format } = useApp()
   const count = hexes.length
+
+  const onSelect = useCallback(
+    (tab: string, hex: string) => {
+      const hexes = getHexes(tab, hex)
+
+      setHexes(hexes)
+
+      router.push(
+        `/generators?hex=${hex.replace("#", "")}&tab=${tab}`,
+        undefined,
+        { shallow: true },
+      )
+    },
+    [router],
+  )
+
+  assignRef(onSelectRef, onSelect)
 
   return (
     <Box as="section">

@@ -1,3 +1,4 @@
+import type { ColorMode } from "@yamada-ui/react"
 import { Grid, defaultTheme } from "@yamada-ui/react"
 import * as c from "color2k"
 import type {
@@ -5,8 +6,8 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import { useState } from "react"
-import { Contrast } from "./contrast"
+import { useRef } from "react"
+import { ContrastChecker } from "./contrast-checker"
 import { Header } from "./header"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
@@ -15,14 +16,32 @@ import { isReadable, readability } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
 import { getCookie } from "utils/storage"
 
-const getContrast = (
+export type Contrast = {
+  fg: string
+  bg: string
+  score: number
+  aa: ContrastLevelScore
+  aaa: ContrastLevelScore
+}
+
+export type ContrastLevel = { aa: boolean; aaa: boolean }
+export type ContrastLevelScore = {
+  small: boolean
+  large: boolean
+  component: boolean
+}
+export type ContrastGround = "fg" | "bg"
+
+export const getContrast = (
   mode: "light" | "dark",
-  query: GetServerSidePropsContext["query"],
-) => {
+  fg: any,
+  bg: any,
+): Contrast => {
   const { white, black } = defaultTheme.colors
   const fallback = mode === "light" ? white : black
-  const fg = c.toHex(`#${query[`${mode}.fg`]}`)
-  const bg = query[`${mode}.bg`] ? `#${query[`${mode}.bg`]}` : fallback
+
+  fg = c.toHex(`#${fg.replace("#", "")}`)
+  bg = bg ? c.toHex(`#${bg.replace("#", "")}`) : fallback
 
   return {
     fg,
@@ -45,15 +64,16 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format, palettes },
   } = await getServerSideCommonProps(req)
-  const level = getCookie<{ aa: boolean; aaa: boolean }>(
+  const level = getCookie<ContrastLevel>(
     cookies,
     CONSTANT.STORAGE.LEVEL,
     '{ "aa": true, "aaa": false }',
   )
 
   try {
-    const light = getContrast("light", req.query)
-    const dark = getContrast("dark", req.query)
+    const { query } = req
+    const light = getContrast("light", query["light.fg"], query["light.bg"])
+    const dark = getContrast("dark", query["dark.fg"], query["dark.bg"])
     const hexes: [string, string] = [light.fg, dark.fg]
 
     const props = {
@@ -83,13 +103,17 @@ const Page: NextPage<PageProps> = ({
   dark,
 }) => {
   const { t } = useI18n()
-  const [{ aa, aaa }, setLevel] = useState(level)
-  const queries = new URLSearchParams({
-    "light.fg": light.fg.replace("#", ""),
-    "light.bg": light.bg.replace("#", ""),
-    "dark.fg": dark.fg.replace("#", ""),
-    "dark.bg": dark.bg.replace("#", ""),
-  })
+  const setLevelRef = useRef<Map<ColorMode, (level: ContrastLevel) => void>>(
+    new Map(),
+  )
+  const queriesRef = useRef(
+    new URLSearchParams({
+      "light.fg": light.fg.replace("#", ""),
+      "light.bg": light.bg.replace("#", ""),
+      "dark.fg": dark.fg.replace("#", ""),
+      "dark.bg": dark.bg.replace("#", ""),
+    }),
+  )
 
   return (
     <AppLayout
@@ -100,7 +124,7 @@ const Page: NextPage<PageProps> = ({
       palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
     >
-      <Header {...{ hexes, aa, aaa, setLevel }} />
+      <Header {...{ hexes, level, setLevelRef }} />
 
       <Grid
         templateColumns={{
@@ -111,13 +135,20 @@ const Page: NextPage<PageProps> = ({
         }}
         gap="lg"
       >
-        <Contrast
+        <ContrastChecker
           mode="light"
-          {...light}
-          level={{ aa, aaa }}
-          queries={queries}
+          contrast={light}
+          level={level}
+          setLevelRef={setLevelRef}
+          queriesRef={queriesRef}
         />
-        <Contrast mode="dark" {...dark} level={{ aa, aaa }} queries={queries} />
+        <ContrastChecker
+          mode="dark"
+          contrast={dark}
+          level={level}
+          setLevelRef={setLevelRef}
+          queriesRef={queriesRef}
+        />
       </Grid>
     </AppLayout>
   )

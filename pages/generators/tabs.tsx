@@ -3,28 +3,34 @@ import {
   SegmentedControl,
   SegmentedControlButton,
 } from "@yamada-ui/react"
-import Link from "next/link"
-import type { FC } from "react"
+import { useState, type FC, type MutableRefObject } from "react"
 import { useI18n } from "contexts/i18n-context"
 
 const TABS = ["alternatives", "shades", "tints", "tones", "hues"]
 
-export type TabsProps = { tab: string; hex: string }
+export type TabsProps = {
+  tab: string
+  hex: string
+  onSelectRef: MutableRefObject<(tab: string, hex: string) => void>
+}
 
-export const Tabs: FC<TabsProps> = ({ tab, hex }) => {
+export const Tabs: FC<TabsProps> = ({ tab: tabProp, hex, onSelectRef }) => {
+  const [tab, setTab] = useState<string>(tabProp)
   const { t } = useI18n()
 
   return (
     <ScrollArea as="section" type="never" tabIndex={-1}>
-      <SegmentedControl as="nav" variant="tabs" value={tab} w="full">
+      <SegmentedControl variant="tabs" value={tab} w="full">
         {TABS.map((tab) => {
           return (
             <SegmentedControlButton
               key={tab}
-              as={Link}
               tabIndex={-1}
               value={tab}
-              href={`/generators?hex=${hex.replace("#", "")}&tab=${tab}`}
+              onClick={() => {
+                setTab(tab)
+                onSelectRef.current(tab, hex)
+              }}
             >
               {t(`generators.${tab}`)}
             </SegmentedControlButton>

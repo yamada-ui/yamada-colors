@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export const middleware = ({ headers, ip }: NextRequest) => {
-  const blockedUserAgents = ["facebookexternalhit", "MJ12bot", "DataForSeoBot"]
+  const blockedUserAgents = process.env.BLOCKED_USER_AGENTS?.split(",") ?? []
 
   const userAgent = headers.get("user-agent")
   ip = headers.get("x-forwarded-for") || ip
@@ -13,7 +13,9 @@ export const middleware = ({ headers, ip }: NextRequest) => {
   if (
     userAgent &&
     blockedUserAgents.some((blockedUserAgent) =>
-      userAgent.includes(blockedUserAgent),
+      userAgent
+        .toLocaleUpperCase()
+        .includes(blockedUserAgent.toLocaleUpperCase()),
     )
   ) {
     return new NextResponse("Access Denied", { status: 403 })

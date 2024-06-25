@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /generators
+Disallow: /contrast-checker

@@ -10,8 +10,14 @@ export const middleware = ({ headers, ip }: NextRequest) => {
   console.log("ip", ip)
   console.log("userAgent", userAgent)
 
-  if (userAgent && blockedUserAgents.some((agent) => userAgent.includes(agent)))
+  if (
+    userAgent &&
+    blockedUserAgents.some((blockedUserAgent) =>
+      userAgent.includes(blockedUserAgent),
+    )
+  ) {
     return new NextResponse("Access Denied", { status: 403 })
+  }
 
   return NextResponse.next()
 }

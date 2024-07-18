@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-export const middleware = ({ headers, ip }: NextRequest) => {
+export const middleware = ({ headers }: NextRequest) => {
   const blockedUserAgents = process.env.BLOCKED_USER_AGENTS?.split(",") ?? []
 
   const userAgent = headers.get("user-agent")
-  ip = headers.get("x-forwarded-for") || ip
-
-  console.log("ip", ip)
-  console.log("userAgent", userAgent)
 
   if (
     userAgent &&

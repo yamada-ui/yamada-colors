@@ -111,6 +111,9 @@ importers:
       eslint-plugin-unused-imports:
         specifier: ^4.0.0
         version: 4.0.1(@typescript-eslint/eslint-plugin@7.17.0(@typescript-eslint/parser@7.17.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0)
+      lefthook:
+        specifier: ^1.7.7
+        version: 1.7.7
       prettier:
         specifier: ^3.3.2
         version: 3.3.3
@@ -2457,6 +2460,50 @@ packages:
   language-tags@1.0.9:
     resolution: {integrity: sha512-MbjN408fEndfiQXbFQ1vnd+1NoLDsnQW41410oQBXiyXDMYH5z505juWa4KUE1LqxRC7DgOgZDbKLxHIwm27hA==}
     engines: {node: '>=0.10'}
+
+  lefthook-darwin-arm64@1.7.7:
+    resolution: {integrity: sha512-EtINYW/1jJDMSlBbCwiZhHRMwybJkuawg9/dtHMll9gE63yBTOQSoqLzjOJWioHKK9DrgAfe2Mh5+PSt0cLVRA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  lefthook-darwin-x64@1.7.7:
+    resolution: {integrity: sha512-77fHVtvLeInztn88fZOsiNMlP5Ql6eG8D233k1G1zndRxwCnVVlB6GVLC/0SRmdE9cR7U66CSphN6EClZrvyHQ==}
+    cpu: [x64]
+    os: [darwin]
+
+  lefthook-freebsd-arm64@1.7.7:
+    resolution: {integrity: sha512-y2+T2ONfr9DYxyx1JGItBf1ARGx0RJcAOn9pEfSN1LrEOAvcVlQKDE8+evdmt8uhMo5TVi+gFe1tdtsIbsiQTA==}
+    cpu: [arm64]
+    os: [freebsd]
+
+  lefthook-freebsd-x64@1.7.7:
+    resolution: {integrity: sha512-6zbprxvq7bBG7ihSA1R/GCC5iN+q9tbjQXKiOI+d63F/Oo5ld/kF5fIZv50K39ujx1Ykdmg5llEIBeDEHuybZQ==}
+    cpu: [x64]
+    os: [freebsd]
+
+  lefthook-linux-arm64@1.7.7:
+    resolution: {integrity: sha512-bUpDortnX1ACCd38uv2+I9vdsyP9Oe9FXZ4E/xX8nl+hnkgC80/nv1KxRI7MlaDdb1z4VgEO/0pT2OU1nM1C/A==}
+    cpu: [arm64]
+    os: [linux]
+
+  lefthook-linux-x64@1.7.7:
+    resolution: {integrity: sha512-8dEuO0AzQkWFKSRvd2rzb/LtmgtEoQHhzgTANeq/2EyWgcfVb62b/qib75oZ0m9W4uvRvqTiLdaGELoS8ohWGA==}
+    cpu: [x64]
+    os: [linux]
+
+  lefthook-windows-arm64@1.7.7:
+    resolution: {integrity: sha512-ZO45ynUnMPm+I8xGgmSc5BqtfByRJSRrhjXQ2lwNE9V+Zl3oMjCMPrs+3KLmrnKxi/k2bq/VHY86XvIhRo7o+g==}
+    cpu: [arm64]
+    os: [win32]
+
+  lefthook-windows-x64@1.7.7:
+    resolution: {integrity: sha512-z4/MxR+GMYZwgCxvLPGU4ebuXNUFdJrtrsAxMVbCw0LU/n7VCP+nfdaxcGO6ELqd4OOfpJCpBhzkvupFefmhhw==}
+    cpu: [x64]
+    os: [win32]
+
+  lefthook@1.7.7:
+    resolution: {integrity: sha512-b1giMxEuEb4MBcSkrEpQSFs5W9+vPlahAltxhWCqqarNzz8oisD4bMA/UGYAn/lvUhhC6oFo98zetQNpvjXp5Q==}
+    hasBin: true
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -6489,6 +6536,41 @@ snapshots:
   language-tags@1.0.9:
     dependencies:
       language-subtag-registry: 0.3.23
+
+  lefthook-darwin-arm64@1.7.7:
+    optional: true
+
+  lefthook-darwin-x64@1.7.7:
+    optional: true
+
+  lefthook-freebsd-arm64@1.7.7:
+    optional: true
+
+  lefthook-freebsd-x64@1.7.7:
+    optional: true
+
+  lefthook-linux-arm64@1.7.7:
+    optional: true
+
+  lefthook-linux-x64@1.7.7:
+    optional: true
+
+  lefthook-windows-arm64@1.7.7:
+    optional: true
+
+  lefthook-windows-x64@1.7.7:
+    optional: true
+
+  lefthook@1.7.7:
+    optionalDependencies:
+      lefthook-darwin-arm64: 1.7.7
+      lefthook-darwin-x64: 1.7.7
+      lefthook-freebsd-arm64: 1.7.7
+      lefthook-freebsd-x64: 1.7.7
+      lefthook-linux-arm64: 1.7.7
+      lefthook-linux-x64: 1.7.7
+      lefthook-windows-arm64: 1.7.7
+      lefthook-windows-x64: 1.7.7
 
   levn@0.4.1:
     dependencies:

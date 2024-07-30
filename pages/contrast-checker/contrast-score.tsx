@@ -13,9 +13,9 @@ import {
 } from "@yamada-ui/react"
 import { useState, type FC, type MutableRefObject } from "react"
 import type { ContrastCheckerProps } from "./contrast-checker"
-import type { Contrast, ContrastLevel, ContrastLevelScore } from "./index.page"
+import type { ContrastLevel } from "./index.page"
 
-export type ContrastScoreProps = Pick<Contrast, "score" | "aa" | "aaa"> &
+export type ContrastScoreProps = ColorContrastScore &
   Pick<ContrastCheckerProps, "mode" | "level"> & {
     setLevelRef: MutableRefObject<
       Map<ColorMode, (level: ContrastLevel) => void>
@@ -55,11 +55,19 @@ export const ContrastScore: FC<ContrastScoreProps> = ({
 
         <Wrap gapX="lg" gapY="md" alignItems="flex-start">
           {level.aa ? (
-            <ContrastLevelScore isMulti={level.aa && level.aaa} {...aa} />
+            <ContrastLevelScore
+              isMulti={level.aa && level.aaa}
+              label="aa"
+              {...aa}
+            />
           ) : null}
 
           {level.aaa ? (
-            <ContrastLevelScore isMulti={level.aa && level.aaa} {...aaa} />
+            <ContrastLevelScore
+              isMulti={level.aa && level.aaa}
+              label="aaa"
+              {...aaa}
+            />
           ) : null}
         </Wrap>
       </Wrap>
@@ -67,11 +75,13 @@ export const ContrastScore: FC<ContrastScoreProps> = ({
   )
 }
 
-type ContrastLevelScoreProps = ContrastLevelScore & {
+type ContrastLevelScoreProps = ColorContrastLevelScore & {
+  label: ColorContrastLevel
   isMulti?: boolean
 }
 
 const ContrastLevelScore: FC<ContrastLevelScoreProps> = ({
+  label,
   large,
   small,
   component,
@@ -87,7 +97,7 @@ const ContrastLevelScore: FC<ContrastLevelScoreProps> = ({
       {isMulti ? (
         <GridItem as={Center} justifySelf="flex-start" colSpan={3}>
           <Tag size="sm" variant="muted">
-            AAA
+            {label.toLocaleUpperCase()}
           </Tag>
         </GridItem>
       ) : null}

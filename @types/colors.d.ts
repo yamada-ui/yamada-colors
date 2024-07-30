@@ -18,3 +18,24 @@ type ColorPalettes = ColorPalette[]
 type ColorExport = "json" | "json.token" | "css" | "css.token"
 
 type ColorFormat = "hex" | "rgb" | "hsl"
+
+type ColorContrastLevel = "aa" | "aaa"
+
+type ColorContrastGround = "fg" | "bg"
+
+type ColorContrastLevelScore = {
+  small: boolean
+  large: boolean
+  component: boolean
+}
+
+type ColorContrastScore = {
+  score: number
+} & Record<ColorContrastLevel, ColorContrastLevelScore>
+
+type ColorContrastSource = {
+  fg: string
+  bg: string
+}
+
+type ColorContrast = ColorContrastSource & ColorContrastScore

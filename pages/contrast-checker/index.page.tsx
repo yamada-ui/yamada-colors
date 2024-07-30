@@ -16,27 +16,13 @@ import { isReadable, readability } from "utils/color"
 import { getServerSideCommonProps } from "utils/next"
 import { getCookie } from "utils/storage"
 
-export type Contrast = {
-  fg: string
-  bg: string
-  score: number
-  aa: ContrastLevelScore
-  aaa: ContrastLevelScore
-}
-
 export type ContrastLevel = { aa: boolean; aaa: boolean }
-export type ContrastLevelScore = {
-  small: boolean
-  large: boolean
-  component: boolean
-}
-export type ContrastGround = "fg" | "bg"
 
 export const getContrast = (
   mode: "light" | "dark",
   fg: any,
   bg: any,
-): Contrast => {
+): ColorContrast => {
   const { white, black } = defaultTheme.colors
   const fallback = mode === "light" ? white : black
 

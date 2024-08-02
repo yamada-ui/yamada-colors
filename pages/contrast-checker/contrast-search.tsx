@@ -1,7 +1,6 @@
 import type { FlexProps } from "@yamada-ui/react"
 import { VStack, Wrap, useUpdateEffect } from "@yamada-ui/react"
 import { memo, useState, type FC } from "react"
-import type { Contrast, ContrastGround } from "./index.page"
 import { SearchColor } from "components/form"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
@@ -9,8 +8,8 @@ import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
 
 export type ContrastSearchProps = Omit<FlexProps, "onChange"> &
-  Pick<Contrast, "fg" | "bg"> & {
-    onChange: (ground: ContrastGround, value: string) => void
+  ColorContrastSource & {
+    onChange: (ground: ColorContrastGround, value: string) => void
   }
 
 export const ContrastSearch: FC<ContrastSearchProps> = memo(
@@ -40,9 +39,9 @@ ContrastSearch.displayName = "ContrastSearch"
 
 type ColorInputProps = {
   label: string
-  ground: ContrastGround
+  ground: ColorContrastGround
   value: string
-  onChange: (ground: ContrastGround, value: string) => void
+  onChange: (ground: ColorContrastGround, value: string) => void
 }
 
 const ColorInput: FC<ColorInputProps> = ({

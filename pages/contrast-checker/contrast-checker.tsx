@@ -16,13 +16,13 @@ import { useCallback, useState } from "react"
 import { ContrastScore } from "./contrast-score"
 import { ContrastSearch } from "./contrast-search"
 import { getContrast } from "./index.page"
-import type { Contrast, ContrastGround, ContrastLevel } from "./index.page"
+import type { ContrastLevel } from "./index.page"
 import { useI18n } from "contexts/i18n-context"
 import { isLight } from "utils/color"
 
 export type ContrastCheckerProps = {
   mode: ColorMode
-  contrast: Contrast
+  contrast: ColorContrast
   level: ContrastLevel
   setLevelRef: MutableRefObject<Map<ColorMode, (level: ContrastLevel) => void>>
   queriesRef: MutableRefObject<URLSearchParams>
@@ -36,10 +36,11 @@ export const ContrastChecker: FC<ContrastCheckerProps> = ({
   queriesRef,
 }) => {
   const router = useRouter()
-  const [{ fg, bg, score, aa, aaa }, setContrast] = useState<Contrast>(contrast)
+  const [{ fg, bg, score, aa, aaa }, setContrast] =
+    useState<ColorContrast>(contrast)
 
   const onChange = useCallback(
-    (ground: ContrastGround, value: string) => {
+    (ground: ColorContrastGround, value: string) => {
       setContrast(({ fg, bg }) => {
         queriesRef.current.set(`${mode}.${ground}`, value.replace("#", ""))
 
@@ -97,7 +98,7 @@ export const ContrastChecker: FC<ContrastCheckerProps> = ({
   )
 }
 
-type ContrastPreviewProps = Pick<Contrast, "fg" | "bg">
+type ContrastPreviewProps = ColorContrastSource
 
 const ContrastPreview: FC<ContrastPreviewProps> = ({ fg, bg }) => {
   return (
@@ -145,7 +146,7 @@ const UIComponent: FC<UIComponentProps> = ({ ...rest }) => {
   )
 }
 
-type SwitchButtonProps = Pick<Contrast, "bg"> & {
+type SwitchButtonProps = Pick<ColorContrastSource, "bg"> & {
   onSwitch: () => void
 }
 

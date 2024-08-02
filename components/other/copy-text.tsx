@@ -46,6 +46,9 @@ export const CopyText = memo(
         <Text
           ref={ref}
           {...rest}
+          display="inline-flex"
+          alignItems="center"
+          gap="1"
           cursor="copy"
           transitionProperty="common"
           transitionDuration="slower"
@@ -88,23 +91,21 @@ export const CopyText = memo(
           {children}
 
           {!hiddenIcon ? (
-            <Text as="span" ms="1">
-              {hasCopied ? (
-                <Check
-                  fontSize="1em"
-                  color="success"
-                  {...iconProps}
-                  {...checkIconProps}
-                />
-              ) : (
-                <Clipboard
-                  fontSize="1em"
-                  color="muted"
-                  {...iconProps}
-                  {...copyIconProps}
-                />
-              )}
-            </Text>
+            hasCopied ? (
+              <Check
+                fontSize="1em"
+                color="success"
+                {...iconProps}
+                {...checkIconProps}
+              />
+            ) : (
+              <Clipboard
+                fontSize="1em"
+                color="muted"
+                {...iconProps}
+                {...copyIconProps}
+              />
+            )
           ) : null}
         </Text>
       )

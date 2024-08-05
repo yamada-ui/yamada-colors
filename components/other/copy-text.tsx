@@ -1,8 +1,5 @@
 import { Check, Clipboard } from "@yamada-ui/lucide"
 import {
-  Center,
-  ColorSwatch,
-  HStack,
   Text,
   forwardRef,
   handlerAll,
@@ -13,6 +10,8 @@ import {
 import type { IconProps, TextProps } from "@yamada-ui/react"
 import type { MouseEvent } from "react"
 import { memo } from "react"
+import { CopiedColorNotice } from "components/feedback"
+import { useI18n } from "contexts/i18n-context"
 
 export type CopyTextProps = TextProps & {
   value?: string
@@ -36,7 +35,16 @@ export const CopyText = memo(
       },
       ref,
     ) => {
-      const notice = useNotice({ limit: 1, placement: "bottom" })
+      const { t } = useI18n()
+      const notice = useNotice({
+        limit: 1,
+        placement: "bottom",
+        component: () => (
+          <CopiedColorNotice value={value}>
+            {t("component.copied-color-notice.copied")}
+          </CopiedColorNotice>
+        ),
+      })
       const { onCopy, value, hasCopied } = useClipboard(
         valueProp ?? (isString(children) ? children : ""),
         5000,
@@ -60,31 +68,7 @@ export const CopyText = memo(
               ev.preventDefault()
               ev.stopPropagation()
 
-              notice({
-                component: () => {
-                  return (
-                    <Center>
-                      <HStack
-                        bg={["white", "black"]}
-                        rounded="full"
-                        py="sm"
-                        pl="sm"
-                        pr="normal"
-                        gap="sm"
-                        boxShadow={["md", "dark-lg"]}
-                      >
-                        <ColorSwatch color={value} isRounded />
-
-                        <Text as="span">{value}</Text>
-
-                        <Text as="span" color="muted" fontSize="sm">
-                          Copied
-                        </Text>
-                      </HStack>
-                    </Center>
-                  )
-                },
-              })
+              notice()
             },
           )}
         >

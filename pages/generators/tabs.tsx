@@ -4,9 +4,8 @@ import {
   SegmentedControlButton,
 } from "@yamada-ui/react"
 import { useState, type FC, type MutableRefObject } from "react"
+import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
-
-const TABS = ["alternatives", "shades", "tints", "tones", "hues"]
 
 export type TabsProps = {
   tab: string
@@ -21,7 +20,7 @@ export const Tabs: FC<TabsProps> = ({ tab: tabProp, hex, onSelectRef }) => {
   return (
     <ScrollArea as="section" type="never" tabIndex={-1}>
       <SegmentedControl variant="tabs" value={tab} w="full">
-        {TABS.map((tab) => {
+        {CONSTANT.ENUM.GENERATORS.map((tab) => {
           return (
             <SegmentedControlButton
               key={tab}

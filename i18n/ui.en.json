@@ -165,8 +165,25 @@
       "not-found": "No palettes",
       "create": "Create"
     },
+    "color-command-menu": {
+      "see": "See Info",
+      "check": "Check Contrast",
+      "copy": "Copy",
+      "generators": {
+        "label": "Generators",
+        "shades": "See Shades",
+        "tints": "See Tints",
+        "tones": "See Tones",
+        "alternatives": "See Alternatives",
+        "hues": "See Hues"
+      },
+      "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" }
+    },
+    "copied-color-notice": {
+      "copied": "Copied"
+    },
     "footer": {
-      "description": "Built by `Hirotomo Yamada` and `these awesome people`"
+      "description": "Built by {Hirotomo Yamada} and {these awesome people}"
     }
   }
 }

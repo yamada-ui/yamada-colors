@@ -168,8 +168,25 @@
       "not-found": "パレットがありません",
       "create": "作成"
     },
+    "color-command-menu": {
+      "see": "情報を見る",
+      "check": "コントラストをチェックする",
+      "copy": "コピーする",
+      "generators": {
+        "label": "ジェネレーター",
+        "shades": "シェードを見る",
+        "tints": "ティントを見る",
+        "tones": "トーンを見る",
+        "alternatives": "代替を見る",
+        "hues": "色相を見る"
+      },
+      "palettes": { "label": "マイパレット", "button": "{name} に追加する" }
+    },
+    "copied-color-notice": {
+      "copied": "コピーしました"
+    },
     "footer": {
-      "description": "このアプリケーションは、`Hirotomo Yamada`と`愉快な仲間たち`によって開発されました。"
+      "description": "このアプリケーションは、{Hirotomo Yamada}と{愉快な仲間たち}によって開発されました。"
     }
   }
 }

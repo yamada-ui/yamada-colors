@@ -54,16 +54,20 @@ export const tone = (hex: string) => {
   const y = (l - (d ? 5 : 15)) / 5
 
   tones.forEach((tone) => {
-    const t = tone / 100
-    let z: number
-
-    if (t <= 5) {
-      z = l + (5 - t) * x
+    if (tone === 500) {
+      hexes.push(hex)
     } else {
-      z = l - (t - 5) * y
-    }
+      const t = tone / 100
+      let z: number
 
-    hexes.push(`#${convert.hsl.hex([h, s, z]).toLowerCase()}`)
+      if (t <= 5) {
+        z = l + (5 - t) * x
+      } else {
+        z = l - (t - 5) * y
+      }
+
+      hexes.push(`#${convert.hsl.hex([h, s, z]).toLowerCase()}`)
+    }
   })
 
   return hexes

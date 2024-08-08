@@ -55,15 +55,18 @@ export const tone = (hex: string) => {
 
   tones.forEach((tone) => {
     const t = tone / 100
-    let z: number
+    let z: number = l
+    let origin: boolean = false
 
-    if (t <= 5) {
+    if (t < 5) {
       z = l + (5 - t) * x
-    } else {
+    } else if (t > 5) {
       z = l - (t - 5) * y
+    } else {
+      origin = true
     }
 
-    hexes.push(`#${convert.hsl.hex([h, s, z]).toLowerCase()}`)
+    hexes.push(origin ? hex : `#${convert.hsl.hex([h, s, z]).toLowerCase()}`)
   })
 
   return hexes

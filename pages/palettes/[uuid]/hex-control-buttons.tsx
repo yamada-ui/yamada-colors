@@ -29,6 +29,7 @@ import {
   useDisclosure,
   useEyeDropper,
   useNotice,
+  useUpdateEffect,
 } from "@yamada-ui/react"
 import type {
   CenterProps,
@@ -305,6 +306,10 @@ const EditButton: FC<EditButtonProps> = memo(
 
       onClose()
     }
+
+    useUpdateEffect(() => {
+      setValue(name)
+    }, [name])
 
     return (
       <Popover

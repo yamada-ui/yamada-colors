@@ -53,7 +53,6 @@ export const CopyText = memo(
       return (
         <Text
           ref={ref}
-          {...rest}
           display="inline-flex"
           alignItems="center"
           gap="1"
@@ -61,6 +60,7 @@ export const CopyText = memo(
           transitionProperty="common"
           transitionDuration="slower"
           _hover={{ opacity: hasCopied ? 1 : 0.7 }}
+          {...rest}
           onClick={handlerAll(
             rest.onClick,
             onCopy,

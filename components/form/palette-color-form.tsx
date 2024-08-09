@@ -3,6 +3,7 @@ import {
   Box,
   ColorSelector,
   ColorSwatch,
+  forwardRef,
   Input,
   useEyeDropper,
   VStack,
@@ -24,24 +25,29 @@ export type PaletteColorFormProps = Omit<
   onSubmit?: () => void
 }
 
-export const PaletteColorForm: FC<PaletteColorFormProps> = memo(
-  ({ name, onChangeName, color, onChangeColor, onSubmit, ...rest }) => {
-    return (
-      <VStack gap="sm" {...rest}>
-        <Input value={name} onChange={(ev) => onChangeName(ev.target.value)} />
+export const PaletteColorForm = memo(
+  forwardRef<PaletteColorFormProps, "div">(
+    ({ name, onChangeName, color, onChangeColor, onSubmit, ...rest }, ref) => {
+      return (
+        <VStack ref={ref} gap="sm" {...rest}>
+          <Input
+            value={name}
+            onChange={(ev) => onChangeName(ev.target.value)}
+          />
 
-        <EditColorPicker
-          color={color}
-          onChangeColor={onChangeColor}
-          onKeyDown={(ev) => {
-            if (ev.key !== "Enter") return
+          <EditColorPicker
+            color={color}
+            onChangeColor={onChangeColor}
+            onKeyDown={(ev) => {
+              if (ev.key !== "Enter") return
 
-            onSubmit?.()
-          }}
-        />
-      </VStack>
-    )
-  },
+              onSubmit?.()
+            }}
+          />
+        </VStack>
+      )
+    },
+  ),
 )
 
 PaletteColorForm.displayName = "PaletteColorForm"

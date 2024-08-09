@@ -4,47 +4,38 @@ import {
   Clipboard,
   Contrast,
   Trash2,
-  Pipette,
   Copy,
 } from "@yamada-ui/lucide"
 import {
-  Box,
   Button,
   Center,
-  ColorSelector,
   ColorSwatch,
   HStack,
-  Input,
   Popover,
   PopoverBody,
   PopoverContent,
   PopoverFooter,
   PopoverTrigger,
   Text,
-  assignRef,
-  convertColor,
   forwardRef,
-  noop,
   useClipboard,
   useDisclosure,
-  useEyeDropper,
   useNotice,
 } from "@yamada-ui/react"
 import type {
   CenterProps,
   ColorMode,
-  InputProps,
   StackProps,
   UseDisclosureProps,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { memo, useRef, useState } from "react"
-import type { ChangeEvent, FC, MutableRefObject } from "react"
+import type { FC, MutableRefObject } from "react"
 import { useHexes } from "./context"
+import { PaletteColorForm } from "components/form"
 import { RemoveScroll } from "components/other"
-import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import { f, isLight } from "utils/color"
+import { isLight } from "utils/color"
 
 export type HexControlButtonsProps = StackProps &
   ReorderColor & {
@@ -138,143 +129,13 @@ const HexControlButton = memo(
 
 HexControlButton.displayName = "HexControlButton"
 
-type EditColorPickerProps = Pick<Color, "hex"> & {
-  hexRef: MutableRefObject<() => string>
-  resetRef: MutableRefObject<() => void>
-} & Omit<InputProps, "value" | "defaultValue" | "onChange" | "size">
-
-const EditColorPicker: FC<EditColorPickerProps> = memo(
-  ({ hex, hexRef, resetRef, ...rest }) => {
-    const { format } = useApp()
-    const [inputValue, setInputValue] = useState<string>(f(hex, format))
-    const [value, setValue] = useState<string>(hex)
-    const { supported: eyeDropperSupported, onOpen: onEyeDropperOpen } =
-      useEyeDropper()
-    const isInputFocused = useRef<boolean>(false)
-
-    const onInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
-      const value = ev.target.value
-
-      setInputValue(value)
-      setValue(value)
-    }
-
-    const onChange = (value: string) => {
-      setValue(value)
-
-      setTimeout(() => {
-        if (!isInputFocused.current) setInputValue(value)
-      })
-    }
-
-    const onEyeDropperClick = async () => {
-      try {
-        const { sRGBHex } = (await onEyeDropperOpen()) ?? {}
-
-        if (!sRGBHex) return
-
-        setValue(sRGBHex)
-        setInputValue(f(sRGBHex, format))
-      } catch {}
-    }
-
-    assignRef(hexRef, () => value)
-    assignRef(resetRef, () => {
-      setInputValue(f(hex, format))
-      setValue(hex)
-    })
-
-    return (
-      <>
-        <Box position="relative" w="full">
-          <ColorSwatch
-            color={value}
-            isRounded
-            position="absolute"
-            top="50%"
-            transform="translateY(-50%)"
-            zIndex={2}
-            boxSize="6"
-            insetStart="2"
-          />
-
-          <Input
-            value={inputValue}
-            onChange={onInputChange}
-            onFocus={() => {
-              isInputFocused.current = true
-            }}
-            onBlur={() => {
-              isInputFocused.current = false
-              const next = convertColor(value, "#ffffff")(format)
-
-              setValue((prev) => (!next || prev === next ? prev : next))
-              setInputValue(next ?? "")
-            }}
-            w="full"
-            pl="10"
-            pr="8"
-            _focus={{ zIndex: "unset" }}
-            placeholder={f("#ffffff", format)}
-            {...rest}
-          />
-
-          {eyeDropperSupported ? (
-            <Box
-              as="button"
-              position="absolute"
-              top="50%"
-              transform="translateY(-50%)"
-              display="inline-flex"
-              justifyContent="center"
-              alignItems="center"
-              zIndex={1}
-              insetEnd="2"
-              w="6"
-              py="1"
-              fontSize="lg"
-              outline={0}
-              rounded="md"
-              transitionProperty="common"
-              transitionDuration="normal"
-              pointerEvents="auto"
-              color={["blackAlpha.600", "whiteAlpha.700"]}
-              _hover={{
-                color: ["blackAlpha.500", "whiteAlpha.600"],
-              }}
-              _focusVisible={{
-                boxShadow: "outline",
-              }}
-              onClick={onEyeDropperClick}
-            >
-              <Pipette fontSize="md" />
-            </Box>
-          ) : null}
-        </Box>
-
-        <ColorSelector
-          value={value}
-          onChange={onChange}
-          format={format}
-          withEyeDropper={false}
-          withResult={false}
-        />
-      </>
-    )
-  },
-)
-
-EditColorPicker.displayName = "EditColorPicker"
-
 type EditButtonProps = ReorderColor &
   UseDisclosureProps & { colorMode: ColorMode }
 
 const EditButton: FC<EditButtonProps> = memo(
-  ({ id, name, hex, colorMode, ...rest }) => {
-    const resolvedHex = hex[colorMode === "light" ? 0 : 1]
+  ({ id, name: nameProp, hex, colorMode, ...rest }) => {
     const [lightHex, darkHex] = hex
-    const resetRef = useRef<() => void>(noop)
-    const hexRef = useRef<() => string>(() => resolvedHex)
+    const resolvedHex = colorMode === "light" ? lightHex : darkHex
     const isSubmitRef = useRef<boolean>(false)
     const { isOpen, onOpen, onClose } = useDisclosure({
       ...rest,
@@ -282,26 +143,25 @@ const EditButton: FC<EditButtonProps> = memo(
         rest.onClose?.()
 
         if (!isSubmitRef.current) {
-          resetRef.current()
-          setValue(name)
+          setName(nameProp)
+          setColor(resolvedHex)
         }
 
         isSubmitRef.current = false
       },
     })
-    const [value, setValue] = useState<string>(name)
     const { onEdit } = useHexes()
     const { t } = useI18n()
+    const [name, setName] = useState<string>(nameProp)
+    const [color, setColor] = useState<string>(resolvedHex)
 
     const onSubmit = () => {
       isSubmitRef.current = true
 
-      const computedHex = f(hexRef.current(), "hex")
-
       const hex: [string, string] =
-        colorMode === "light" ? [computedHex, darkHex] : [lightHex, computedHex]
+        colorMode === "light" ? [color, darkHex] : [lightHex, color]
 
-      onEdit({ id, name: value, hex })
+      onEdit({ id, name, hex })
 
       onClose()
     }
@@ -335,29 +195,19 @@ const EditButton: FC<EditButtonProps> = memo(
         <PopoverContent>
           <PopoverBody>
             <RemoveScroll allowPinchZoom={false} enabled={isOpen}>
-              <>
-                <Input
-                  value={value}
-                  onChange={(ev) => setValue(ev.target.value)}
-                />
-
-                <EditColorPicker
-                  hex={resolvedHex}
-                  resetRef={resetRef}
-                  hexRef={hexRef}
-                  onKeyDown={(ev) => {
-                    if (ev.key !== "Enter") return
-
-                    onSubmit()
-                  }}
-                />
-              </>
+              <PaletteColorForm
+                name={name}
+                onChangeName={setName}
+                color={color}
+                onChangeColor={setColor}
+                onSubmit={onSubmit}
+              />
             </RemoveScroll>
           </PopoverBody>
 
           <PopoverFooter>
             <Button
-              isDisabled={!value.length}
+              isDisabled={!name.length}
               w="full"
               colorScheme="neutral"
               borderColor="transparent"

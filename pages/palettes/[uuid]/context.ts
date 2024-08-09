@@ -37,10 +37,9 @@ export const [HexesProvider, useHexes] = createContext<HexesContext>({
   name: "HexesContext",
 })
 
-type PaletteColorContext = ReorderColor
+type HexContext = ReorderColor
 
-export const [PaletteColorProvider, usePaletteColor] =
-  createContext<PaletteColorContext>({
-    strict: false,
-    name: "PaletteColorContext",
-  })
+export const [HexProvider, useHex] = createContext<HexContext>({
+  strict: false,
+  name: "HexContext",
+})

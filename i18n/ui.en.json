@@ -165,8 +165,47 @@
       "not-found": "No palettes",
       "create": "Create"
     },
+    "color-command-menu": {
+      "see": "See Info",
+      "check": "Check Contrast",
+      "copy": "Copy",
+      "generators": {
+        "label": "Generators",
+        "shades": "See Shades",
+        "tints": "See Tints",
+        "tones": "See Tones",
+        "alternatives": "See Alternatives",
+        "hues": "See Hues"
+      },
+      "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" },
+      "palette": {
+        "label": "Palette",
+        "add": "Add to palette"
+      },
+      "palette-color": {
+        "label": "Color",
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "palette-command-menu": {
+      "see": "See Info",
+      "rename": "Rename",
+      "delete": "Delete",
+      "menu": {
+        "label": "Menu",
+        "blindness": "See Blindness",
+        "shades": "See Shades",
+        "tints": "See Tints",
+        "tones": "See Tones"
+      },
+      "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" }
+    },
+    "copied-color-notice": {
+      "copied": "Copied"
+    },
     "footer": {
-      "description": "Built by `Hirotomo Yamada` and `these awesome people`"
+      "description": "Built by {Hirotomo Yamada} and {these awesome people}"
     }
   }
 }

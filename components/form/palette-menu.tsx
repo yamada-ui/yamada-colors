@@ -91,7 +91,7 @@ export const PaletteMenu = memo(
             </Box>
           </PopoverTrigger>
 
-          <PopoverContent w="sm">
+          <PopoverContent w="sm" maxW="sm">
             <PopoverCloseButton rounded="full" />
 
             <PopoverHeader>{t("component.palette-menu.title")}</PopoverHeader>

@@ -90,7 +90,7 @@ export const I18nProvider: FC<I18nProviderProps> = ({ children }) => {
       const strOrArray = get<string | string[]>(ui, path, "")
 
       if (isString(strOrArray)) {
-        const match = strOrArray.match(/`([^`]+)`/)
+        const match = strOrArray.match(/{([^}]+)}/)
 
         if (!match) {
           return strOrArray
@@ -120,13 +120,13 @@ const renderElement = (
   str: string,
   callback?: (str: string, index: number) => ReactNode,
 ) => {
-  const array = str.split(/(`[^`]+`)/)
+  const array = str.split(/({[^}]+})/)
 
   return array.map((str, index) => {
-    if (str.startsWith("`") && str.endsWith("`")) {
+    if (str.startsWith("{") && str.endsWith("}")) {
       return (
         <Fragment key={index}>
-          {callback ? callback(str.replace(/`/g, ""), index) : str}
+          {callback ? callback(str.replace(/{|}/g, ""), index) : str}
         </Fragment>
       )
     } else {

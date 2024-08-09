@@ -11,11 +11,12 @@ import {
   assignRef,
   useUpdateEffect,
 } from "@yamada-ui/react"
-import type { GridProps } from "@yamada-ui/react"
+import type { GridItemProps, GridProps } from "@yamada-ui/react"
 import { matchSorter } from "match-sorter"
 import Link from "next/link"
 import { memo, useRef, useState } from "react"
 import type { FC, MutableRefObject } from "react"
+import { PaletteCommandMenu } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -75,77 +76,9 @@ export const Palettes: FC<PalettesProps> = memo(
           gap="md"
           {...rest}
         >
-          {palettes.map(({ uuid, name, colors }) => {
-            return (
-              <GridItem key={uuid} as="li" minW="0">
-                <Motion whileHover={{ scale: 0.95 }}>
-                  <VStack
-                    as={Link}
-                    href={`/palettes/${uuid}`}
-                    gap="0"
-                    rounded="2xl"
-                    overflow="hidden"
-                    boxShadow={[
-                      "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
-                      "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
-                    ]}
-                    outline={0}
-                    _focusVisible={{ boxShadow: ["outline", "outline"] }}
-                    onClick={() => {
-                      setCookie(
-                        CONSTANT.STORAGE.PALETTE_QUERY,
-                        queryRef.current,
-                      )
-                    }}
-                  >
-                    <Grid
-                      templateColumns={`repeat(${colors.length > 4 ? 4 : colors.length}, 1fr)`}
-                      h={{ base: "4xs", sm: "5xs" }}
-                    >
-                      {colors.length ? (
-                        colors.map(({ hex }, index) => (
-                          <GridItem
-                            key={`${hex}-${index}`}
-                            bg={hex}
-                            display={index < 4 ? "block" : "none"}
-                          />
-                        ))
-                      ) : (
-                        <>
-                          <GridItem bg={["blackAlpha.100", "whiteAlpha.100"]} />
-                        </>
-                      )}
-                    </Grid>
-
-                    <Grid
-                      justifyContent="flex-start"
-                      alignItems="center"
-                      px={{ base: "normal", sm: "md" }}
-                      gap={{ base: "xs", sm: "0" }}
-                      h={{ base: "4xs", sm: "5xs" }}
-                    >
-                      <Text
-                        fontWeight="medium"
-                        lineClamp={1}
-                        alignSelf="flex-end"
-                      >
-                        {name}
-                      </Text>
-
-                      <Text
-                        as="span"
-                        fontSize="sm"
-                        color="muted"
-                        alignSelf="flex-start"
-                      >
-                        {colors.length} colors
-                      </Text>
-                    </Grid>
-                  </VStack>
-                </Motion>
-              </GridItem>
-            )
-          })}
+          {palettes.map((palette) => (
+            <Palette key={palette.uuid} palette={palette} queryRef={queryRef} />
+          ))}
         </Grid>
       </Box>
     ) : (
@@ -173,3 +106,79 @@ export const Palettes: FC<PalettesProps> = memo(
 )
 
 Palettes.displayName = "palettes"
+
+type PaletteProps = GridItemProps & {
+  palette: ColorPalette
+  queryRef: MutableRefObject<string>
+}
+
+const Palette: FC<PaletteProps> = memo(({ palette, queryRef, ...rest }) => {
+  const { uuid, name, colors } = palette
+
+  return (
+    <GridItem as="li" minW="0" {...rest}>
+      <PaletteCommandMenu palette={palette}>
+        <Motion whileHover={{ scale: 0.95 }}>
+          <VStack
+            as={Link}
+            href={`/palettes/${uuid}`}
+            gap="0"
+            rounded="2xl"
+            overflow="hidden"
+            boxShadow={[
+              "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
+              "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
+            ]}
+            outline={0}
+            _focusVisible={{ boxShadow: ["outline", "outline"] }}
+            onClick={() => {
+              setCookie(CONSTANT.STORAGE.PALETTE_QUERY, queryRef.current)
+            }}
+          >
+            <Grid
+              templateColumns={`repeat(${colors.length > 4 ? 4 : colors.length}, 1fr)`}
+              h={{ base: "4xs", sm: "5xs" }}
+            >
+              {colors.length ? (
+                colors.map(({ hex }, index) => (
+                  <GridItem
+                    key={`${hex}-${index}`}
+                    bg={hex}
+                    display={index < 4 ? "block" : "none"}
+                  />
+                ))
+              ) : (
+                <>
+                  <GridItem bg={["blackAlpha.100", "whiteAlpha.100"]} />
+                </>
+              )}
+            </Grid>
+
+            <Grid
+              justifyContent="flex-start"
+              alignItems="center"
+              px={{ base: "normal", sm: "md" }}
+              gap={{ base: "xs", sm: "0" }}
+              h={{ base: "4xs", sm: "5xs" }}
+            >
+              <Text fontWeight="medium" lineClamp={1} alignSelf="flex-end">
+                {name}
+              </Text>
+
+              <Text
+                as="span"
+                fontSize="sm"
+                color="muted"
+                alignSelf="flex-start"
+              >
+                {colors.length} colors
+              </Text>
+            </Grid>
+          </VStack>
+        </Motion>
+      </PaletteCommandMenu>
+    </GridItem>
+  )
+})
+
+Palette.displayName = "palette"

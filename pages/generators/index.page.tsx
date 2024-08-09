@@ -12,6 +12,7 @@ import { Tabs } from "./tabs"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
 import { alternative, darken, hue, lighten, tone } from "utils/color"
+import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 
 export const getHexes = (tab: string, hex: string) => {
@@ -46,7 +47,10 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   try {
     hex = c.toHex(hex)
 
-    const hexes = getHexes(tab, hex)
+    const hexes = getHexes(tab, hex).map((hex) => ({
+      hex,
+      name: getColorName(hex),
+    }))
 
     const props = {
       cookies,

@@ -14,6 +14,7 @@ import {
 } from "@yamada-ui/react"
 import type { FC } from "react"
 import { NextLink } from "components/navigation"
+import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f, isLight } from "utils/color"
@@ -132,29 +133,32 @@ type BlindnessItemProps = GridItemProps & { label: string; hex: string }
 
 const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
   return (
-    <GridItem
-      as={Center}
-      minW="0"
-      py={{ base: "md", sm: "md" }}
-      px="md"
-      bg={hex}
-      _hover={{
-        "& > span": {
-          color: isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700",
-        },
-      }}
-      {...rest}
-    >
-      <Text
-        as="span"
-        fontSize={{ base: "md", sm: "sm" }}
-        color="transparent"
-        transitionProperty="common"
-        transitionDuration="slower"
-        lineClamp={1}
-      >
-        {label}
-      </Text>
+    <GridItem boxSize="full" {...rest}>
+      <ColorCommandMenu value={hex} triggerProps={{ h: "full" }}>
+        <Center
+          minW="0"
+          h="full"
+          py={{ base: "md", sm: "md" }}
+          px="md"
+          bg={hex}
+          _hover={{
+            "& > span": {
+              color: isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700",
+            },
+          }}
+        >
+          <Text
+            as="span"
+            fontSize={{ base: "md", sm: "sm" }}
+            color="transparent"
+            transitionProperty="common"
+            transitionDuration="slower"
+            lineClamp={1}
+          >
+            {label}
+          </Text>
+        </Center>
+      </ColorCommandMenu>
     </GridItem>
   )
 }

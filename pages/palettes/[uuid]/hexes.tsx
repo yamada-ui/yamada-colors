@@ -249,15 +249,18 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
   const { onEdit, colorMode } = useHexes()
   const { changePalette } = useApp()
   const [internalColors, setInternalColors] = useState<ReorderColors>(colors)
+  const internalColorIdsRef = useRef<string[]>(colors.map(({ id }) => id))
 
-  const onChange = (ids: (string | number)[]) => {
+  const onChange = (ids: string[]) => {
     setInternalColors((prev) =>
       ids.map((id) => prev.find((item) => item.id === id)!),
     )
+
+    internalColorIdsRef.current = ids
   }
 
-  const onCompleteChange = (ids: (string | number)[]) => {
-    const resolvedColors = ids.map((id) => {
+  const onCompleteChange = () => {
+    const resolvedColors = internalColorIdsRef.current.map((id) => {
       const { name, hex } = colors.find((item) => item.id === id)!
 
       return { name, hex }
@@ -276,7 +279,8 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
       gap="0"
       variant="unstyled"
       onChange={onChange}
-      onCompleteChange={onCompleteChange}
+      onMouseUp={onCompleteChange}
+      onTouchEnd={onCompleteChange}
     >
       {internalColors.map((value, index) => {
         const { id, name, hex } = value

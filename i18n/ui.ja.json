@@ -182,6 +182,18 @@
       },
       "palettes": { "label": "マイパレット", "button": "{name} に追加する" }
     },
+    "palette-command-menu": {
+      "see": "情報を見る",
+      "rename": "名前を変更する",
+      "delete": "削除する",
+      "menu": {
+        "label": "メニュー",
+        "blindness": "色覚を見る",
+        "shades": "シェードを見る",
+        "tints": "ティントを見る",
+        "tones": "トーンを見る"
+      }
+    },
     "copied-color-notice": {
       "copied": "コピーしました"
     },

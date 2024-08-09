@@ -179,6 +179,19 @@
       },
       "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" }
     },
+    "palette-command-menu": {
+      "see": "See Info",
+      "rename": "Rename",
+      "delete": "Delete",
+      "menu": {
+        "label": "Menu",
+        "blindness": "See Blindness",
+        "shades": "See Shades",
+        "tints": "See Tints",
+        "tones": "See Tones"
+      },
+      "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" }
+    },
     "copied-color-notice": {
       "copied": "Copied"
     },

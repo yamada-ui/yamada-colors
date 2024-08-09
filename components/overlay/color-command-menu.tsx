@@ -63,7 +63,28 @@ export const ColorCommandMenu = memo(
       const hasPalettes = !!omittedPalettes.length
 
       return (
-        <ContextMenu {...rest}>
+        <ContextMenu
+          modifiers={[
+            {
+              name: "preventOverflow",
+              options: {
+                padding: {
+                  top: 16,
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                },
+              },
+            },
+            {
+              name: "scroll",
+              fn: (state) => {
+                console.log(state)
+              },
+            },
+          ]}
+          {...rest}
+        >
           <ContextMenuTrigger ref={ref} h="full" {...triggerProps}>
             {children}
           </ContextMenuTrigger>
@@ -310,7 +331,7 @@ const ColorCommandMenuPalettes: FC<ColorCommandMenuPalettesProps> = memo(
             }
           >
             {tc(`component.color-command-menu.palettes.button`, (str) => (
-              <Text as="span" fontWeight="semibold" lineClamp={1}>
+              <Text as="span" lineClamp={1}>
                 {str === "color" ? value : name}
               </Text>
             ))}

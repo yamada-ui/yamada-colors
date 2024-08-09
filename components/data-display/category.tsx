@@ -1,18 +1,25 @@
-import type { CarouselProps } from "@yamada-ui/carousel"
-import { Carousel, CarouselSlide } from "@yamada-ui/carousel"
-import type { GridProps, StackProps, StringLiteral } from "@yamada-ui/react"
+import type {
+  FlexProps,
+  GridProps,
+  IconButtonProps,
+  StackProps,
+  StringLiteral,
+} from "@yamada-ui/react"
 import {
   Box,
+  ChevronIcon,
+  Flex,
   Grid,
   GridItem,
   HStack,
   Heading,
+  IconButton,
   Text,
   VStack,
   forwardRef,
 } from "@yamada-ui/react"
 import type { FC, PropsWithChildren } from "react"
-import { memo } from "react"
+import { memo, useRef } from "react"
 import { ColorCard } from "./color-card"
 import { NextLink } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
@@ -59,7 +66,7 @@ export const Category = memo(
 
       return (
         <VStack as="article" ref={ref} {...rest}>
-          <HStack>
+          <HStack as="header">
             <CategoryTitle>{toCamelCase(category)}</CategoryTitle>
 
             <NextLink
@@ -72,11 +79,13 @@ export const Category = memo(
             </NextLink>
           </HStack>
 
-          {type === "carousel" ? (
-            <CategoryCarousel size={size} colors={colors} />
-          ) : (
-            <CategoryGrid size={size} colors={colors} />
-          )}
+          <Box as="nav">
+            {type === "carousel" ? (
+              <CategoryCarousel size={size} colors={colors} />
+            ) : (
+              <CategoryGrid size={size} colors={colors} />
+            )}
+          </Box>
         </VStack>
       )
     },
@@ -166,42 +175,144 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
 
 CategoryGrid.displayName = "CategoryGrid"
 
-type CategoryCarouselProps = CarouselProps & {
+const getSlideSize = (count: number) =>
+  `calc(100% / ${count} - (var(--ui-slide-gap) * ${count - 1}) / ${count})`
+
+type CategoryCarouselProps = FlexProps & {
   size?: CategorySize
   colors: Colors
 }
 
 const CategoryCarousel: FC<CategoryCarouselProps> = memo(
   ({ size = "md", colors, ...rest }) => {
+    const ref = useRef<HTMLUListElement>(null)
+    const length = colors.length
+
+    const onScrollMove = (direction: "left" | "right") => {
+      if (!ref.current) return
+
+      const scrollLeft = ref.current.scrollLeft
+
+      if (direction === "left") {
+        ref.current.scrollTo({
+          left: scrollLeft - ref.current.scrollWidth / length,
+          behavior: "smooth",
+        })
+      } else {
+        ref.current.scrollTo({
+          left: scrollLeft + ref.current.scrollWidth / length,
+          behavior: "smooth",
+        })
+      }
+    }
+
     return (
       <Box
+        position="relative"
+        w="full"
         var={[
+          {
+            name: "slide-gap",
+            token: "spaces",
+            value: "md",
+          },
           {
             name: "slide-size",
             value: {
-              base: size === "md" ? "33.3%" : "25%",
-              md: size === "md" ? "50%" : "33.3%",
-              sm: size === "md" ? "100%" : "50%",
+              base: size === "md" ? getSlideSize(3) : getSlideSize(4),
+              md: size === "md" ? getSlideSize(2) : getSlideSize(3),
+              sm: size === "md" ? getSlideSize(1) : getSlideSize(2),
             },
           },
         ]}
       >
-        <Carousel
-          innerProps={{ as: "ul", h: "auto" }}
-          slideSize="var(--ui-slide-size)"
-          align="start"
-          withIndicators={false}
+        <Flex
+          ref={ref}
+          as="ul"
+          w="full"
+          gap="var(--ui-slide-gap)"
+          overflowX="auto"
+          overflowY="hidden"
+          scrollSnapType="x mandatory"
+          whiteSpace="nowrap"
+          sx={{
+            scrollbarWidth: "none",
+            _scrollbar: { display: "none" },
+            "&::-webkit-scrollbar": { display: "none" },
+          }}
           {...rest}
         >
           {colors.map(({ name, hex }, index) => (
-            <CarouselSlide key={`${hex}-${index}`} as="li">
-              <ColorCard hex={hex} name={size === "md" ? name : undefined} />
-            </CarouselSlide>
+            <Box
+              key={`${hex}-${index}`}
+              as="li"
+              listStyle="none"
+              flexShrink={0}
+              flexGrow={0}
+              flexBasis="var(--ui-slide-size)"
+              scrollSnapAlign="start"
+            >
+              <ColorCard
+                hex={hex}
+                name={size === "md" ? name : undefined}
+                menuProps={{ strategy: "fixed" }}
+              />
+            </Box>
           ))}
-        </Carousel>
+        </Flex>
+
+        <CategoryCarouselButton
+          placement="left"
+          size={size}
+          onClick={() => onScrollMove("left")}
+        />
+
+        <CategoryCarouselButton
+          placement="right"
+          size={size}
+          onClick={() => onScrollMove("right")}
+        />
       </Box>
     )
   },
 )
 
 CategoryCarousel.displayName = "CategoryCarousel"
+
+type CategoryCarouselButtonProps = Omit<IconButtonProps, "size"> & {
+  placement: "left" | "right"
+  size?: CategorySize
+}
+
+const CategoryCarouselButton: FC<CategoryCarouselButtonProps> = memo(
+  ({ placement, size, ...rest }) => {
+    return (
+      <IconButton
+        w={size === "md" ? "10" : "8"}
+        h={size === "md" ? "10" : "8"}
+        minW="auto"
+        lineHeight="1"
+        icon={
+          <ChevronIcon
+            fontSize={size === "md" ? "2xl" : "lg"}
+            color={["blackAlpha.700", "whiteAlpha.800"]}
+            transform={
+              placement === "left" ? "rotate(90deg)" : "rotate(-90deg)"
+            }
+          />
+        }
+        isRounded
+        position="absolute"
+        top="50%"
+        left={placement === "left" ? "var(--ui-slide-gap)" : undefined}
+        right={placement === "right" ? "var(--ui-slide-gap)" : undefined}
+        transform="translateY(-50%)"
+        bg={["whiteAlpha.400", "blackAlpha.500"]}
+        _hover={{ bg: ["whiteAlpha.500", "blackAlpha.600"] }}
+        {...rest}
+      />
+    )
+  },
+)
+
+CategoryCarouselButton.displayName = "CategoryCarouselButton"

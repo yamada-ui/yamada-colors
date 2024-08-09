@@ -40,7 +40,22 @@ export const PaletteCommandMenu = memo(
 
       return (
         <>
-          <ContextMenu {...rest}>
+          <ContextMenu
+            modifiers={[
+              {
+                name: "preventOverflow",
+                options: {
+                  padding: {
+                    top: 16,
+                    bottom: 16,
+                    left: 16,
+                    right: 16,
+                  },
+                },
+              },
+            ]}
+            {...rest}
+          >
             <ContextMenuTrigger ref={ref} h="full" {...triggerProps}>
               {children}
             </ContextMenuTrigger>

@@ -76,12 +76,6 @@ export const ColorCommandMenu = memo(
                 },
               },
             },
-            {
-              name: "scroll",
-              fn: (state) => {
-                console.log(state)
-              },
-            },
           ]}
           {...rest}
         >

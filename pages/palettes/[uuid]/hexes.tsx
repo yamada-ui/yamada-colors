@@ -1,11 +1,4 @@
-import {
-  Forward,
-  GripVertical,
-  Moon,
-  Plus,
-  RefreshCcw,
-  Sun,
-} from "@yamada-ui/lucide"
+import { GripVertical, Moon, Plus, RefreshCcw, Sun } from "@yamada-ui/lucide"
 import type { ColorMode, MotionProps, MotionVariants } from "@yamada-ui/react"
 import {
   Box,
@@ -30,8 +23,14 @@ import {
 import Link from "next/link"
 import { memo, useCallback, useMemo, useRef, useState } from "react"
 import type { FC } from "react"
-import { HexesProvider, useHexes, usePalette } from "./context"
+import {
+  HexesProvider,
+  PaletteColorProvider,
+  useHexes,
+  usePalette,
+} from "./context"
 import { HexControlButtons } from "./hex-control-buttons"
+import { ColorCommandMenu } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -284,87 +283,101 @@ const HexReorder: FC<HexReorderProps> = memo(() => {
       onChange={onChange}
       onCompleteChange={onCompleteChange}
     >
-      {internalColors.map(({ id, name, hex }, index) => {
+      {internalColors.map((value, index) => {
+        const { id, name, hex } = value
         const isFirst = !index
         const isLast = index + 1 === colors.length
         const [lightHex, darkHex] = hex
 
         return (
-          <ReorderItem
-            key={id}
-            value={id}
-            display="grid"
-            gridTemplateColumns={{
-              base: "1fr auto 1fr",
-              xl: "1fr",
-              lg: "1fr auto 1fr",
-              md: "1fr",
-            }}
-            gap="sm"
-          >
-            <HexToggleItem
-              display={{
-                base: "block",
-                xl: colorMode !== "light" ? "none" : "block",
-                lg: "block",
-                md: colorMode !== "light" ? "none" : "block",
+          <PaletteColorProvider key={id} value={value}>
+            <ReorderItem
+              value={id}
+              display="grid"
+              gridTemplateColumns={{
+                base: "1fr auto 1fr",
+                xl: "1fr",
+                lg: "1fr auto 1fr",
+                md: "1fr",
               }}
-              {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
-            />
-
-            <VStack
-              display={{ base: "flex", xl: "none", lg: "flex", md: "none" }}
-              gap="0"
+              gap="sm"
             >
-              <Tooltip label={t("palette.apply.dark")} placement="top">
-                <IconButton
-                  right="0"
-                  aria-label="Sync with dark"
-                  isRounded
-                  variant="ghost"
-                  _hover={{
-                    bg: ["blackAlpha.100", "whiteAlpha.100"],
+              <ColorCommandMenu name={name} value={lightHex}>
+                <HexToggleItem
+                  display={{
+                    base: "block",
+                    xl: colorMode !== "light" ? "none" : "block",
+                    lg: "block",
+                    md: colorMode !== "light" ? "none" : "block",
                   }}
-                  colorScheme="neutral"
-                  color={["blackAlpha.500", "whiteAlpha.500"]}
-                  icon={
-                    <ChevronIcon fontSize="1.5rem" transform="rotate(-90deg)" />
-                  }
-                  onClick={() =>
-                    onEdit({ id, name, hex: [lightHex, lightHex] })
-                  }
+                  {...{ id, name, hex, isFirst, isLast, colorMode: "light" }}
                 />
-              </Tooltip>
+              </ColorCommandMenu>
 
-              <Tooltip label={t("palette.apply.light")} placement="top">
-                <IconButton
-                  right="0"
-                  aria-label="Sync with light"
-                  isRounded
-                  variant="ghost"
-                  _hover={{
-                    bg: ["blackAlpha.100", "whiteAlpha.100"],
+              <VStack
+                display={{ base: "flex", xl: "none", lg: "flex", md: "none" }}
+                gap="0"
+              >
+                <Tooltip label={t("palette.apply.dark")} placement="top">
+                  <IconButton
+                    right="0"
+                    aria-label="Sync with dark"
+                    isRounded
+                    variant="ghost"
+                    _hover={{
+                      bg: ["blackAlpha.100", "whiteAlpha.100"],
+                    }}
+                    colorScheme="neutral"
+                    color={["blackAlpha.500", "whiteAlpha.500"]}
+                    icon={
+                      <ChevronIcon
+                        fontSize="1.5rem"
+                        transform="rotate(-90deg)"
+                      />
+                    }
+                    onClick={() =>
+                      onEdit({ id, name, hex: [lightHex, lightHex] })
+                    }
+                  />
+                </Tooltip>
+
+                <Tooltip label={t("palette.apply.light")} placement="top">
+                  <IconButton
+                    right="0"
+                    aria-label="Sync with light"
+                    isRounded
+                    variant="ghost"
+                    _hover={{
+                      bg: ["blackAlpha.100", "whiteAlpha.100"],
+                    }}
+                    colorScheme="neutral"
+                    color={["blackAlpha.500", "whiteAlpha.500"]}
+                    icon={
+                      <ChevronIcon
+                        fontSize="1.5rem"
+                        transform="rotate(90deg)"
+                      />
+                    }
+                    onClick={() =>
+                      onEdit({ id, name, hex: [darkHex, darkHex] })
+                    }
+                  />
+                </Tooltip>
+              </VStack>
+
+              <ColorCommandMenu name={name} value={darkHex}>
+                <HexToggleItem
+                  display={{
+                    base: "block",
+                    xl: colorMode === "light" ? "none" : "block",
+                    lg: "block",
+                    md: colorMode === "light" ? "none" : "block",
                   }}
-                  colorScheme="neutral"
-                  color={["blackAlpha.500", "whiteAlpha.500"]}
-                  icon={
-                    <ChevronIcon fontSize="1.5rem" transform="rotate(90deg)" />
-                  }
-                  onClick={() => onEdit({ id, name, hex: [darkHex, darkHex] })}
+                  {...{ id, name, hex, isFirst, isLast, colorMode: "dark" }}
                 />
-              </Tooltip>
-            </VStack>
-
-            <HexToggleItem
-              display={{
-                base: "block",
-                xl: colorMode === "light" ? "none" : "block",
-                lg: "block",
-                md: colorMode === "light" ? "none" : "block",
-              }}
-              {...{ id, name, hex, isFirst, isLast, colorMode: "dark" }}
-            />
-          </ReorderItem>
+              </ColorCommandMenu>
+            </ReorderItem>
+          </PaletteColorProvider>
         )
       })}
     </Reorder>
@@ -531,26 +544,16 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
       <Grid as="ul" templateColumns={`repeat(${count}, 1fr)`}>
         {hexes.map((hex, index) => (
           <GridItem key={`${hex}-${index}`} as="li" boxSize="full">
-            <Center
-              as={Link}
-              href={`/colors/${hex.replace("#", "")}`}
-              tabIndex={-1}
-              boxSize="full"
-              bg={hex}
-              _hover={{
-                "& > *": {
-                  opacity: "1",
-                },
-              }}
-              color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
-            >
-              <Forward
-                fontSize="1.125rem"
-                opacity="0"
-                transitionProperty="common"
-                transitionDuration="slower"
+            <ColorCommandMenu value={hex}>
+              <Center
+                as={Link}
+                href={`/colors/${hex.replace("#", "")}`}
+                tabIndex={-1}
+                boxSize="full"
+                bg={hex}
+                color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
               />
-            </Center>
+            </ColorCommandMenu>
           </GridItem>
         ))}
       </Grid>

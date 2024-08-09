@@ -180,7 +180,16 @@
         "alternatives": "代替を見る",
         "hues": "色相を見る"
       },
-      "palettes": { "label": "マイパレット", "button": "{name} に追加する" }
+      "palettes": { "label": "マイパレット", "button": "{name} に追加する" },
+      "palette": {
+        "label": "パレット",
+        "add": "このパレットに追加する"
+      },
+      "palette-color": {
+        "label": "カラー",
+        "edit": "編集する",
+        "delete": "削除する"
+      }
     },
     "palette-command-menu": {
       "see": "情報を見る",

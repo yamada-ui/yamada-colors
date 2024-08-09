@@ -19,7 +19,10 @@ type PaletteContext = {
   colorsMapRef: MutableRefObject<ReorderColors[]>
 }
 
-export const [PaletteProvider, usePalette] = createContext<PaletteContext>()
+export const [PaletteProvider, usePalette] = createContext<PaletteContext>({
+  strict: false,
+  name: "PaletteContext",
+})
 
 type HexesContext = {
   colorMode: ColorMode
@@ -29,4 +32,15 @@ type HexesContext = {
   onDelete: (id: string) => void
 }
 
-export const [HexesProvider, useHexes] = createContext<HexesContext>()
+export const [HexesProvider, useHexes] = createContext<HexesContext>({
+  strict: false,
+  name: "HexesContext",
+})
+
+type PaletteColorContext = ReorderColor
+
+export const [PaletteColorProvider, usePaletteColor] =
+  createContext<PaletteColorContext>({
+    strict: false,
+    name: "PaletteColorContext",
+  })

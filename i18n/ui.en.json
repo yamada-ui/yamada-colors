@@ -177,7 +177,16 @@
         "alternatives": "See Alternatives",
         "hues": "See Hues"
       },
-      "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" }
+      "palettes": { "label": "My Palettes", "button": "Add {color} to {name}" },
+      "palette": {
+        "label": "Palette",
+        "add": "Add to palette"
+      },
+      "palette-color": {
+        "label": "Color",
+        "edit": "Edit",
+        "delete": "Delete"
+      }
     },
     "palette-command-menu": {
       "see": "See Info",

@@ -11,6 +11,7 @@ import {
 import Link from "next/link"
 import type { FC, ReactNode } from "react"
 import { NextLink } from "components/navigation"
+import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
@@ -102,21 +103,19 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
       <Box as="nav">
         <Wrap as="ul" gap={{ base: "sm" }}>
           {colors.map((hex, index) => (
-            <Motion
-              key={`${hex}-${index}`}
-              as="li"
-              whileHover={{ scale: 0.95 }}
-            >
-              <Box
-                as={Link}
-                display="block"
-                href={`/colors/${hex.replace("#", "")}`}
-                outlineColor="focus"
-                rounded="lg"
-                boxSize={{ base: "8" }}
-                bg={hex}
-              />
-            </Motion>
+            <ColorCommandMenu key={`${hex}-${index}`} value={hex}>
+              <Motion as="li" whileHover={{ scale: 0.95 }}>
+                <Box
+                  as={Link}
+                  display="block"
+                  href={`/colors/${hex.replace("#", "")}`}
+                  outlineColor="focus"
+                  rounded="lg"
+                  boxSize={{ base: "8" }}
+                  bg={hex}
+                />
+              </Motion>
+            </ColorCommandMenu>
           ))}
         </Wrap>
       </Box>

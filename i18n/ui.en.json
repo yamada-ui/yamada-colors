@@ -36,7 +36,7 @@
   },
   "palette": {
     "description": "All-in-one color tool for creator and developer.",
-    "create": "Add a color",
+    "create": "Create a palette",
     "redo": "Redo",
     "undo": "Undo",
     "export": "Export",

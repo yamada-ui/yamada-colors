@@ -12,8 +12,7 @@ export const getRandomColors = ({
   count?: RandomColorOptionsMultiple["count"]
   luminosity?: RandomColorOptionsMultiple["luminosity"]
 }) => {
-  let hue =
-    defaultTheme.colors[category as keyof typeof defaultTheme.colors][500]
+  let hue = (defaultTheme.colors[category] as Record<string, string>)[500]
 
   if (category === "gray") hue = "monochrome"
 

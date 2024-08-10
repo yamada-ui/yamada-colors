@@ -1,4 +1,4 @@
-import { convertColor } from "@yamada-ui/react"
+import { convertColor, generate } from "@yamada-ui/react"
 import blinder from "color-blind"
 import convert from "color-convert"
 import * as color from "color2k"
@@ -46,31 +46,8 @@ export const lighten = (hex: string) => {
   return hexes
 }
 
-export const tone = (hex: string) => {
-  const [h, s, l] = toHsl(hex)
-  const hexes: string[] = []
-  const d = l <= 50
-  const x = ((!d ? 100 : 95) - l) / 5
-  const y = (l - (d ? 5 : 15)) / 5
-
-  tones.forEach((tone) => {
-    const t = tone / 100
-    let z: number = l
-    let origin: boolean = false
-
-    if (t < 5) {
-      z = l + (5 - t) * x
-    } else if (t > 5) {
-      z = l - (t - 5) * y
-    } else {
-      origin = true
-    }
-
-    hexes.push(origin ? hex : `#${convert.hsl.hex([h, s, z]).toLowerCase()}`)
-  })
-
-  return hexes
-}
+export const tone = (hex: string) =>
+  Object.values(generate.tones(hex)) as string[]
 
 export const complementary = (hex: string) => {
   let [h, s, l] = toHsl(hex)

@@ -73,7 +73,7 @@ const getToneColors = (hex: string) => {
 }
 
 const getContrast = (hex: string) => {
-  const { white, black } = defaultTheme.colors
+  const { white, black } = defaultTheme.colors as Record<string, string>
 
   return {
     light: {

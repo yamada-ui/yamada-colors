@@ -7,7 +7,7 @@ body:
       value: |
         Thank you for submitting a feature request! 😎
 
-        If you have an idea for a new feature topic, notice something is not working as intended, or feel there is an error with the current functionality, you are in the right place!
+        If you have an idea for a new feature, you are in the right place!
   - type: input
     id: subject
     attributes:

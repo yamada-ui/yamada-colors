@@ -12,12 +12,7 @@ import {
   Spacer,
   Tag,
   useBreakpointValue,
-  Button,
   Dialog,
-  DialogBody,
-  DialogFooter,
-  DialogHeader,
-  Input,
   useDisclosure,
   Text,
   VStack,
@@ -27,19 +22,18 @@ import {
   ChevronIcon,
   Tooltip,
   funcAll,
+  noop,
 } from "@yamada-ui/react"
 import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
 import { useRouter } from "next/router"
-import { memo, useCallback, useRef, useState } from "react"
+import { memo, useCallback, useRef } from "react"
 import type { FC } from "react"
 import { usePalette } from "./context"
-import { ExportModal } from "components/overlay"
+import { ExportModal, PaletteRenameModal } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { setCookie } from "utils/storage"
-
-const TABS = ["palettes", "blindness", "shades", "tints", "tones"]
 
 export type HeaderProps = StackProps & {}
 
@@ -136,7 +130,7 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
           size="sm"
           onChange={onChange}
         >
-          {TABS.map((tab) => {
+          {CONSTANT.ENUM.PALETTE.map((tab) => {
             return (
               <SegmentedControlButton key={tab} value={tab}>
                 {t(`palette.tab.${tab}`)}
@@ -315,13 +309,7 @@ type EditButtonProps = {
 
 const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
   const { t } = useI18n()
-  const [value, setValue] = useState<string>(name)
-  const { isOpen, onOpen, onClose } = useDisclosure({
-    onClose: () => {
-      setValue((prev) => (!prev.length ? name : prev))
-    },
-  })
-  const isComposition = useRef<boolean>(false)
+  const onOpenRef = useRef<() => void>(noop)
 
   return (
     <>
@@ -333,52 +321,15 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
           icon={<Pencil fontSize="1.125rem" />}
           borderColor="transparent"
           isRounded
-          onClick={onOpen}
+          onClick={() => onOpenRef.current()}
         />
       </Tooltip>
 
-      <Dialog isOpen={isOpen} onClose={onClose} withCloseButton={false}>
-        <DialogHeader>{t("palettes.rename.title")}</DialogHeader>
-
-        <DialogBody>
-          <Input
-            value={value}
-            onChange={(ev) => setValue(ev.target.value)}
-            placeholder={t("palettes.rename.placeholder")}
-            onCompositionStart={() => {
-              isComposition.current = true
-            }}
-            onCompositionEnd={() => {
-              isComposition.current = false
-            }}
-            onKeyDown={(ev) => {
-              if (ev.key !== "Enter") return
-              if (isComposition.current) return
-              if (!value.length) return
-
-              onClose()
-              onEdit(value)
-            }}
-          />
-        </DialogBody>
-
-        <DialogFooter>
-          <Button variant="ghost" colorScheme="neutral" onClick={onClose}>
-            {t("palettes.rename.cancel")}
-          </Button>
-
-          <Button
-            isDisabled={!value.length}
-            colorScheme="primary"
-            onClick={() => {
-              onClose()
-              onEdit(value)
-            }}
-          >
-            {t("palettes.rename.submit")}
-          </Button>
-        </DialogFooter>
-      </Dialog>
+      <PaletteRenameModal
+        value={name}
+        onSubmit={onEdit}
+        onOpenRef={onOpenRef}
+      />
     </>
   )
 })
@@ -392,7 +343,7 @@ type DeleteButtonProps = {
 
 const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
   const { t } = useI18n()
-  const { isOpen, onOpen, onClose } = useDisclosure({})
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>

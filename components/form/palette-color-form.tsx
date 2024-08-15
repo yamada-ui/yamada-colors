@@ -6,6 +6,7 @@ import {
   forwardRef,
   Input,
   useEyeDropper,
+  useUpdateEffect,
   VStack,
 } from "@yamada-ui/react"
 import type { InputProps, StackProps } from "@yamada-ui/react"
@@ -91,6 +92,10 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
         setInputValue(f(sRGBHex, format))
       } catch {}
     }
+
+    useUpdateEffect(() => {
+      setInputValue(f(color, format))
+    }, [color, format])
 
     return (
       <>

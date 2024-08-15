@@ -24,7 +24,7 @@ jobs:
           token: ${{ secrets.BOT_TOKEN }}
           base: main
           delete-branch: true
-          commit-message: "ci(changesets): version packages"
+          commit-message: "ci(changesets): updated dependencies"
           title: "Updated dependencies"
           branch: changeset-release/main
           assignees: "hirotomoyamada"

@@ -168,7 +168,7 @@ const EditButton: FC<EditButtonProps> = memo(
     }
 
     useUpdateEffect(() => {
-      setValue(name)
+      setName(name)
     }, [name])
 
     return (

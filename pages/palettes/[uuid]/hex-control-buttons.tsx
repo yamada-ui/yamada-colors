@@ -171,6 +171,10 @@ const EditButton: FC<EditButtonProps> = memo(
       setName(name)
     }, [name])
 
+    useUpdateEffect(() => {
+      setColor(resolvedHex)
+    }, [resolvedHex])
+
     return (
       <Popover
         isOpen={isOpen}

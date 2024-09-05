@@ -1,6 +1,6 @@
 import { Box, Grid, HStack, Heading, Spacer, VStack } from "@yamada-ui/react"
 import type { FC } from "react"
-import { PaletteMenu } from "components/form"
+import { PaletteMenu } from "components/forms"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
 import { f } from "utils/color"

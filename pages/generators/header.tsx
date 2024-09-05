@@ -1,7 +1,7 @@
 import { Box, ChevronIcon, HStack, Spacer, Tooltip } from "@yamada-ui/react"
 import { useRouter } from "next/router"
 import { useState, type FC } from "react"
-import { SearchColor } from "components/form"
+import { SearchColor } from "components/forms"
 import { NextLinkIconButton } from "components/navigation"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"

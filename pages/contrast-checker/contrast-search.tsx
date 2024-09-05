@@ -1,7 +1,7 @@
 import type { FlexProps } from "@yamada-ui/react"
 import { VStack, Wrap, useUpdateEffect } from "@yamada-ui/react"
 import { memo, useState, type FC } from "react"
-import { SearchColor } from "components/form"
+import { SearchColor } from "components/forms"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"

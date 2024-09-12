@@ -47,7 +47,7 @@ export const PaletteMenu = memo(
       })
       const { t } = useI18n()
       const { changePalette } = useApp()
-      const firstRef = useRef<HTMLDivElement>(null)
+      const firstRef = useRef<HTMLButtonElement>(null)
 
       const onSelect = useCallback(
         ({ colors, ...rest }: ColorPalette) => {
@@ -120,7 +120,7 @@ export const PaletteMenu = memo(
 PaletteMenu.displayName = "PaletteMenu"
 
 type PaletteButtonsProps = {
-  firstRef: RefObject<HTMLDivElement>
+  firstRef: RefObject<HTMLButtonElement>
   onSelect: (palette: ColorPalette) => void
 }
 
@@ -211,7 +211,7 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
 PaletteButtons.displayName = "PaletteButtons"
 
 type CreatePaletteProps = {
-  firstRef: RefObject<HTMLDivElement>
+  firstRef: RefObject<HTMLButtonElement>
   onCloseRef: MutableRefObject<() => void>
 }
 

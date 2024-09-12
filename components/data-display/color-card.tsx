@@ -2,6 +2,7 @@ import type {
   AspectRatioProps,
   BoxProps,
   GridProps,
+  Merge,
   MotionProps,
 } from "@yamada-ui/react"
 import {
@@ -26,7 +27,7 @@ export type ColorCardProps = AspectRatioProps & {
   size?: "md" | "lg"
   hex: string
   name?: string
-  linkProps?: Omit<BoxProps, "as"> & Omit<LinkProps, "as">
+  linkProps?: Merge<BoxProps, Omit<LinkProps, "as">>
   motionProps?: MotionProps
   gridProps?: GridProps
   boxProps?: BoxProps

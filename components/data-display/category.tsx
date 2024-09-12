@@ -210,7 +210,7 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
       <Box
         position="relative"
         w="full"
-        var={[
+        vars={[
           {
             name: "slide-gap",
             token: "spaces",

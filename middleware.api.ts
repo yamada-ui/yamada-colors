@@ -6,15 +6,15 @@ export const middleware = ({ headers }: NextRequest) => {
 
   const userAgent = headers.get("user-agent")
 
-  if (
-    userAgent &&
-    blockedUserAgents.some((blockedUserAgent) =>
+  if (userAgent) {
+    const isBlockedUserAgent = (blockedUserAgent: string) =>
       userAgent
         .toLocaleUpperCase()
-        .includes(blockedUserAgent.toLocaleUpperCase()),
-    )
-  ) {
-    return new NextResponse("Access Denied", { status: 403 })
+        .includes(blockedUserAgent.toLocaleUpperCase())
+
+    if (blockedUserAgents.some(isBlockedUserAgent)) {
+      return new NextResponse("Access Denied", { status: 403 })
+    }
   }
 
   return NextResponse.next()

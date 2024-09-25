@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server"
 
 export const middleware = ({ headers, ip }: NextRequest) => {
   const blockedUserAgents = process.env.BLOCKED_USER_AGENTS?.split(",") ?? []
+  const blockedIpAddresses = process.env.BLOCKED_IP_ADDRESSES?.split(",") ?? []
 
   const userAgent = headers.get("user-agent")
   ip ??=
@@ -15,6 +16,15 @@ export const middleware = ({ headers, ip }: NextRequest) => {
         .includes(blockedUserAgent.toLocaleUpperCase())
 
     if (blockedUserAgents.some(isBlockedUserAgent)) {
+      return new NextResponse("Access Denied", { status: 403 })
+    }
+  }
+
+  if (ip) {
+    const isBlockedIpAddress = (blockedIpAddress: string) =>
+      ip.includes(blockedIpAddress.toLocaleUpperCase())
+
+    if (blockedIpAddresses.some(isBlockedIpAddress)) {
       return new NextResponse("Access Denied", { status: 403 })
     } else {
       console.log(ip)

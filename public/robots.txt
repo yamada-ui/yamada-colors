@@ -2,3 +2,9 @@ User-agent: *
 Disallow: /colors/
 Disallow: /generators/
 Disallow: /contrast-checker/
+Disallow: /en/colors/
+Disallow: /en/generators/
+Disallow: /en/contrast-checker/
+Disallow: /ja/colors/
+Disallow: /ja/generators/
+Disallow: /ja/contrast-checker/

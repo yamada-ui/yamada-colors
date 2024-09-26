@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+export const config = {
+  matcher: ["/colors/:path*", "/generators/:path*", "/contrast-checker/:path*"],
+}
+
 export const middleware = ({ headers, ip }: NextRequest) => {
   const blockedUserAgents = process.env.BLOCKED_USER_AGENTS?.split(",") ?? []
   const blockedIpAddresses = process.env.BLOCKED_IP_ADDRESSES?.split(",") ?? []

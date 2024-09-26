@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /colors
-Disallow: /generators
-Disallow: /contrast-checker
+Disallow: /colors/
+Disallow: /generators/
+Disallow: /contrast-checker/

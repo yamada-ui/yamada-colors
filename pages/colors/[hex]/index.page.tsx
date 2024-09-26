@@ -170,6 +170,8 @@ const Page: NextPage<PageProps> = ({
     <AppLayout
       title={hex}
       description={t("colors.description")}
+      noindex={true}
+      nofollow={true}
       hex={hex}
       format={format}
       palettes={palettes}

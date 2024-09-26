@@ -77,6 +77,8 @@ const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
     <AppLayout
       title={t("generators.title")}
       description={t("generators.description")}
+      noindex={true}
+      nofollow={true}
       hex={hex}
       format={format}
       palettes={palettes}

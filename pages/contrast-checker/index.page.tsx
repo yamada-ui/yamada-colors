@@ -105,6 +105,8 @@ const Page: NextPage<PageProps> = ({
     <AppLayout
       title={t("contrast-checker.title")}
       description={t("contrast-checker.description")}
+      noindex={true}
+      nofollow={true}
       hex={hexes}
       format={format}
       palettes={palettes}

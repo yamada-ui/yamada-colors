@@ -2,12 +2,11 @@ import type { StackProps } from "@yamada-ui/react"
 import { Center, HStack, VStack } from "@yamada-ui/react"
 import { type FC, type PropsWithChildren } from "react"
 import { Footer, Header, Sidebar } from "components/layouts"
+import type { SEOProps } from "components/media-and-icons"
 import { SEO } from "components/media-and-icons"
 import { AppProvider } from "contexts/app-context"
 
-type AppLayoutOptions = {
-  title: string
-  description: string
+type AppLayoutOptions = SEOProps & {
   hex?: string | [string, string]
   palettes?: ColorPalettes
   format?: ColorFormat
@@ -19,6 +18,8 @@ export type AppLayoutProps = PropsWithChildren & StackProps & AppLayoutOptions
 export const AppLayout: FC<AppLayoutProps> = ({
   title,
   description,
+  noindex,
+  nofollow,
   hex,
   format,
   palettes,
@@ -28,7 +29,12 @@ export const AppLayout: FC<AppLayoutProps> = ({
 }) => {
   return (
     <AppProvider {...{ hex, format, palettes }}>
-      <SEO title={title} description={description} />
+      <SEO
+        title={title}
+        description={description}
+        noindex={noindex}
+        nofollow={nofollow}
+      />
 
       <Header />
 

@@ -3,12 +3,22 @@ import { NextSeo } from "next-seo"
 import React from "react"
 import { CONSTANT } from "constant"
 
-export type SEOProps = Pick<NextSeoProps, "title" | "description">
+export type SEOProps = Pick<
+  NextSeoProps,
+  "title" | "description" | "noindex" | "nofollow"
+>
 
-export const SEO = ({ title, description }: SEOProps) => (
+export const SEO = ({
+  title,
+  description,
+  noindex = false,
+  nofollow = false,
+}: SEOProps) => (
   <NextSeo
     title={title}
     description={description}
     {...CONSTANT.SEO.NEXT_SEO_PROPS}
+    noindex={noindex}
+    nofollow={nofollow}
   />
 )

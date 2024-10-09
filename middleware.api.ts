@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { NextResponse } from "next/server"
 
 export const config = {
   matcher: ["/colors/:path*", "/generators/:path*", "/contrast-checker/:path*"],
@@ -31,6 +31,7 @@ export const middleware = ({ headers, ip }: NextRequest) => {
     if (blockedIpAddresses.some(isBlockedIpAddress)) {
       return new NextResponse("Access Denied", { status: 403 })
     } else {
+      // eslint-disable-next-line no-console
       console.log(ip)
     }
   }

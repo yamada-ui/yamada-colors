@@ -1,3 +1,4 @@
+import type { FC, ReactNode } from "react"
 import {
   Box,
   Grid,
@@ -8,88 +9,87 @@ import {
   VStack,
   Wrap,
 } from "@yamada-ui/react"
-import Link from "next/link"
-import type { FC, ReactNode } from "react"
 import { NextLink } from "components/navigation"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import Link from "next/link"
 import { f } from "utils/color"
 
-export type OthersProps = {
-  hex: string
-  complementaryColors: string[]
-  hueColors: string[]
+export interface OthersProps {
   alternativeColors: string[]
-  triadicColors: string[]
-  squareColors: string[]
+  complementaryColors: string[]
+  hex: string
+  hueColors: string[]
   splitComplementaryColors: string[]
+  squareColors: string[]
+  triadicColors: string[]
 }
 
 export const Others: FC<OthersProps> = ({
-  hex,
-  complementaryColors,
-  hueColors,
   alternativeColors,
-  triadicColors,
-  squareColors,
+  complementaryColors,
+  hex,
+  hueColors,
   splitComplementaryColors,
+  squareColors,
+  triadicColors,
 }) => {
   const { t } = useI18n()
   const { format } = useApp()
 
   return (
     <Grid
-      templateColumns={{ base: "repeat(3, 1fr)", sm: "1fr" }}
       gap={{ base: "md", sm: "normal" }}
+      templateColumns={{ base: "repeat(3, 1fr)", sm: "1fr" }}
     >
       <List
-        title={t("colors.complementary.title")}
-        description={t("colors.complementary.description")}
         colors={complementaryColors}
+        description={t("colors.complementary.description")}
+        title={t("colors.complementary.title")}
       />
       <List
-        title={t("colors.alternatives.title")}
-        description={t("colors.alternatives.description", f(hex, format))}
-        more={t("colors.alternatives.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=alternatives`}
         colors={alternativeColors}
+        description={t("colors.alternatives.description", f(hex, format))}
+        more={t("colors.alternatives.more")}
+        title={t("colors.alternatives.title")}
       />
       <List
-        title={t("colors.hues.title")}
-        description={t("colors.hues.description")}
-        more={t("colors.hues.more")}
         href={`/generators?hex=${hex.replace("#", "")}&tab=hues`}
         colors={hueColors}
+        description={t("colors.hues.description")}
+        more={t("colors.hues.more")}
+        title={t("colors.hues.title")}
       />
       <List
-        title={t("colors.triadic.title")}
-        description={t("colors.triadic.description")}
         colors={triadicColors}
+        description={t("colors.triadic.description")}
+        title={t("colors.triadic.title")}
       />
       <List
-        title={t("colors.square.title")}
-        description={t("colors.square.description")}
         colors={squareColors}
+        description={t("colors.square.description")}
+        title={t("colors.square.title")}
       />
       <List
-        title={t("colors.split-complementary.title")}
-        description={t("colors.split-complementary.description")}
         colors={splitComplementaryColors}
+        description={t("colors.split-complementary.description")}
+        title={t("colors.split-complementary.title")}
       />
     </Grid>
   )
 }
 
-type ListProps = {
-  title: ReactNode
-  description: ReactNode
-  more?: ReactNode
-  href?: string
+interface ListProps {
   colors: string[]
+  description: ReactNode
+  title: ReactNode
+  href?: string
+  more?: ReactNode
 }
 
-const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
+const List: FC<ListProps> = ({ href, colors, description, more, title }) => {
   return (
     <GridItem as="section" display="flex" flexDirection="column" gap="md">
       <VStack gap={{ base: "xs", sm: "0" }}>
@@ -107,12 +107,12 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
               <Motion as="li" whileHover={{ scale: 0.95 }}>
                 <Box
                   as={Link}
-                  display="block"
                   href={`/colors/${hex.replace("#", "")}`}
+                  bg={hex}
+                  boxSize={{ base: "8" }}
+                  display="block"
                   outlineColor="focus"
                   rounded="lg"
-                  boxSize={{ base: "8" }}
-                  bg={hex}
                 />
               </Motion>
             </ColorCommandMenu>
@@ -124,9 +124,9 @@ const List: FC<ListProps> = ({ title, description, more, href, colors }) => {
         <NextLink
           href={href}
           variant="muted"
+          alignSelf="flex-start"
           fontSize="sm"
           whiteSpace="nowrap"
-          alignSelf="flex-start"
         >
           {more}
         </NextLink>

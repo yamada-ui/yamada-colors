@@ -1,40 +1,40 @@
-import { defaultTheme } from "@yamada-ui/react"
-import * as c from "color2k"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
+import { defaultTheme } from "@yamada-ui/react"
+import * as c from "color2k"
+import { useI18n } from "contexts/i18n-context"
+import { AppLayout } from "layouts/app-layout"
+import {
+  alternative,
+  blindness,
+  complementary,
+  darken,
+  hue,
+  isReadable,
+  lighten,
+  readability,
+  splitComplementary,
+  square,
+  toCielab,
+  toCielch,
+  toCmyk,
+  toHsl,
+  toHsv,
+  tone,
+  toRgb,
+  triadic,
+} from "utils/color"
+import { getColorName } from "utils/color-name-list"
+import { getServerSideCommonProps } from "utils/next"
 import { A11y } from "./a11y"
 import { Data } from "./data"
 import { Gradients } from "./gradients"
 import { Header } from "./header"
 import { Others } from "./others"
 import { useHistory } from "./use-history"
-import { useI18n } from "contexts/i18n-context"
-import { AppLayout } from "layouts/app-layout"
-import {
-  darken,
-  tone,
-  lighten,
-  toCielab,
-  toCielch,
-  toCmyk,
-  toHsl,
-  toHsv,
-  toRgb,
-  hue,
-  complementary,
-  alternative,
-  triadic,
-  square,
-  splitComplementary,
-  readability,
-  isReadable,
-  blindness,
-} from "utils/color"
-import { getColorName } from "utils/color-name-list"
-import { getServerSideCommonProps } from "utils/next"
 
 const getColorData = (hex: string) => {
   const name = getColorName(hex)
@@ -45,13 +45,15 @@ const getColorData = (hex: string) => {
   const cielab = toCielab(hex)
   const cielch = toCielch(hex)
 
-  return { name, hex, rgb, hsl, hsv, cmyk, cielab, cielch }
+  return { name, cielab, cielch, cmyk, hex, hsl, hsv, rgb }
 }
+
+export type ColorData = ReturnType<typeof getColorData>
 
 const getShadeColors = (hex: string) => {
   const hexes = darken(hex)
 
-  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+  const colors = hexes.map((hex) => ({ name: getColorName(hex), hex }))
 
   return colors
 }
@@ -59,7 +61,7 @@ const getShadeColors = (hex: string) => {
 const getTintColors = (hex: string) => {
   const hexes = lighten(hex)
 
-  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+  const colors = hexes.map((hex) => ({ name: getColorName(hex), hex }))
 
   return colors
 }
@@ -67,32 +69,34 @@ const getTintColors = (hex: string) => {
 const getToneColors = (hex: string) => {
   const hexes = tone(hex)
 
-  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+  const colors = hexes.map((hex) => ({ name: getColorName(hex), hex }))
 
   return colors
 }
 
 const getContrast = (hex: string) => {
-  const { white, black } = defaultTheme.colors as Record<string, string>
+  const white = defaultTheme.colors.white as string
+  const black = defaultTheme.colors.black as string
 
   return {
     light: {
+      large: isReadable(hex, white, { size: "large", level: "AA" }),
       score: readability(hex, white),
-      small: isReadable(hex, white, { level: "AA", size: "small" }),
-      large: isReadable(hex, white, { level: "AA", size: "large" }),
+      small: isReadable(hex, white, { size: "small", level: "AA" }),
     },
     dark: {
+      large: isReadable(hex, black, { size: "large", level: "AA" }),
       score: readability(hex, black),
-      small: isReadable(hex, black, { level: "AA", size: "small" }),
-      large: isReadable(hex, black, { level: "AA", size: "large" }),
+      small: isReadable(hex, black, { size: "small", level: "AA" }),
     },
   }
 }
 
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+export const getServerSideProps = (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format, palettes },
-  } = await getServerSideCommonProps(req)
+  } = getServerSideCommonProps(req)
+
   let hex = `#${req.query.hex}`
 
   try {
@@ -115,23 +119,23 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     const contrast = getContrast(hex)
 
     const props = {
-      cookies,
-      format,
       name,
-      palettes,
-      hex,
+      alternativeColors,
+      blind,
+      complementaryColors,
+      contrast,
+      cookies,
       data,
+      format,
+      hex,
+      hueColors,
+      palettes,
       shadeColors,
+      splitComplementaryColors,
+      squareColors,
       tintColors,
       toneColors,
-      complementaryColors,
-      hueColors,
-      alternativeColors,
       triadicColors,
-      squareColors,
-      splitComplementaryColors,
-      blind,
-      contrast,
     }
 
     return { props }
@@ -142,58 +146,56 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-export type ColorData = PageProps["data"]
-
 const Page: NextPage<PageProps> = ({
+  name,
+  alternativeColors,
+  blind,
+  complementaryColors,
+  contrast,
   cookies,
+  data,
   format,
   hex,
+  hueColors,
   palettes,
-  name,
-  data,
   shadeColors,
+  splitComplementaryColors,
+  squareColors,
   tintColors,
   toneColors,
-  complementaryColors,
-  hueColors,
-  alternativeColors,
   triadicColors,
-  squareColors,
-  splitComplementaryColors,
-  blind,
-  contrast,
 }) => {
   useHistory({ cookies, hex })
   const { t } = useI18n()
 
   return (
     <AppLayout
-      title={hex}
       description={t("colors.description")}
-      noindex={true}
-      nofollow={true}
-      hex={hex}
       format={format}
-      palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
+      hex={hex}
+      nofollow
+      noindex
+      palettes={palettes}
+      title={hex}
     >
-      <Header {...{ hex, name }} />
+      <Header {...{ name, hex }} />
 
       <Data {...data} />
 
       <Gradients {...{ hex, shadeColors, tintColors, toneColors }} />
 
-      <A11y {...{ hex, blind, contrast }} />
+      <A11y {...{ blind, contrast, hex }} />
 
       <Others
         {...{
-          hex,
-          complementaryColors,
-          hueColors,
           alternativeColors,
-          triadicColors,
-          squareColors,
+          complementaryColors,
+          hex,
+          hueColors,
           splitComplementaryColors,
+          squareColors,
+          triadicColors,
         }}
       />
     </AppLayout>

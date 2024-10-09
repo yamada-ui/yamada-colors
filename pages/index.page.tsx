@@ -3,16 +3,16 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import { Category, categories } from "components/data-display"
+import { categories, Category } from "components/data-display"
 import { useI18n } from "contexts/i18n-context"
 import { getRandomColors } from "functions/get-random-colors"
 import { AppLayout } from "layouts/app-layout"
 import { getServerSideCommonProps } from "utils/next"
 
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+export const getServerSideProps = (req: GetServerSidePropsContext) => {
   const {
-    props: { cookies, hex, format, palettes },
-  } = await getServerSideCommonProps(req)
+    props: { cookies, format, hex, palettes },
+  } = getServerSideCommonProps(req)
 
   const omittedCategories = (categories as unknown as string[])
     .sort(() => 0.5 - Math.random())
@@ -25,10 +25,10 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   })
 
   const props = {
-    cookies,
-    hex,
-    format,
     categories: computedCategories,
+    cookies,
+    format,
+    hex,
     palettes,
   }
 
@@ -37,17 +37,17 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ hex, format, categories, palettes }) => {
+const Page: NextPage<PageProps> = ({ categories, format, hex, palettes }) => {
   const { t } = useI18n()
 
   return (
     <AppLayout
-      title={t("app.title")}
       description={t("app.description")}
+      format={format}
       gap={{ base: "lg", sm: "normal" }}
       hex={hex}
-      format={format}
       palettes={palettes}
+      title={t("app.title")}
     >
       {categories.map(({ category, colors }, index) => {
         const type = index % 4 === 2 || index % 4 === 3 ? "carousel" : "grid"
@@ -56,10 +56,10 @@ const Page: NextPage<PageProps> = ({ hex, format, categories, palettes }) => {
         return (
           <Category
             key={category}
-            category={category}
-            colors={colors}
             type={type}
             size={size}
+            category={category}
+            colors={colors}
           />
         )
       })}

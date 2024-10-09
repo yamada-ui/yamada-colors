@@ -58,11 +58,7 @@ export const complementary = (hex: string) => {
   ]
 }
 
-export const alternative = (
-  hex: string,
-  count: number = 10,
-  slice: number = 60,
-) => {
+export const alternative = (hex: string, count = 10, slice = 60) => {
   let [h, s, l] = toHsl(hex)
   const hexes: string[] = []
 
@@ -125,15 +121,15 @@ export const readability = (hex1: string, hex2: string) => {
   return color.getContrast(hex1, hex2)
 }
 
-type WcagOptions = {
+interface WcagOptions {
+  size: "component" | "large" | "small"
   level: "AA" | "AAA"
-  size: "small" | "large" | "component"
 }
 
 export const isReadable = (
   hex1: string,
   hex2: string,
-  { level, size }: WcagOptions = { level: "AA", size: "small" },
+  { size, level }: WcagOptions = { size: "small", level: "AA" },
 ) => {
   const score = readability(hex1, hex2)
 
@@ -156,47 +152,51 @@ export const isReadable = (
 }
 
 export const mostReadable = (
-  hex: string,
+  targetHex: string,
   hexes: [string, ...string[]],
   {
-    level,
     size,
     includeFallbackColors,
+    level,
   }: { includeFallbackColors?: boolean } & WcagOptions = {
-    level: "AA",
     size: "small",
+    level: "AA",
   },
 ): string => {
   let result: string | undefined = undefined
   let bestScore = 0
   let score = 0
 
-  for (var i = 0; i < hexes.length; i++) {
-    score = readability(hex, hexes[i])
+  for (const hex of hexes) {
+    score = readability(targetHex, hex)
+
     if (score > bestScore) {
       bestScore = score
 
-      result = hexes[i]
+      result = hex
     }
   }
 
-  if (isReadable(hex, result!, { level, size }) || !includeFallbackColors) {
+  if (
+    isReadable(targetHex, result!, { size, level }) ||
+    !includeFallbackColors
+  ) {
     return result!
   } else {
     includeFallbackColors = false
 
-    return mostReadable(hex, ["#fff", "#000"], {
-      level,
+    return mostReadable(targetHex, ["#fff", "#000"], {
       size,
       includeFallbackColors,
+      level,
     })
   }
 }
 
 export const blindness = (hex: string) => ({
+  achromatopsia: blinder.achromatopsia(hex),
+  deuteranopia: blinder.deuteranopia(hex),
   original: hex,
   protanopia: blinder.protanopia(hex),
-  deuteranopia: blinder.deuteranopia(hex),
   tritanopia: blinder.tritanopia(hex),
-  achromatopsia: blinder.achromatopsia(hex),
 })

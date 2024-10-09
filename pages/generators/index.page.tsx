@@ -1,19 +1,19 @@
-import { noop } from "@yamada-ui/react"
-import * as c from "color2k"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
-import { useRef } from "react"
-import { Header } from "./header"
-import { Hexes } from "./hexes"
-import { Tabs } from "./tabs"
+import { noop } from "@yamada-ui/react"
+import * as c from "color2k"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
+import { useRef } from "react"
 import { alternative, darken, hue, lighten, tone } from "utils/color"
 import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
+import { Header } from "./header"
+import { Hexes } from "./hexes"
+import { Tabs } from "./tabs"
 
 export const getHexes = (tab: string, hex: string) => {
   switch (tab) {
@@ -37,10 +37,10 @@ export const getHexes = (tab: string, hex: string) => {
   }
 }
 
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+export const getServerSideProps = (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format, palettes },
-  } = await getServerSideCommonProps(req)
+  } = getServerSideCommonProps(req)
   let tab = (req.query.tab ?? "alternatives") as string
   let hex = `#${req.query.hex}`
 
@@ -48,17 +48,17 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
     hex = c.toHex(hex)
 
     const hexes = getHexes(tab, hex).map((hex) => ({
-      hex,
       name: getColorName(hex),
+      hex,
     }))
 
     const props = {
       cookies,
       format,
-      palettes,
-      tab,
       hex,
       hexes,
+      palettes,
+      tab,
     }
 
     return { props }
@@ -69,26 +69,26 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ tab, hex, format, palettes, hexes }) => {
+const Page: NextPage<PageProps> = ({ format, hex, hexes, palettes, tab }) => {
   const onSelectRef = useRef<(tab: string, hex: string) => void>(noop)
   const { t } = useI18n()
 
   return (
     <AppLayout
-      title={t("generators.title")}
       description={t("generators.description")}
-      noindex={true}
-      nofollow={true}
-      hex={hex}
       format={format}
-      palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
+      hex={hex}
+      nofollow
+      noindex
+      palettes={palettes}
+      title={t("generators.title")}
     >
       <Header {...{ hex, tab }} />
 
-      <Tabs {...{ tab, hex, onSelectRef }} />
+      <Tabs {...{ hex, tab, onSelectRef }} />
 
-      <Hexes {...{ hexes, hex, onSelectRef }} />
+      <Hexes {...{ hex, hexes, onSelectRef }} />
     </AppLayout>
   )
 }

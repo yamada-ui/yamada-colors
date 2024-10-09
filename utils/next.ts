@@ -1,13 +1,13 @@
 import type { GetServerSidePropsContext } from "next"
-import { getCookie, getCookies } from "./storage"
 import { CONSTANT } from "constant"
+import { getCookie, getCookies } from "./storage"
 
 const randomHex = () =>
   `#${Math.floor(Math.random() * 16777215)
     .toString(16)
     .padStart(6, "0")}`
 
-export const getServerSideCommonProps = async ({
+export const getServerSideCommonProps = ({
   req,
 }: GetServerSidePropsContext) => {
   const cookies = req.headers.cookie ?? ""
@@ -21,11 +21,11 @@ export const getServerSideCommonProps = async ({
     ),
   )
   const resolvedPalettes = palettes
-    .map(({ uuid, name, colors, timestamp }) => ({
-      uuid,
+    .map(({ name, colors, timestamp, uuid }) => ({
       name: decodeURIComponent(name),
       colors,
       timestamp,
+      uuid,
     }))
     .sort((a, b) => b.timestamp - a.timestamp)
 

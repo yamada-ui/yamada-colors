@@ -1,3 +1,7 @@
+import type {
+  ContextMenuProps,
+  ContextMenuTriggerProps,
+} from "@yamada-ui/react"
 import {
   ContextMenu,
   ContextMenuTrigger,
@@ -11,32 +15,28 @@ import {
   Text,
   useDisclosure,
 } from "@yamada-ui/react"
-import type {
-  ContextMenuProps,
-  ContextMenuTriggerProps,
-} from "@yamada-ui/react"
-import { useRouter } from "next/router"
-import { memo, useRef } from "react"
-import { PaletteRenameModal } from "./palette-rename-modal"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { useRouter } from "next/router"
+import { memo, useRef } from "react"
 import { setCookie } from "utils/storage"
+import { PaletteRenameModal } from "./palette-rename-modal"
 
-export type PaletteCommandMenuProps = ContextMenuProps & {
+export interface PaletteCommandMenuProps extends ContextMenuProps {
   palette: ColorPalette
   triggerProps?: ContextMenuTriggerProps
 }
 
 export const PaletteCommandMenu = memo(
   forwardRef<PaletteCommandMenuProps, "div">(
-    ({ palette, children, triggerProps, ...rest }, ref) => {
-      const { uuid, name } = palette
+    ({ children, palette, triggerProps, ...rest }, ref) => {
+      const { name, uuid } = palette
       const { changePalette, deletePalette } = useApp()
       const { t } = useI18n()
       const router = useRouter()
       const onOpenRef = useRef<() => void>(noop)
-      const { isOpen, onOpen, onClose } = useDisclosure()
+      const { isOpen, onClose, onOpen } = useDisclosure()
 
       return (
         <>
@@ -46,10 +46,10 @@ export const PaletteCommandMenu = memo(
                 name: "preventOverflow",
                 options: {
                   padding: {
-                    top: 16,
                     bottom: 16,
                     left: 16,
                     right: 16,
+                    top: 16,
                   },
                 },
               },
@@ -100,25 +100,25 @@ export const PaletteCommandMenu = memo(
 
           <PaletteRenameModal
             value={name}
-            onSubmit={(name) => changePalette({ ...palette, name })}
             onOpenRef={onOpenRef}
+            onSubmit={(name) => changePalette({ ...palette, name })}
           />
 
           <Dialog
-            isOpen={isOpen}
-            onClose={onClose}
-            header={<Text lineClamp={1}>{name}</Text>}
             cancel={{
               colorScheme: "neutral",
               children: t("palettes.delete.cancel"),
             }}
-            onCancel={onClose}
+            header={<Text lineClamp={1}>{name}</Text>}
+            isOpen={isOpen}
             success={{
               colorScheme: "danger",
               children: t("palettes.delete.submit"),
             }}
-            onSuccess={() => deletePalette(uuid)}
             withCloseButton={false}
+            onCancel={onClose}
+            onClose={onClose}
+            onSuccess={() => deletePalette(uuid)}
           >
             {t("palettes.delete.description")}
           </Dialog>

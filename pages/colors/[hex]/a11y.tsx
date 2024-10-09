@@ -1,46 +1,46 @@
-import { Check, X } from "@yamada-ui/lucide"
 import type { GridItemProps } from "@yamada-ui/react"
+import type { FC } from "react"
+import { Check, X } from "@yamada-ui/lucide"
 import {
   Box,
   Center,
   Grid,
   GridItem,
-  HStack,
   Heading,
+  HStack,
   Spacer,
   Text,
   VStack,
   Wrap,
 } from "@yamada-ui/react"
-import type { FC } from "react"
 import { NextLink } from "components/navigation"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f, isLight } from "utils/color"
 
-type ContrastData = {
+interface ContrastData {
+  large: boolean
   score: number
   small: boolean
-  large: boolean
 }
 
-export type A11yProps = {
-  hex: string
+export interface A11yProps {
   blind: {
+    achromatopsia: string
+    deuteranopia: string
     original: string
     protanopia: string
-    deuteranopia: string
     tritanopia: string
-    achromatopsia: string
   }
   contrast: {
     light: ContrastData
     dark: ContrastData
   }
+  hex: string
 }
 
-export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
+export const A11y: FC<A11yProps> = ({ blind, contrast, hex }) => {
   const { t } = useI18n()
 
   return (
@@ -51,20 +51,20 @@ export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
         </Heading>
 
         <Grid
-          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(1, 1fr)" }}
           gap="md"
+          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(1, 1fr)" }}
         >
-          <Contrast hex={hex} mode="light" data={contrast.light} />
+          <Contrast data={contrast.light} hex={hex} mode="light" />
 
-          <Contrast hex={hex} mode="dark" data={contrast.dark} />
+          <Contrast data={contrast.dark} hex={hex} mode="dark" />
         </Grid>
 
         <NextLink
           href={`/contrast-checker?light.fg=${hex.replace("#", "")}&dark.fg=${hex.replace("#", "")}`}
           variant="muted"
+          alignSelf="flex-start"
           fontSize="sm"
           whiteSpace="nowrap"
-          alignSelf="flex-start"
         >
           {t("colors.contrast.more")}
         </NextLink>
@@ -81,66 +81,69 @@ export const A11y: FC<A11yProps> = ({ hex, blind, contrast }) => {
   )
 }
 
-type BlindnessProps = {
+interface BlindnessProps {
+  achromatopsia: string
+  deuteranopia: string
   original: string
   protanopia: string
-  deuteranopia: string
   tritanopia: string
-  achromatopsia: string
 }
 
 const Blindness: FC<BlindnessProps> = ({
+  achromatopsia,
+  deuteranopia,
   original,
   protanopia,
-  deuteranopia,
   tritanopia,
-  achromatopsia,
 }) => {
   const { t } = useI18n()
 
   return (
     <Grid
       h={{ base: "xs", sm: "auto" }}
-      templateColumns={{ base: "repeat(5, 1fr)", sm: "repeat(1, 1fr)" }}
-      rounded="2xl"
       overflow="hidden"
+      rounded="2xl"
+      templateColumns={{ base: "repeat(5, 1fr)", sm: "repeat(1, 1fr)" }}
     >
       <BlindnessItem
-        label={t("colors.color-blindness.original")}
         hex={original}
+        label={t("colors.color-blindness.original")}
       />
       <BlindnessItem
-        label={t("colors.color-blindness.protanopia")}
         hex={protanopia}
+        label={t("colors.color-blindness.protanopia")}
       />
       <BlindnessItem
-        label={t("colors.color-blindness.deuteranopia")}
         hex={deuteranopia}
+        label={t("colors.color-blindness.deuteranopia")}
       />
       <BlindnessItem
-        label={t("colors.color-blindness.tritanopia")}
         hex={tritanopia}
+        label={t("colors.color-blindness.tritanopia")}
       />
       <BlindnessItem
-        label={t("colors.color-blindness.achromatopsia")}
         hex={achromatopsia}
+        label={t("colors.color-blindness.achromatopsia")}
       />
     </Grid>
   )
 }
 
-type BlindnessItemProps = GridItemProps & { label: string; hex: string }
+interface BlindnessItemProps extends GridItemProps {
+  hex: string
+  label: string
+}
 
-const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
+const BlindnessItem: FC<BlindnessItemProps> = ({ hex, label, ...rest }) => {
   return (
     <GridItem boxSize="full" {...rest}>
       <ColorCommandMenu value={hex} triggerProps={{ h: "full" }}>
         <Center
-          minW="0"
-          h="full"
-          py={{ base: "md", sm: "md" }}
-          px="md"
           bg={hex}
+          h="full"
+          minW="0"
+          px="md"
+          py={{ base: "md", sm: "md" }}
           _hover={{
             "& > span": {
               color: isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700",
@@ -149,11 +152,11 @@ const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
         >
           <Text
             as="span"
-            fontSize={{ base: "md", sm: "sm" }}
             color="transparent"
-            transitionProperty="common"
-            transitionDuration="slower"
+            fontSize={{ base: "md", sm: "sm" }}
             lineClamp={1}
+            transitionDuration="slower"
+            transitionProperty="common"
           >
             {label}
           </Text>
@@ -163,13 +166,13 @@ const BlindnessItem: FC<BlindnessItemProps> = ({ label, hex, ...rest }) => {
   )
 }
 
-type ContrastProps = {
-  hex: string
-  mode: "light" | "dark"
+interface ContrastProps {
   data: ContrastData
+  hex: string
+  mode: "dark" | "light"
 }
 
-const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
+const Contrast: FC<ContrastProps> = ({ data, hex, mode }) => {
   const { format } = useApp()
   const color = mode === "light" ? "black" : "white"
   const bg = mode === "light" ? "white" : "black"
@@ -177,17 +180,17 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
 
   return (
     <VStack
-      rounded="2xl"
-      p={{ base: "lg", sm: "md" }}
-      borderWidth="1px"
-      gap="sm"
       bg={bg}
+      borderWidth="1px"
       color={color}
+      gap="sm"
+      p={{ base: "lg", sm: "md" }}
+      rounded="2xl"
     >
       <HStack gap="sm">
         <Box
-          boxSize={{ base: "6", sm: "4" }}
           bg={hex}
+          boxSize={{ base: "6", sm: "4" }}
           rounded={{ base: "lg", sm: "base" }}
         />
 
@@ -204,16 +207,16 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
         <Spacer />
 
         <Grid
-          templateColumns="auto auto auto"
           alignItems="center"
           gapX="sm"
           gapY={{ base: "sm", sm: "xs" }}
+          templateColumns="auto auto auto"
         >
           <Text
-            minW="10ch"
             color={muted}
             fontSize={{ base: "md", sm: "sm" }}
             fontWeight="semibold"
+            minW="10ch"
           >
             Large Text
           </Text>
@@ -251,9 +254,9 @@ const Contrast: FC<ContrastProps> = ({ hex, mode, data }) => {
           )}
 
           <Text
-            minW="4ch"
             fontSize={{ base: "md", sm: "sm" }}
             fontWeight="semibold"
+            minW="4ch"
           >
             {data.small ? "Pass" : "Fail"}
           </Text>

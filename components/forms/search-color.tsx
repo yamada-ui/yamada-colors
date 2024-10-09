@@ -1,50 +1,46 @@
-import {
-  Box,
-  Button,
-  ChevronIcon,
-  ColorPicker,
-  IconButton,
-  handlerAll,
-  useDisclosure,
-} from "@yamada-ui/react"
 import type {
   BoxProps,
   ColorPickerProps,
   IconButtonProps,
 } from "@yamada-ui/react"
+import {
+  Box,
+  Button,
+  ChevronIcon,
+  ColorPicker,
+  handlerAll,
+  IconButton,
+  useDisclosure,
+} from "@yamada-ui/react"
 import * as c from "color2k"
-import { forwardRef, memo } from "react"
 import { RemoveScroll } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { forwardRef, memo } from "react"
 import { f } from "utils/color"
 
-export type SearchColorProps = Omit<
-  ColorPickerProps,
-  "value" | "onChange" | "onSubmit"
-> &
-  Pick<ColorPickerProps, "value" | "onChange"> & {
-    isRemoveScroll?: boolean
-    onSubmit?: (value: string) => void
-    containerProps?: BoxProps
-    submitProps?: IconButtonProps
-  }
+export interface SearchColorProps extends Omit<ColorPickerProps, "onSubmit"> {
+  isRemoveScroll?: boolean
+  containerProps?: BoxProps
+  submitProps?: IconButtonProps
+  onSubmit?: (value: string) => void
+}
 
 export const SearchColor = memo(
   forwardRef<HTMLInputElement, SearchColorProps>(
     (
       {
+        isRemoveScroll,
         value,
-        onChange,
-        onSubmit: onSubmitProp,
         containerProps,
         submitProps,
-        isRemoveScroll,
+        onChange,
+        onSubmit: onSubmitProp,
         ...rest
       },
       ref,
     ) => {
-      const { isOpen, onOpen, onClose } = useDisclosure()
+      const { isOpen, onClose, onOpen } = useDisclosure()
       const { t } = useI18n()
       const { format } = useApp()
 
@@ -66,31 +62,31 @@ export const SearchColor = memo(
           allowPinchZoom={false}
           enabled={!!isRemoveScroll && isOpen}
         >
-          <Box position="relative" h="fit-content" {...containerProps}>
+          <Box h="fit-content" position="relative" {...containerProps}>
             <ColorPicker
               ref={ref}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-              value={value}
-              onChange={onChange}
-              placeholder={f("#ffffff", format)}
-              matchWidth
               format={format}
+              isOpen={isOpen}
+              matchWidth
+              placeholder={f("#ffffff", format)}
               rounded="full"
-              eyeDropperProps={{ right: 9, fontSize: "1em", rounded: "full" }}
+              value={value}
+              eyeDropperProps={{ fontSize: "1em", right: 9, rounded: "full" }}
               inputProps={{ pe: "4rem" }}
+              onChange={onChange}
+              onClose={onClose}
               onKeyDown={(ev) => {
                 if (ev.key !== "Enter") return
 
                 onSubmit()
               }}
+              onOpen={onOpen}
               {...rest}
             >
               <Button
                 colorScheme="neutral"
-                borderColor="transparent"
                 bg={["blackAlpha.200", "whiteAlpha.100"]}
+                borderColor="transparent"
                 onClick={onSubmit}
               >
                 {t("component.color-search.submit")}
@@ -98,25 +94,25 @@ export const SearchColor = memo(
             </ColorPicker>
 
             <IconButton
+              colorScheme="neutral"
+              size="sm"
               bg={["blackAlpha.200", "whiteAlpha.100"]}
               borderColor="transparent"
+              boxSize="6"
               icon={
                 <ChevronIcon
-                  fontSize="lg"
                   color="muted"
+                  fontSize="lg"
                   transform="rotate(-90deg)"
                 />
               }
-              colorScheme="neutral"
-              position="absolute"
-              zIndex="kurillin"
-              top="50%"
-              right="2"
-              transform="translateY(-50%)"
-              boxSize="6"
-              minW="auto"
-              size="sm"
               isRounded
+              minW="auto"
+              position="absolute"
+              right="2"
+              top="50%"
+              transform="translateY(-50%)"
+              zIndex="kurillin"
               {...submitProps}
               onClick={handlerAll(submitProps?.onClick, onSubmit)}
             />

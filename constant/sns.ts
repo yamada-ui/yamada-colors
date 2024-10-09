@@ -1,4 +1,5 @@
 export const SNS = {
+  DISCORD: "https://discord.gg/H7V5RfEDTR",
   GITHUB: {
     HIROTOMO_YAMADA: "https://github.com/hirotomoyamada",
     YAMADA_COLORS: "https://github.com/yamada-ui/yamada-colors",
@@ -6,5 +7,4 @@ export const SNS = {
   TWITTER: {
     HIROTOMO_YAMADA: "https://twitter.com/hirotomoyamada",
   },
-  DISCORD: "https://discord.gg/H7V5RfEDTR",
 }

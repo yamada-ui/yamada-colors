@@ -1,41 +1,51 @@
-type Color = { hex: string; name: string }
+interface Color {
+  name: string
+  hex: string
+}
 type Colors = Color[]
 
-type PaletteColor = { hex: [string, string]; name: string }
+interface PaletteColor {
+  name: string
+  hex: [string, string]
+}
 type PaletteColors = PaletteColor[]
 
-type ReorderColor = PaletteColor & { id: string }
+interface ReorderColor extends PaletteColor {
+  id: string
+}
 type ReorderColors = ReorderColor[]
 
-type ColorPalette = {
-  uuid: string
+interface ColorPalette {
   name: string
   colors: PaletteColors
   timestamp: number
+  uuid: string
 }
 type ColorPalettes = ColorPalette[]
 
-type ColorExport = "json" | "json.token" | "css" | "css.token"
+type ColorExport = "css" | "css.token" | "json" | "json.token"
 
-type ColorFormat = "hex" | "rgb" | "hsl"
+type ColorFormat = "hex" | "hsl" | "rgb"
 
 type ColorContrastLevel = "aa" | "aaa"
 
-type ColorContrastGround = "fg" | "bg"
+type ColorContrastGround = "bg" | "fg"
 
-type ColorContrastLevelScore = {
-  small: boolean
-  large: boolean
+interface ColorContrastLevelScore {
   component: boolean
+  large: boolean
+  small: boolean
 }
 
-type ColorContrastScore = {
+interface ColorContrastScore {
+  aa: ColorContrastLevelScore
+  aaa: ColorContrastLevelScore
   score: number
-} & Record<ColorContrastLevel, ColorContrastLevelScore>
-
-type ColorContrastSource = {
-  fg: string
-  bg: string
 }
 
-type ColorContrast = ColorContrastSource & ColorContrastScore
+interface ColorContrastSource {
+  bg: string
+  fg: string
+}
+
+interface ColorContrast extends ColorContrastScore, ColorContrastSource {}

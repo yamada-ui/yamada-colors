@@ -1,3 +1,5 @@
+import type { InputProps, StackProps } from "@yamada-ui/react"
+import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react"
 import { Pipette } from "@yamada-ui/lucide"
 import {
   Box,
@@ -9,26 +11,21 @@ import {
   useUpdateEffect,
   VStack,
 } from "@yamada-ui/react"
-import type { InputProps, StackProps } from "@yamada-ui/react"
-import { memo, useRef, useState } from "react"
-import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react"
 import { useApp } from "contexts/app-context"
+import { memo, useRef, useState } from "react"
 import { f } from "utils/color"
 
-export type PaletteColorFormProps = Omit<
-  StackProps,
-  "onChange" | "onSubmit"
-> & {
+export interface PaletteColorFormProps extends Omit<StackProps, "onSubmit"> {
   name: string
-  onChangeName: Dispatch<SetStateAction<string>>
   color: string
   onChangeColor: Dispatch<SetStateAction<string>>
+  onChangeName: Dispatch<SetStateAction<string>>
   onSubmit?: () => void
 }
 
 export const PaletteColorForm = memo(
   forwardRef<PaletteColorFormProps, "div">(
-    ({ name, onChangeName, color, onChangeColor, onSubmit, ...rest }, ref) => {
+    ({ name, color, onChangeColor, onChangeName, onSubmit, ...rest }, ref) => {
       return (
         <VStack ref={ref} gap="sm" {...rest}>
           <Input
@@ -53,11 +50,9 @@ export const PaletteColorForm = memo(
 
 PaletteColorForm.displayName = "PaletteColorForm"
 
-type EditColorPickerProps = Pick<
-  PaletteColorFormProps,
-  "color" | "onChangeColor"
-> &
-  InputProps
+interface EditColorPickerProps
+  extends Omit<InputProps, "color">,
+    Pick<PaletteColorFormProps, "color" | "onChangeColor"> {}
 
 const EditColorPicker: FC<EditColorPickerProps> = memo(
   ({ color, onChangeColor, ...rest }) => {
@@ -101,62 +96,62 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
       <>
         <Box position="relative" w="full">
           <ColorSwatch
+            boxSize="6"
             color={color}
+            insetStart="2"
             isRounded
             position="absolute"
             top="50%"
             transform="translateY(-50%)"
             zIndex={2}
-            boxSize="6"
-            insetStart="2"
           />
 
           <Input
+            pl="10"
+            placeholder={f("#ffffff", format)}
+            pr="8"
             value={inputValue}
-            onChange={onInputChange}
-            onFocus={() => {
-              isInputFocused.current = true
-            }}
+            w="full"
+            _focus={{ zIndex: "unset" }}
             onBlur={() => {
               isInputFocused.current = false
               const next = f(color, format)
 
               onChangeColor((prev) => (!next || prev === next ? prev : next))
-              setInputValue(next ?? "")
+              setInputValue(next)
             }}
-            w="full"
-            pl="10"
-            pr="8"
-            _focus={{ zIndex: "unset" }}
-            placeholder={f("#ffffff", format)}
+            onChange={onInputChange}
+            onFocus={() => {
+              isInputFocused.current = true
+            }}
             {...rest}
           />
 
           {eyeDropperSupported ? (
             <Box
               as="button"
+              alignItems="center"
+              color={["blackAlpha.600", "whiteAlpha.700"]}
+              display="inline-flex"
+              fontSize="lg"
+              insetEnd="2"
+              justifyContent="center"
+              outline={0}
+              pointerEvents="auto"
               position="absolute"
+              py="1"
+              rounded="md"
               top="50%"
               transform="translateY(-50%)"
-              display="inline-flex"
-              justifyContent="center"
-              alignItems="center"
-              zIndex={1}
-              insetEnd="2"
-              w="6"
-              py="1"
-              fontSize="lg"
-              outline={0}
-              rounded="md"
-              transitionProperty="common"
               transitionDuration="normal"
-              pointerEvents="auto"
-              color={["blackAlpha.600", "whiteAlpha.700"]}
-              _hover={{
-                color: ["blackAlpha.500", "whiteAlpha.600"],
-              }}
+              transitionProperty="common"
+              w="6"
+              zIndex={1}
               _focusVisible={{
                 boxShadow: "outline",
+              }}
+              _hover={{
+                color: ["blackAlpha.500", "whiteAlpha.600"],
               }}
               onClick={onEyeDropperClick}
             >
@@ -166,11 +161,11 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
         </Box>
 
         <ColorSelector
-          value={f(color, format)}
-          onChange={onChange}
           format={format}
+          value={f(color, format)}
           withEyeDropper={false}
           withResult={false}
+          onChange={onChange}
         />
       </>
     )

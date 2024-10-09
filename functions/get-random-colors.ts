@@ -1,6 +1,6 @@
+import type { RandomColorOptionsMultiple } from "utils/random-color"
 import { defaultTheme } from "@yamada-ui/react"
 import { getColorName } from "utils/color-name-list"
-import type { RandomColorOptionsMultiple } from "utils/random-color"
 import randomColor from "utils/random-color"
 
 export const getRandomColors = ({
@@ -12,12 +12,12 @@ export const getRandomColors = ({
   count?: RandomColorOptionsMultiple["count"]
   luminosity?: RandomColorOptionsMultiple["luminosity"]
 }) => {
-  let hue = (defaultTheme.colors[category] as Record<string, string>)[500]
+  let hue = (defaultTheme.colors[category] as { [key: string]: string })[500]
 
   if (category === "gray") hue = "monochrome"
 
-  const hexes = randomColor({ count, luminosity, hue })
-  const colors = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+  const hexes = randomColor({ count, hue, luminosity })
+  const colors = hexes.map((hex) => ({ name: getColorName(hex), hex }))
 
   return colors
 }

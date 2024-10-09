@@ -1,3 +1,5 @@
+import type { ModalProps, SelectItem } from "@yamada-ui/react"
+import type { FC } from "react"
 import { Check, Clipboard } from "@yamada-ui/lucide"
 import {
   HStack,
@@ -14,11 +16,9 @@ import {
   useClipboard,
   useUpdateEffect,
 } from "@yamada-ui/react"
-import type { ModalProps, SelectItem } from "@yamada-ui/react"
-import { memo, useState } from "react"
-import type { FC } from "react"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { memo, useState } from "react"
 
 const items: SelectItem[] = [
   {
@@ -53,31 +53,31 @@ const items: SelectItem[] = [
   },
 ]
 
-export type ExportModalProps = ModalProps & {
+export interface ExportModalProps extends ModalProps {
   type: ColorExport
   colors: Colors | ReorderColors
 }
 
 export const ExportModal: FC<ExportModalProps> = memo(
-  ({ isOpen, type: typeProp, onClose, colors, ...rest }) => {
+  ({ type: typeProp, colors, isOpen, onClose, ...rest }) => {
     const { t } = useI18n()
     const [type, setType] = useState(typeProp)
     const { format } = useApp()
-    const { value, loading } = useAsync(async () => {
+    const { loading, value } = useAsync(async () => {
       if (!isOpen) return ""
 
       const res = await fetch("/api/palettes/export", {
-        method: "POST",
+        body: JSON.stringify({ type, colors, format }),
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ type, format, colors }),
+        method: "POST",
       })
       const data = (await res.json()) as string
 
       return data
     }, [isOpen, type, format, colors])
-    const { onCopy, hasCopied } = useClipboard(value, 5000)
+    const { hasCopied, onCopy } = useClipboard(value, 5000)
 
     useUpdateEffect(() => {
       setType(typeProp)
@@ -85,21 +85,23 @@ export const ExportModal: FC<ExportModalProps> = memo(
 
     return (
       <Modal isOpen={isOpen} onClose={onClose} {...rest}>
-        <ModalCloseButton rounded="full" colorScheme="neutral" />
+        <ModalCloseButton colorScheme="neutral" rounded="full" />
 
         <ModalHeader gap="sm">{t("component.export-modal.title")}</ModalHeader>
 
         <ModalBody overflow="visible">
-          <HStack w="full" gap="sm">
+          <HStack gap="sm" w="full">
             <Select
+              items={items}
               value={type}
               onChange={(value) => setType(value as ColorExport)}
-              items={items}
             />
 
             <IconButton
-              bg={hasCopied ? "success" : ["blackAlpha.800", "whiteAlpha.800"]}
               colorScheme="neutral"
+              bg={hasCopied ? "success" : ["blackAlpha.800", "whiteAlpha.800"]}
+              borderColor="transparent"
+              color={["whiteAlpha.900", "blackAlpha.900"]}
               icon={
                 hasCopied ? (
                   <Check fontSize="1.25rem" />
@@ -108,27 +110,25 @@ export const ExportModal: FC<ExportModalProps> = memo(
                 )
               }
               pointerEvents={hasCopied ? "none" : "auto"}
-              color={["whiteAlpha.900", "blackAlpha.900"]}
               _hover={{
                 bg: hasCopied
                   ? "success"
                   : ["blackAlpha.900", "whiteAlpha.900"],
               }}
-              borderColor="transparent"
               onClick={onCopy}
             />
           </HStack>
 
           <ScrollArea
             type="scroll"
-            w="full"
-            h={{ base: "4xl" }}
-            p="md"
-            whiteSpace="pre"
-            rounded="md"
             bg={["blackAlpha.50", "whiteAlpha.100"]}
             color="muted"
+            h={{ base: "4xl" }}
+            p="md"
             position="relative"
+            rounded="md"
+            w="full"
+            whiteSpace="pre"
           >
             {!loading ? value : "Loading…"}
           </ScrollArea>

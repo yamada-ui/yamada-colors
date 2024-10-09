@@ -1,44 +1,44 @@
-import { Pencil, Upload, Trash2 } from "@yamada-ui/lucide"
+import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
+import type { FC } from "react"
+import { Pencil, Trash2, Upload } from "@yamada-ui/lucide"
 import {
   Box,
+  ChevronIcon,
+  Dialog,
+  funcAll,
   Grid,
-  HStack,
+  GridItem,
   Heading,
+  HStack,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Spacer,
-  Tag,
-  useBreakpointValue,
-  Dialog,
-  useDisclosure,
-  Text,
-  VStack,
-  GridItem,
+  noop,
   SegmentedControl,
   SegmentedControlButton,
-  ChevronIcon,
+  Spacer,
+  Tag,
+  Text,
   Tooltip,
-  funcAll,
-  noop,
+  useBreakpointValue,
+  useDisclosure,
+  VStack,
 } from "@yamada-ui/react"
-import type { IconButtonProps, MenuProps, StackProps } from "@yamada-ui/react"
-import { useRouter } from "next/router"
-import { memo, useCallback, useRef } from "react"
-import type { FC } from "react"
-import { usePalette } from "./context"
 import { ExportModal, PaletteRenameModal } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { useRouter } from "next/router"
+import { memo, useCallback, useRef } from "react"
 import { setCookie } from "utils/storage"
+import { usePalette } from "./context"
 
-export type HeaderProps = StackProps & {}
+export interface HeaderProps extends StackProps {}
 
 export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
-  const { tab, uuid, name, colors, timestamp, setTab, setName } = usePalette()
+  const { name, colors, setName, setTab, tab, timestamp, uuid } = usePalette()
   const { changePalette, deletePalette } = useApp()
   const router = useRouter()
   const { t } = useI18n()
@@ -52,7 +52,7 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
     (name: string) => {
       setName(name)
 
-      changePalette({ uuid, name, colors, timestamp })
+      changePalette({ name, colors, timestamp, uuid })
     },
     [setName, changePalette, uuid, colors, timestamp],
   )
@@ -66,15 +66,15 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
   return (
     <HStack as="section" alignItems="flex-start" gap="sm" {...rest}>
       <Grid
-        templateColumns={{ base: "auto 1fr" }}
         alignItems="center"
         gap={{ base: "md" }}
+        templateColumns={{ base: "auto 1fr" }}
       >
         {colors.length ? (
           <Grid
             boxSize={{ base: "20", sm: "16" }}
-            rounded="2xl"
             overflow="hidden"
+            rounded="2xl"
             templateColumns={`repeat(${colors.length < 3 ? 1 : 2}, 1fr)`}
           >
             {colors.map(({ hex }, index) => (
@@ -88,18 +88,18 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
           </Grid>
         ) : (
           <Box
+            bg={["blackAlpha.100", "whiteAlpha.100"]}
             boxSize={{ base: "20", sm: "16" }}
             rounded="2xl"
-            bg={["blackAlpha.100", "whiteAlpha.100"]}
           />
         )}
 
-        <VStack minW="0" gap={{ base: "xs", sm: "0" }} justifyContent="center">
+        <VStack gap={{ base: "xs", sm: "0" }} justifyContent="center" minW="0">
           <Heading fontSize={{ base: "4xl", sm: "2xl" }} lineClamp={1}>
             {name}
           </Heading>
 
-          <Text as="span" color="muted" alignSelf="flex-start" lineClamp={1}>
+          <Text as="span" alignSelf="flex-start" color="muted" lineClamp={1}>
             {colors.length} colors
           </Text>
         </VStack>
@@ -108,10 +108,10 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
       <Spacer />
 
       <VStack
-        w="auto"
-        gap="sm"
         alignItems="flex-end"
+        gap="sm"
         justifyContent="space-between"
+        w="auto"
       >
         <HStack gap="sm">
           <RollbackButtons />
@@ -124,10 +124,10 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
         </HStack>
 
         <SegmentedControl
-          variant="tabs"
-          value={tab}
-          display={{ base: "inline-flex", sm: "none" }}
           size="sm"
+          variant="tabs"
+          display={{ base: "inline-flex", sm: "none" }}
+          value={tab}
           onChange={onChange}
         >
           {CONSTANT.ENUM.PALETTE.map((tab) => {
@@ -145,10 +145,10 @@ export const Header: FC<HeaderProps> = memo(({ ...rest }) => {
 
 Header.displayName = "Header"
 
-type RollbackButtonsProps = {}
+interface RollbackButtonsProps {}
 
 const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
-  const { uuid, name, timestamp, indexRef, colorsMapRef, changeColors } =
+  const { name, changeColors, colorsMapRef, indexRef, timestamp, uuid } =
     usePalette()
   const { t } = useI18n()
   const { changePalette } = useApp()
@@ -158,44 +158,44 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
   const rollbackColors = (index: number) => {
     indexRef.current = index
 
-    const colors = [...colorsMapRef.current[index]]
+    const colors = [...colorsMapRef.current[index]!]
 
     changeColors(colors, true)
 
     const resolvedColors = colors.map(({ name, hex }) => ({ name, hex }))
 
-    changePalette({ uuid, name, colors: resolvedColors, timestamp })
+    changePalette({ name, colors: resolvedColors, timestamp, uuid })
   }
 
   return (
     <>
       <Tooltip label={t("palette.redo")} placement="top">
         <IconButton
-          display={{ base: "inline-flex", sm: "none" }}
-          bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          color="muted"
-          icon={<ChevronIcon fontSize="2xl" transform="rotate(90deg)" />}
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
-          isRounded
+          color="muted"
           disabled={!index}
-          onClick={() => rollbackColors(index - 1)}
+          display={{ base: "inline-flex", sm: "none" }}
+          icon={<ChevronIcon fontSize="2xl" transform="rotate(90deg)" />}
+          isRounded
           _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
+          onClick={() => rollbackColors(index - 1)}
         />
       </Tooltip>
 
       <Tooltip label={t("palette.undo")} placement="top">
         <IconButton
-          display={{ base: "inline-flex", sm: "none" }}
-          bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
-          color="muted"
-          icon={<ChevronIcon fontSize="2xl" transform="rotate(-90deg)" />}
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
-          isRounded
+          color="muted"
           disabled={index === colors.length - 1}
-          onClick={() => rollbackColors(index + 1)}
+          display={{ base: "inline-flex", sm: "none" }}
+          icon={<ChevronIcon fontSize="2xl" transform="rotate(-90deg)" />}
+          isRounded
           _hover={{ bg: ["blackAlpha.100", "whiteAlpha.100"], _disabled: {} }}
+          onClick={() => rollbackColors(index + 1)}
         />
       </Tooltip>
     </>
@@ -204,7 +204,7 @@ const RollbackButtons: FC<RollbackButtonsProps> = memo(() => {
 
 RollbackButtons.displayName = "RollbackButtons"
 
-type DownloadButtonProps = IconButtonProps & {
+interface DownloadButtonProps extends IconButtonProps {
   menuProps?: MenuProps
 }
 
@@ -233,20 +233,20 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
         >
           <Box>
             <Menu
-              placement="bottom"
               modifiers={[
                 {
                   name: "preventOverflow",
                   options: {
                     padding: {
-                      top: padding,
                       bottom: padding,
                       left: padding,
                       right: padding,
+                      top: padding,
                     },
                   },
                 },
               ]}
+              placement="bottom"
               restoreFocus={false}
               {...menuControl}
               {...menuProps}
@@ -258,13 +258,13 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
             >
               <MenuButton as="div">
                 <IconButton
+                  colorScheme="neutral"
                   aria-label="Open color download menu"
-                  isRounded
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
-                  colorScheme="neutral"
                   color="muted"
                   icon={<Upload fontSize="1.125rem" />}
+                  isRounded
                   {...rest}
                 />
               </MenuButton>
@@ -302,7 +302,7 @@ const DownloadButton: FC<DownloadButtonProps> = memo(
 
 DownloadButton.displayName = "DownloadButton"
 
-type EditButtonProps = {
+interface EditButtonProps {
   name: string
   onEdit: (name: string) => void
 }
@@ -315,11 +315,11 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
     <>
       <Tooltip label={t("palette.rename")} placement="top">
         <IconButton
-          bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          borderColor="transparent"
           color="muted"
           icon={<Pencil fontSize="1.125rem" />}
-          borderColor="transparent"
           isRounded
           onClick={() => onOpenRef.current()}
         />
@@ -327,8 +327,8 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
 
       <PaletteRenameModal
         value={name}
-        onSubmit={onEdit}
         onOpenRef={onOpenRef}
+        onSubmit={onEdit}
       />
     </>
   )
@@ -336,44 +336,44 @@ const EditButton: FC<EditButtonProps> = memo(({ name, onEdit }) => {
 
 EditButton.displayName = "EditButton"
 
-type DeleteButtonProps = {
+interface DeleteButtonProps {
   name: string
   onDelete: () => void
 }
 
 const DeleteButton: FC<DeleteButtonProps> = memo(({ name, onDelete }) => {
   const { t } = useI18n()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onClose, onOpen } = useDisclosure()
 
   return (
     <>
       <Tooltip label={t("palette.delete")} placement="top">
         <IconButton
-          bg={["blackAlpha.100", "whiteAlpha.100"]}
           colorScheme="neutral"
+          bg={["blackAlpha.100", "whiteAlpha.100"]}
+          borderColor="transparent"
           color="danger"
           icon={<Trash2 fontSize="1.125rem" />}
-          borderColor="transparent"
           isRounded
           onClick={onOpen}
         />
       </Tooltip>
 
       <Dialog
-        isOpen={isOpen}
-        onClose={onClose}
-        header={<Text lineClamp={1}>{name}</Text>}
         cancel={{
           colorScheme: "neutral",
           children: t("palettes.delete.cancel"),
         }}
-        onCancel={onClose}
+        header={<Text lineClamp={1}>{name}</Text>}
+        isOpen={isOpen}
         success={{
           colorScheme: "danger",
           children: t("palettes.delete.submit"),
         }}
-        onSuccess={onDelete}
         withCloseButton={false}
+        onCancel={onClose}
+        onClose={onClose}
+        onSuccess={onDelete}
       >
         {t("palettes.delete.description")}
       </Dialog>

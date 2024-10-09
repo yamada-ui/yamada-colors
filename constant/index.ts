@@ -4,4 +4,4 @@ import { SEO } from "./seo"
 import { SNS } from "./sns"
 import { STORAGE } from "./storage"
 
-export const CONSTANT = { SNS, SEO, I18N, STORAGE, ENUM }
+export const CONSTANT = { ENUM, I18N, SEO, SNS, STORAGE }

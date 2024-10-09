@@ -1,47 +1,48 @@
+import type { FC, PropsWithChildren } from "react"
 import { noop } from "@yamada-ui/react"
+import { CONSTANT } from "constant"
 import {
   createContext,
-  useMemo,
-  useContext,
-  useState,
   useCallback,
+  useContext,
   useEffect,
+  useMemo,
+  useState,
 } from "react"
-import type { PropsWithChildren, FC } from "react"
-import { CONSTANT } from "constant"
 import { deleteCookie, generateUUID, getCookie, setCookie } from "utils/storage"
 
-type AppContext = {
-  hex?: string | [string, string]
+interface AppContext {
+  changeFormat: (format: ColorFormat) => void
+  changePalette: (palette: ColorPalette) => void
+  createPalette: (name: string) => void
+  deletePalette: (uuid: string) => void
   format: ColorFormat
   palettes: ColorPalettes
-  changeFormat: (format: ColorFormat) => void
-  createPalette: (name: string) => void
-  changePalette: (palette: ColorPalette) => void
-  deletePalette: (uuid: string) => void
+  hex?: [string, string] | string
 }
 
 const AppContext = createContext<AppContext>({
-  hex: undefined,
-  format: "hex",
-  palettes: [],
   changeFormat: noop,
-  createPalette: noop,
   changePalette: noop,
+  createPalette: noop,
   deletePalette: noop,
+  format: "hex",
+  hex: undefined,
+  palettes: [],
 })
 
-export type AppProviderProps = PropsWithChildren<{
-  hex?: string | [string, string]
-  format?: ColorFormat
-  palettes?: ColorPalettes
-}>
+export interface AppProviderProps
+  extends PropsWithChildren<{
+    format?: ColorFormat
+    hex?: [string, string] | string
+    palettes?: ColorPalettes
+  }> {}
 
 export const AppProvider: FC<AppProviderProps> = ({
-  hex,
-  format: formatProp = "hex",
-  palettes: palettesProp = [],
   children,
+  format: formatProp = "hex",
+  hex,
+  palettes: palettesProp = [],
 }) => {
   const [format, setFormat] = useState<ColorFormat>(formatProp)
   const [palettes, setPalettes] = useState<ColorPalettes>(palettesProp)
@@ -53,33 +54,33 @@ export const AppProvider: FC<AppProviderProps> = ({
     setCookie(
       `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
       JSON.stringify({
-        uuid,
         name: encodeURIComponent(name),
         colors: [],
         timestamp,
+        uuid,
       }),
     )
 
     setPalettes((prev) => [
       {
-        uuid,
         name,
         colors: [],
         timestamp,
+        uuid,
       },
       ...prev,
     ])
   }, [])
 
   const changePalette = useCallback(
-    ({ uuid, name, colors, timestamp }: ColorPalette) => {
+    ({ name, colors, timestamp, uuid }: ColorPalette) => {
       setCookie(
         `${CONSTANT.STORAGE.PALETTE}-${uuid}`,
         JSON.stringify({
-          uuid,
           name: encodeURIComponent(name),
           colors,
           timestamp,
+          uuid,
         }),
       )
 
@@ -115,13 +116,13 @@ export const AppProvider: FC<AppProviderProps> = ({
 
   const value = useMemo(
     () => ({
-      hex,
-      format,
-      palettes,
       changeFormat,
-      createPalette,
       changePalette,
+      createPalette,
       deletePalette,
+      format,
+      hex,
+      palettes,
     }),
     [
       hex,

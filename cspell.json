@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "language": "en",
+  "words": [
+    "achromatomaly",
+    "achromatopsia",
+    "cielab",
+    "cielch",
+    "cmyk",
+    "deuteranomaly",
+    "Hirotomo",
+    "jeice",
+    "jiti",
+    "kurillin",
+    "nonconstructor",
+    "nonoctal",
+    "protanomaly",
+    "tritanomaly",
+    "TSES",
+    "tseslint",
+    "yamcha"
+  ],
+  "ignorePaths": ["node_modules", "pnpm-lock.yaml"]
+}

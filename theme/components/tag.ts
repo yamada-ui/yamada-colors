@@ -4,9 +4,9 @@ export const Tag: ComponentMultiStyle = {
   variants: {
     muted: {
       container: {
+        boxShadow: `inset 0 0 0px 1px $muted`,
         color: "muted",
-        var: [{ name: "muted", token: "colors", value: "muted" }],
-        boxShadow: `inset 0 0 0px 1px var(--ui-muted)`,
+        vars: [{ name: "muted", token: "colors", value: "muted" }],
       },
     },
   },

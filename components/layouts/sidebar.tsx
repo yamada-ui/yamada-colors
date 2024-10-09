@@ -1,9 +1,9 @@
 import type { StackProps } from "@yamada-ui/react"
-import { VStack, forwardRef } from "@yamada-ui/react"
-import { memo } from "react"
+import { forwardRef, VStack } from "@yamada-ui/react"
 import { Tree } from "components/navigation"
+import { memo } from "react"
 
-export type SidebarProps = StackProps
+export interface SidebarProps extends StackProps {}
 
 export const Sidebar = memo(
   forwardRef<SidebarProps, "aside">(({ ...rest }, ref) => {
@@ -12,12 +12,12 @@ export const Sidebar = memo(
         ref={ref}
         as="aside"
         bg={["blackAlpha.50", "whiteAlpha.100"]}
-        rounded="2xl"
-        position="sticky"
-        top="6rem"
-        w="17rem"
         maxH="calc(100dvh - 8rem)"
         p="md"
+        position="sticky"
+        rounded="2xl"
+        top="6rem"
+        w="17rem"
         {...rest}
       >
         <Tree isAside />

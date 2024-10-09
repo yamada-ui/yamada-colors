@@ -4,11 +4,11 @@ export const Link: ComponentStyle = {
   variants: {
     muted: {
       color: "muted",
-      transitionProperty: "common",
       transitionDuration: "slower",
+      transitionProperty: "common",
       _hover: {
-        textDecoration: "inherit",
         color: ["black", "white"],
+        textDecoration: "inherit",
       },
     },
   },

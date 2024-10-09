@@ -1,26 +1,26 @@
-export type RandomColorOptionsSingle = {
-  hue?: number | string
-  luminosity?: "bright" | "light" | "dark" | "random"
-  seed?: number | string
-  format?: "hsl" | "hsla" | "rgb" | "rgba" | "hex"
+/* eslint-disable no-var */
+export interface RandomColorOptionsSingle {
   alpha?: number
+  format?: "hex" | "hsl" | "hsla" | "rgb" | "rgba"
+  hue?: number | string
+  luminosity?: "bright" | "dark" | "light" | "random"
+  seed?: number | string
 }
 
-export type RandomColorOptionsMultiple = RandomColorOptionsSingle & {
+export interface RandomColorOptionsMultiple extends RandomColorOptionsSingle {
   count: number
 }
 
-export type RandomColorDictionary = Record<
-  string,
-  {
+export interface RandomColorDictionary {
+  [key: string]: {
+    brightnessRange: [number, number]
     hueRange: [number, number] | null
     lowerBounds: [number, number][]
     saturationRange: [number, number]
-    brightnessRange: [number, number]
   }
->
+}
 
-let seed: string | number | null = null
+let seed: null | number | string = null
 
 const colorDictionary: RandomColorDictionary = {}
 
@@ -29,35 +29,34 @@ loadColorBounds()
 const colorRanges: boolean[] = []
 
 function randomColor<
-  T extends RandomColorOptionsSingle | RandomColorOptionsMultiple,
+  T extends RandomColorOptionsMultiple | RandomColorOptionsSingle,
 >(options: T): T extends RandomColorOptionsMultiple ? string[] : string {
   if (
-    options.seed !== undefined &&
-    options.seed !== null &&
+    options.seed != null &&
     options.seed === parseInt(options.seed.toString(), 10)
   ) {
     seed = options.seed
   } else if (typeof options.seed === "string") {
     seed = stringToInteger(options.seed)
-  } else if (options.seed !== undefined && options.seed !== null) {
+  } else if (options.seed != null) {
     throw new TypeError("The seed value must be an integer or string")
   } else {
     seed = null
   }
 
-  var H: number, S: number, B: number
+  let H: number, S: number, B: number
 
   if ("count" in options) {
-    var totalColors = options.count,
+    let totalColors = options.count,
       colors: string[] = []
-    for (var i = 0; i < options.count; i++) {
+    for (let i = 0; i < options.count; i++) {
       colorRanges.push(false)
     }
     // @ts-ignore
     delete options.count
 
     while (totalColors > colors.length) {
-      var color = randomColor(options) as string
+      let color = randomColor(options) as string
 
       if (seed !== null) {
         options.seed = seed
@@ -90,9 +89,9 @@ function pickHue(options: RandomColorOptionsSingle) {
 
     if (!hueRange) return hue
 
-    var step = (hueRange[1] - hueRange[0]) / colorRanges.length
+    let step = (hueRange[1] - hueRange[0]) / colorRanges.length
 
-    var j = parseInt(((hue - hueRange[0]) / step).toString())
+    let j = parseInt(((hue - hueRange[0]) / step).toString())
 
     if (colorRanges[j] === true) {
       j = (j + 2) % colorRanges.length
@@ -100,7 +99,7 @@ function pickHue(options: RandomColorOptionsSingle) {
       colorRanges[j] = true
     }
 
-    var min = (hueRange[0] + j * step) % 359,
+    let min = (hueRange[0] + j * step) % 359,
       max = (hueRange[0] + (j + 1) * step) % 359
 
     hueRange = [min, max]
@@ -132,9 +131,9 @@ function pickSaturation(hue: number, options: RandomColorOptionsSingle) {
     return randomWithin([0, 100])
   }
 
-  var saturationRange = getSaturationRange(hue)
+  let saturationRange = getSaturationRange(hue)
 
-  var sMin = saturationRange?.[0] ?? 0,
+  let sMin = saturationRange?.[0] ?? 0,
     sMax = saturationRange?.[1] ?? 0
 
   switch (options.luminosity) {
@@ -159,7 +158,7 @@ function pickBrightness(
   S: number,
   options: RandomColorOptionsSingle,
 ) {
-  var bMin = getMinimumBrightness(H, S),
+  let bMin = getMinimumBrightness(H, S),
     bMax = 100
 
   switch (options.luminosity) {
@@ -219,17 +218,17 @@ function setFormat(
 }
 
 function getMinimumBrightness(H: number, S: number) {
-  var lowerBounds = getColorInfo(H)?.lowerBounds ?? []
+  let lowerBounds = getColorInfo(H)?.lowerBounds ?? []
 
-  for (var i = 0; i < lowerBounds.length - 1; i++) {
-    var s1 = lowerBounds[i][0],
-      v1 = lowerBounds[i][1]
+  for (let i = 0; i < lowerBounds.length - 1; i++) {
+    let s1 = lowerBounds[i]![0],
+      v1 = lowerBounds[i]![1]
 
-    var s2 = lowerBounds[i + 1][0],
-      v2 = lowerBounds[i + 1][1]
+    let s2 = lowerBounds[i + 1]![0],
+      v2 = lowerBounds[i + 1]![1]
 
     if (S >= s1 && S <= s2) {
-      var m = (v2 - v1) / (s2 - s1),
+      let m = (v2 - v1) / (s2 - s1),
         b = v1 - m * s1
 
       return m * S + b
@@ -240,10 +239,10 @@ function getMinimumBrightness(H: number, S: number) {
 }
 
 function getHueRange(
-  colorInput: string | number | undefined,
+  colorInput: number | string | undefined,
 ): [number, number] | null | undefined {
   if (typeof parseInt(colorInput?.toString() ?? "0") === "number") {
-    var number = parseInt(colorInput?.toString() ?? "0")
+    let number = parseInt(colorInput?.toString() ?? "0")
 
     if (number < 360 && number > 0) {
       return [number, number]
@@ -252,12 +251,12 @@ function getHueRange(
 
   if (typeof colorInput === "string") {
     if (colorDictionary[colorInput]) {
-      var color = colorDictionary[colorInput]
+      let color = colorDictionary[colorInput]
       if (color.hueRange) {
         return color.hueRange
       }
     } else if (colorInput.match(/^#?([0-9A-F]{3}|[0-9A-F]{6})$/i)) {
-      var hue = HexToHSB(colorInput)?.[0]
+      let hue = HexToHSB(colorInput)?.[0]
 
       return typeof hue === "number" ? [hue, hue] : null
     }
@@ -275,11 +274,11 @@ function getColorInfo(hue: number | undefined = 0) {
     hue -= 360
   }
 
-  for (var colorName in colorDictionary) {
-    var color = colorDictionary[colorName]
+  for (let colorName in colorDictionary) {
+    let color = colorDictionary[colorName]
 
     if (
-      color.hueRange &&
+      color?.hueRange &&
       hue >= color.hueRange[0] &&
       hue <= color.hueRange[1]
     ) {
@@ -291,33 +290,33 @@ function getColorInfo(hue: number | undefined = 0) {
 function randomWithin(range: [number, number] | null | undefined) {
   if (seed === null) {
     if (!range) return 0
-    var golden_ratio = 0.618033988749895
-    var r = Math.random()
+    let golden_ratio = 0.618033988749895
+    let r = Math.random()
     r += golden_ratio
     r %= 1
     return Math.floor(range[0] + r * (range[1] + 1 - range[0]))
   } else {
-    var max = range?.[1] || 1
-    var min = range?.[0] || 0
+    let max = range?.[1] || 1
+    let min = range?.[0] || 0
     seed = (Number(seed) * 9301 + 49297) % 233280
-    var rnd = seed / 233280.0
+    let rnd = seed / 233280.0
     return Math.floor(min + rnd * (max - min))
   }
 }
 
 function HSVtoHex(hsv: [number, number, number]) {
-  var rgb = HSVtoRGB(hsv)
+  let rgb = HSVtoRGB(hsv)
 
   function componentToHex(c: number) {
-    var hex = c.toString(16)
+    let hex = c.toString(16)
     return hex.length == 1 ? "0" + hex : hex
   }
 
-  var hex =
+  let hex =
     "#" +
-    componentToHex(rgb[0]) +
-    componentToHex(rgb[1]) +
-    componentToHex(rgb[2])
+    componentToHex(rgb[0]!) +
+    componentToHex(rgb[1]!) +
+    componentToHex(rgb[2]!)
 
   return hex
 }
@@ -327,16 +326,16 @@ function defineColor(
   hueRange: [number, number] | null,
   lowerBounds: [number, number][],
 ) {
-  var sMin = lowerBounds[0][0],
-    sMax = lowerBounds[lowerBounds.length - 1][0],
-    bMin = lowerBounds[lowerBounds.length - 1][1],
-    bMax = lowerBounds[0][1]
+  let sMin = lowerBounds[0]![0],
+    sMax = lowerBounds[lowerBounds.length - 1]![0],
+    bMin = lowerBounds[lowerBounds.length - 1]![1],
+    bMax = lowerBounds[0]![1]
 
   colorDictionary[name] = {
+    brightnessRange: [bMin, bMax],
     hueRange: hueRange,
     lowerBounds: lowerBounds,
     saturationRange: [sMin, sMax],
-    brightnessRange: [bMin, bMax],
   }
 }
 
@@ -454,7 +453,7 @@ function loadColorBounds() {
 }
 
 function HSVtoRGB(hsv: [number, number, number]) {
-  var h = hsv[0]
+  let h = hsv[0]
   if (h === 0) {
     h = 1
   }
@@ -464,10 +463,10 @@ function HSVtoRGB(hsv: [number, number, number]) {
 
   // Rebase the h,s,v values
   h = h / 360
-  var s = hsv[1] / 100,
+  let s = hsv[1] / 100,
     v = hsv[2] / 100
 
-  var h_i = Math.floor(h * 6),
+  let h_i = Math.floor(h * 6),
     f = h * 6 - h_i,
     p = v * (1 - s),
     q = v * (1 - f * s),
@@ -509,7 +508,7 @@ function HSVtoRGB(hsv: [number, number, number]) {
       break
   }
 
-  var result = [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)]
+  let result = [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)]
   return result
 }
 
@@ -517,11 +516,11 @@ function HexToHSB(hex: string) {
   hex = hex.replace(/^#/, "")
   hex = hex.length === 3 ? hex.replace(/(.)/g, "$1$1") : hex
 
-  var red = parseInt(hex.substr(0, 2), 16) / 255,
+  let red = parseInt(hex.substr(0, 2), 16) / 255,
     green = parseInt(hex.substr(2, 2), 16) / 255,
     blue = parseInt(hex.substr(4, 2), 16) / 255
 
-  var cMax = Math.max(red, green, blue),
+  let cMax = Math.max(red, green, blue),
     delta = cMax - Math.min(red, green, blue),
     saturation = cMax ? delta / cMax : 0
 
@@ -536,7 +535,7 @@ function HexToHSB(hex: string) {
 }
 
 function HSVtoHSL(hsv: [number, number, number]) {
-  var h = hsv[0],
+  let h = hsv[0],
     s = hsv[1] / 100,
     v = hsv[2] / 100,
     k = (2 - s) * v
@@ -549,8 +548,8 @@ function HSVtoHSL(hsv: [number, number, number]) {
 }
 
 function stringToInteger(string: string) {
-  var total = 0
-  for (var i = 0; i !== string.length; i++) {
+  let total = 0
+  for (let i = 0; i !== string.length; i++) {
     if (total >= Number.MAX_SAFE_INTEGER) break
     total += string.charCodeAt(i)
   }
@@ -558,23 +557,23 @@ function stringToInteger(string: string) {
 }
 
 function getRealHueRange(
-  colorHue: string | number | undefined,
+  colorHue: number | string | undefined,
 ): [number, number] | null | undefined {
   if (!isNaN(Number(colorHue))) {
-    var number = parseInt(colorHue?.toString() ?? "0")
+    let number = parseInt(colorHue?.toString() ?? "0")
 
     if (number < 360 && number > 0) {
       return getColorInfo(number)?.hueRange
     }
   } else if (typeof colorHue === "string") {
     if (colorDictionary[colorHue]) {
-      var color = colorDictionary[colorHue]
+      let color = colorDictionary[colorHue]
 
       if (color.hueRange) {
         return color.hueRange
       }
     } else if (colorHue.match(/^#?([0-9A-F]{3}|[0-9A-F]{6})$/i)) {
-      var hue = HexToHSB(colorHue)?.[0]
+      let hue = HexToHSB(colorHue)?.[0]
       return getColorInfo(hue)?.hueRange
     }
   }

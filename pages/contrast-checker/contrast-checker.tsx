@@ -1,47 +1,47 @@
-import { RefreshCcw } from "@yamada-ui/lucide"
 import type { CenterProps, ColorMode } from "@yamada-ui/react"
+import type { FC, MutableRefObject } from "react"
+import type { ContrastLevel } from "./index.page"
+import { RefreshCcw } from "@yamada-ui/lucide"
 import {
   Center,
+  getMemoizedObject as get,
   IconButton,
   Text,
+  Tooltip,
+  useTheme,
   VStack,
   Wrap,
-  useTheme,
-  getMemoizedObject as get,
-  Tooltip,
 } from "@yamada-ui/react"
+import { useI18n } from "contexts/i18n-context"
 import { useRouter } from "next/router"
-import type { MutableRefObject, FC } from "react"
 import { useCallback, useState } from "react"
+import { isLight } from "utils/color"
 import { ContrastScore } from "./contrast-score"
 import { ContrastSearch } from "./contrast-search"
 import { getContrast } from "./index.page"
-import type { ContrastLevel } from "./index.page"
-import { useI18n } from "contexts/i18n-context"
-import { isLight } from "utils/color"
 
-export type ContrastCheckerProps = {
-  mode: ColorMode
+export interface ContrastCheckerProps {
   contrast: ColorContrast
   level: ContrastLevel
-  setLevelRef: MutableRefObject<Map<ColorMode, (level: ContrastLevel) => void>>
+  mode: ColorMode
   queriesRef: MutableRefObject<URLSearchParams>
+  setLevelRef: MutableRefObject<Map<ColorMode, (level: ContrastLevel) => void>>
 }
 
 export const ContrastChecker: FC<ContrastCheckerProps> = ({
-  mode,
   contrast,
   level,
-  setLevelRef,
+  mode,
   queriesRef,
+  setLevelRef,
 }) => {
   const router = useRouter()
-  const [{ fg, bg, score, aa, aaa }, setContrast] =
+  const [{ aa, aaa, bg, fg, score }, setContrast] =
     useState<ColorContrast>(contrast)
 
   const onChange = useCallback(
     (ground: ColorContrastGround, value: string) => {
-      setContrast(({ fg, bg }) => {
+      setContrast(({ bg, fg }) => {
         queriesRef.current.set(`${mode}.${ground}`, value.replace("#", ""))
 
         router.push(`/contrast-checker?${queriesRef.current}`, undefined, {
@@ -57,7 +57,7 @@ export const ContrastChecker: FC<ContrastCheckerProps> = ({
   )
 
   const onSwitch = useCallback(() => {
-    setContrast(({ fg, bg }) => {
+    setContrast(({ bg, fg }) => {
       queriesRef.current.set(`${mode}.fg`, bg.replace("#", ""))
       queriesRef.current.set(`${mode}.bg`, fg.replace("#", ""))
 
@@ -71,26 +71,26 @@ export const ContrastChecker: FC<ContrastCheckerProps> = ({
 
   return (
     <VStack as="section" gap={{ base: "normal", sm: "md" }}>
-      <ContrastSearch fg={fg} bg={bg} onChange={onChange} />
+      <ContrastSearch bg={bg} fg={fg} onChange={onChange} />
 
       <VStack
-        gap="0"
-        rounded="2xl"
-        overflow="hidden"
-        position="relative"
         boxShadow={[
           "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
           "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 5px 10px rgba(0, 0, 0, 0.2), 0px -5px 10px rgba(0, 0, 0, 0.2)",
         ]}
+        gap="0"
+        overflow="hidden"
+        position="relative"
+        rounded="2xl"
       >
         <SwitchButton bg={bg} onSwitch={onSwitch} />
-        <ContrastPreview fg={fg} bg={bg} />
+        <ContrastPreview bg={bg} fg={fg} />
         <ContrastScore
-          mode={mode}
-          score={score}
           aa={aa}
           aaa={aaa}
           level={level}
+          mode={mode}
+          score={score}
           setLevelRef={setLevelRef}
         />
       </VStack>
@@ -98,14 +98,14 @@ export const ContrastChecker: FC<ContrastCheckerProps> = ({
   )
 }
 
-type ContrastPreviewProps = ColorContrastSource
+interface ContrastPreviewProps extends ColorContrastSource {}
 
-const ContrastPreview: FC<ContrastPreviewProps> = ({ fg, bg }) => {
+const ContrastPreview: FC<ContrastPreviewProps> = ({ bg, fg }) => {
   return (
     <VStack
-      p={{ base: "lg", sm: "md" }}
       bg={bg}
       gap={{ base: "lg", sm: "normal" }}
+      p={{ base: "lg", sm: "md" }}
     >
       <VStack gap={{ base: "sm", sm: "0" }}>
         <Text color={fg} fontSize="2xl" lineClamp={1}>
@@ -118,27 +118,27 @@ const ContrastPreview: FC<ContrastPreviewProps> = ({ fg, bg }) => {
       </VStack>
 
       <Wrap gap="md">
-        <UIComponent color={bg} bg={fg} />
+        <UIComponent bg={fg} color={bg} />
 
-        <UIComponent color={fg} borderWidth="1px" borderColor={fg} />
+        <UIComponent borderColor={fg} borderWidth="1px" color={fg} />
       </Wrap>
     </VStack>
   )
 }
 
-type UIComponentProps = CenterProps
+interface UIComponentProps extends CenterProps {}
 
 const UIComponent: FC<UIComponentProps> = ({ ...rest }) => {
   const { theme } = useTheme()
 
   return (
     <Center
-      h={{ base: "10", sm: "8" }}
+      cursor="pointer"
       fontSize={{ base: "md", sm: "sm" }}
+      h={{ base: "10", sm: "8" }}
       lineHeight={{ base: get(theme, "sizes.10"), sm: get(theme, "sizes.8") }}
       px={{ base: "4", sm: "3" }}
       rounded="full"
-      cursor="pointer"
       {...rest}
     >
       <Text as="span">UI Component</Text>
@@ -146,7 +146,7 @@ const UIComponent: FC<UIComponentProps> = ({ ...rest }) => {
   )
 }
 
-type SwitchButtonProps = Pick<ColorContrastSource, "bg"> & {
+interface SwitchButtonProps extends Pick<ColorContrastSource, "bg"> {
   onSwitch: () => void
 }
 
@@ -156,19 +156,19 @@ const SwitchButton: FC<SwitchButtonProps> = ({ bg, onSwitch }) => {
   return (
     <Tooltip label={t("contrast-checker.invert")} placement="top">
       <IconButton
-        icon={<RefreshCcw fontSize={{ base: "1.125rem", sm: "0.875rem" }} />}
-        border="none"
-        minW={{ base: "8", sm: "6" }}
-        h={{ base: "8", sm: "6" }}
-        position="absolute"
-        isRounded
-        color={isLight(bg) ? "white" : "black"}
         bg={isLight(bg) ? "blackAlpha.800" : "whiteAlpha.800"}
+        border="none"
+        color={isLight(bg) ? "white" : "black"}
+        h={{ base: "8", sm: "6" }}
+        icon={<RefreshCcw fontSize={{ base: "1rem", sm: "0.875rem" }} />}
+        isRounded
+        minW={{ base: "8", sm: "6" }}
+        position="absolute"
+        right={{ base: "md", sm: "md" }}
+        top={{ base: "md", sm: "md" }}
         _hover={{
           bg: isLight(bg) ? "black" : "white",
         }}
-        top={{ base: "md", sm: "md" }}
-        right={{ base: "md", sm: "md" }}
         onClick={onSwitch}
       />
     </Tooltip>

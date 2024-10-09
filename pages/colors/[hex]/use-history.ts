@@ -1,8 +1,11 @@
-import { useEffect } from "react"
 import { CONSTANT } from "constant"
+import { useEffect } from "react"
 import { getCookie, setCookie } from "utils/storage"
 
-export type UseHistoryProps = { cookies: string; hex: string }
+export interface UseHistoryProps {
+  cookies: string
+  hex: string
+}
 
 export const useHistory = ({ cookies, hex }: UseHistoryProps) => {
   useEffect(() => {

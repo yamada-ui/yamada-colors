@@ -1,5 +1,7 @@
-import { Check } from "@yamada-ui/lucide"
 import type { ButtonProps, ColorMode } from "@yamada-ui/react"
+import type { FC, MutableRefObject } from "react"
+import type { ContrastLevel } from "./index.page"
+import { Check } from "@yamada-ui/lucide"
 import {
   Box,
   Button,
@@ -9,14 +11,13 @@ import {
   Tooltip,
   useColorModeValue,
 } from "@yamada-ui/react"
-import { useState, type FC, type MutableRefObject } from "react"
-import type { ContrastLevel } from "./index.page"
 import { NextLinkIconButton } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
+import { useState } from "react"
 import { setCookie } from "utils/storage"
 
-export type HeaderProps = {
+export interface HeaderProps {
   hexes: [string, string]
   level: ContrastLevel
   setLevelRef: MutableRefObject<Map<ColorMode, (level: ContrastLevel) => void>>
@@ -32,9 +33,9 @@ export const Header: FC<HeaderProps> = ({ hexes, level, setLevelRef }) => {
         <Box>
           <NextLinkIconButton
             href={`/colors/${hexes[0].replace("#", "")}`}
+            colorScheme="neutral"
             bg={["blackAlpha.100", "whiteAlpha.100"]}
             borderColor="transparent"
-            colorScheme="neutral"
             icon={
               <ChevronIcon
                 color="muted"
@@ -92,23 +93,25 @@ export const Header: FC<HeaderProps> = ({ hexes, level, setLevelRef }) => {
   )
 }
 
-type LevelButtonProps = ButtonProps & { isSelected?: boolean }
+interface LevelButtonProps extends ButtonProps {
+  isSelected?: boolean
+}
 
 const LevelButton: FC<LevelButtonProps> = ({ isSelected, ...rest }) => {
   const colorScheme = useColorModeValue("blackAlpha", "neutral")
 
   return (
     <Button
-      size="sm"
-      leftIcon={<Check fontSize="1.125rem" />}
-      gap="1"
-      variant={isSelected ? "solid" : "outline"}
       colorScheme={isSelected ? "success" : colorScheme}
-      color={isSelected ? undefined : "muted"}
+      size="sm"
+      variant={isSelected ? "solid" : "outline"}
       border="1px solid"
       borderColor={isSelected ? ["success.500", "success.600"] : "border"}
+      color={isSelected ? undefined : "muted"}
       fontWeight="normal"
+      gap="1"
       isRounded
+      leftIcon={<Check fontSize="1.125rem" />}
       _hover={isSelected ? {} : undefined}
       {...rest}
     />

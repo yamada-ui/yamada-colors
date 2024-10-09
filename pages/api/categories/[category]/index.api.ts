@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getRandomColors } from "functions/get-random-colors"
 
-type ResponseData = {
+interface ResponseData {
   colors: Colors
 }
 

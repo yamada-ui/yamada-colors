@@ -1,33 +1,33 @@
-import { Check, X } from "@yamada-ui/lucide"
 import type { ColorMode } from "@yamada-ui/react"
+import type { FC, MutableRefObject } from "react"
+import type { ContrastCheckerProps } from "./contrast-checker"
+import type { ContrastLevel } from "./index.page"
+import { Check, X } from "@yamada-ui/lucide"
 import {
+  Box,
   Center,
   Grid,
+  GridItem,
   Spacer,
+  Tag,
   Text,
   VStack,
   Wrap,
-  GridItem,
-  Tag,
-  Box,
 } from "@yamada-ui/react"
-import { useState, type FC, type MutableRefObject } from "react"
-import type { ContrastCheckerProps } from "./contrast-checker"
-import type { ContrastLevel } from "./index.page"
+import { useState } from "react"
 
-export type ContrastScoreProps = ColorContrastScore &
-  Pick<ContrastCheckerProps, "mode" | "level"> & {
-    setLevelRef: MutableRefObject<
-      Map<ColorMode, (level: ContrastLevel) => void>
-    >
-  }
+export interface ContrastScoreProps
+  extends ColorContrastScore,
+    Pick<ContrastCheckerProps, "level" | "mode"> {
+  setLevelRef: MutableRefObject<Map<ColorMode, (level: ContrastLevel) => void>>
+}
 
 export const ContrastScore: FC<ContrastScoreProps> = ({
-  mode,
-  score,
   aa,
   aaa,
   level: levelProp,
+  mode,
+  score,
   setLevelRef,
 }) => {
   const [level, setLevel] = useState<ContrastLevel>(levelProp)
@@ -36,10 +36,10 @@ export const ContrastScore: FC<ContrastScoreProps> = ({
 
   return (
     <VStack
-      p={{ base: "lg", sm: "md" }}
-      gap="sm"
       bg={["blackAlpha.50", "whiteAlpha.100"]}
       color="muted"
+      gap="sm"
+      p={{ base: "lg", sm: "md" }}
     >
       <Wrap alignItems="flex-start" gap="md">
         <Text
@@ -53,21 +53,13 @@ export const ContrastScore: FC<ContrastScoreProps> = ({
 
         <Spacer />
 
-        <Wrap gapX="lg" gapY="md" alignItems="flex-start">
+        <Wrap alignItems="flex-start" gapX="lg" gapY="md">
           {level.aa ? (
-            <ContrastLevelScore
-              isMulti={level.aa && level.aaa}
-              label="aa"
-              {...aa}
-            />
+            <ContrastLevelScore isMulti={level.aaa} label="aa" {...aa} />
           ) : null}
 
           {level.aaa ? (
-            <ContrastLevelScore
-              isMulti={level.aa && level.aaa}
-              label="aaa"
-              {...aaa}
-            />
+            <ContrastLevelScore isMulti={level.aa} label="aaa" {...aaa} />
           ) : null}
         </Wrap>
       </Wrap>
@@ -75,27 +67,27 @@ export const ContrastScore: FC<ContrastScoreProps> = ({
   )
 }
 
-type ContrastLevelScoreProps = ColorContrastLevelScore & {
+interface ContrastLevelScoreProps extends ColorContrastLevelScore {
   label: ColorContrastLevel
   isMulti?: boolean
 }
 
 const ContrastLevelScore: FC<ContrastLevelScoreProps> = ({
+  component,
+  isMulti,
   label,
   large,
   small,
-  component,
-  isMulti,
 }) => {
   return (
     <Grid
-      templateColumns="13ch auto 4ch"
       alignItems="center"
       gapX="sm"
       gapY={{ base: "sm", sm: "xs" }}
+      templateColumns="13ch auto 4ch"
     >
       {isMulti ? (
-        <GridItem as={Center} justifySelf="flex-start" colSpan={3}>
+        <GridItem as={Center} colSpan={3} justifySelf="flex-start">
           <Tag size="sm" variant="muted">
             {label.toLocaleUpperCase()}
           </Tag>

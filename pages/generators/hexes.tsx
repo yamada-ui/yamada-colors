@@ -1,23 +1,24 @@
 import type { MotionProps } from "@yamada-ui/react"
+import type { FC, MutableRefObject } from "react"
 import {
+  assignRef,
   Box,
   Center,
   Grid,
   GridItem,
   Motion,
   VStack,
-  assignRef,
 } from "@yamada-ui/react"
-import { useRouter } from "next/router"
-import { useCallback, useState, type FC, type MutableRefObject } from "react"
-import { getHexes } from "./index.page"
 import { CopyText } from "components/other"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
+import { useRouter } from "next/router"
+import { useCallback, useState } from "react"
 import { f } from "utils/color"
 import { getColorName } from "utils/color-name-list"
+import { getHexes } from "./index.page"
 
-export type HexesProps = {
+export interface HexesProps {
   hexes: Colors
   onSelectRef: MutableRefObject<(tab: string, hex: string) => void>
 }
@@ -31,8 +32,8 @@ export const Hexes: FC<HexesProps> = ({ hexes: hexesProp, onSelectRef }) => {
   const onSelect = useCallback(
     (tab: string, hex: string) => {
       const hexes = getHexes(tab, hex).map((hex) => ({
-        hex,
         name: getColorName(hex),
+        hex,
       }))
 
       setHexes(hexes)
@@ -52,48 +53,48 @@ export const Hexes: FC<HexesProps> = ({ hexes: hexesProp, onSelectRef }) => {
     <Box as="section">
       <Grid
         as="ul"
-        templateColumns={{ base: `repeat(${count}, 1fr)`, md: "1fr" }}
         gap={{ base: "0", md: "md" }}
+        templateColumns={{ base: `repeat(${count}, 1fr)`, md: "1fr" }}
       >
-        {hexes.map(({ hex, name }, index) => {
+        {hexes.map(({ name, hex }, index) => {
           const isStart = !index
           const isEnd = index + 1 === count
 
           return (
             <GridItem key={`${hex}-${index}`} as="li">
-              <ColorCommandMenu name={name} value={hex} hiddenGenerators>
-                <VStack minW="0" gap={{ base: "md", md: "sm" }}>
+              <ColorCommandMenu name={name} hiddenGenerators value={hex}>
+                <VStack gap={{ base: "md", md: "sm" }} minW="0">
                   <LinkBox
                     display={{ base: "block", md: "none" }}
-                    minH="xs"
                     hex={hex}
-                    isStart={isStart}
-                    isEnd={isEnd}
                     initial={{
-                      borderStartStartRadius: isStart ? "16px" : "0px",
+                      borderEndEndRadius: isEnd ? "16px" : "0px",
                       borderEndStartRadius: isStart ? "16px" : "0px",
                       borderStartEndRadius: isEnd ? "16px" : "0px",
-                      borderEndEndRadius: isEnd ? "16px" : "0px",
+                      borderStartStartRadius: isStart ? "16px" : "0px",
                     }}
-                    whileHover={{ scale: 1.1, borderRadius: "16px" }}
+                    isEnd={isEnd}
+                    isStart={isStart}
+                    minH="xs"
+                    whileHover={{ borderRadius: "16px", scale: 1.1 }}
                   />
 
                   <LinkBox
                     display={{ base: "none", md: "block" }}
-                    minH={{ base: "20", sm: "16" }}
                     hex={hex}
-                    isStart={isStart}
                     isEnd={isEnd}
+                    isStart={isStart}
+                    minH={{ base: "20", sm: "16" }}
                     rounded="2xl"
                     whileHover={{ scale: 0.95 }}
                   />
 
                   <Center px="xs">
                     <CopyText
-                      hiddenIcon
                       as="span"
                       color="muted"
                       fontSize="sm"
+                      hiddenIcon
                       lineClamp={1}
                     >
                       {f(hex, format)}
@@ -109,13 +110,13 @@ export const Hexes: FC<HexesProps> = ({ hexes: hexesProp, onSelectRef }) => {
   )
 }
 
-type LinkBoxProps = MotionProps<"a"> & {
+interface LinkBoxProps extends MotionProps<"a"> {
   hex: string
-  isStart: boolean
   isEnd: boolean
+  isStart: boolean
 }
 
-const LinkBox: FC<LinkBoxProps> = ({ hex, isStart, isEnd, ...rest }) => {
+const LinkBox: FC<LinkBoxProps> = ({ hex, isEnd, isStart, ...rest }) => {
   return (
     // @ts-ignore
     <Motion
@@ -128,18 +129,18 @@ const LinkBox: FC<LinkBoxProps> = ({ hex, isStart, isEnd, ...rest }) => {
       _focusVisible={{
         zIndex: 1,
         _before: {
-          content: '""',
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
           bottom: 0,
           boxShadow: "outline",
+          content: '""',
+          left: 0,
+          position: "absolute",
+          right: 0,
           roundedLeft: { base: isStart ? "2xl" : "0px", md: "2xl" },
           roundedRight: {
             base: isEnd ? "2xl" : "0px",
             md: "2xl",
           },
+          top: 0,
         },
       }}
       {...rest}

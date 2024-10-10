@@ -1,3 +1,5 @@
+import type { DialogProps } from "@yamada-ui/react"
+import type { FC, RefObject } from "react"
 import {
   assignRef,
   Button,
@@ -8,25 +10,21 @@ import {
   Input,
   useDisclosure,
 } from "@yamada-ui/react"
-import type { DialogProps } from "@yamada-ui/react"
-import { memo, useRef, useState } from "react"
-import type { FC, RefObject } from "react"
 import { useI18n } from "contexts/i18n-context"
+import { memo, useRef, useState } from "react"
 
-export type PaletteRenameModalProps = Omit<
-  DialogProps,
-  "isOpen" | "onClose" | "onSubmit"
-> & {
+export interface PaletteRenameModalProps
+  extends Omit<DialogProps, "isOpen" | "onClose" | "onSubmit"> {
   value: string
-  onSubmit: (value: string) => void
   onOpenRef: RefObject<() => void>
+  onSubmit: (value: string) => void
 }
 
 export const PaletteRenameModal: FC<PaletteRenameModalProps> = memo(
-  ({ value: valueProp, onSubmit, onOpenRef, ...rest }) => {
+  ({ value: valueProp, onOpenRef, onSubmit, ...rest }) => {
     const { t } = useI18n()
     const [value, setValue] = useState<string>(valueProp)
-    const { isOpen, onOpen, onClose } = useDisclosure({
+    const { isOpen, onClose, onOpen } = useDisclosure({
       onClose: () => {
         setValue((prev) => (!prev.length ? valueProp : prev))
       },
@@ -38,22 +36,22 @@ export const PaletteRenameModal: FC<PaletteRenameModalProps> = memo(
     return (
       <Dialog
         isOpen={isOpen}
-        onClose={onClose}
         withCloseButton={false}
+        onClose={onClose}
         {...rest}
       >
         <DialogHeader>{t("palettes.rename.title")}</DialogHeader>
 
         <DialogBody>
           <Input
+            placeholder={t("palettes.rename.placeholder")}
             value={value}
             onChange={(ev) => setValue(ev.target.value)}
-            placeholder={t("palettes.rename.placeholder")}
-            onCompositionStart={() => {
-              isComposition.current = true
-            }}
             onCompositionEnd={() => {
               isComposition.current = false
+            }}
+            onCompositionStart={() => {
+              isComposition.current = true
             }}
             onKeyDown={(ev) => {
               if (ev.key !== "Enter") return
@@ -67,13 +65,13 @@ export const PaletteRenameModal: FC<PaletteRenameModalProps> = memo(
         </DialogBody>
 
         <DialogFooter>
-          <Button variant="ghost" colorScheme="neutral" onClick={onClose}>
+          <Button colorScheme="neutral" variant="ghost" onClick={onClose}>
             {t("palettes.rename.cancel")}
           </Button>
 
           <Button
-            isDisabled={!value.length}
             colorScheme="primary"
+            isDisabled={!value.length}
             onClick={() => {
               onClose()
               onSubmit(value)

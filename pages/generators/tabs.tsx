@@ -1,19 +1,20 @@
+import type { FC, MutableRefObject } from "react"
 import {
   ScrollArea,
   SegmentedControl,
   SegmentedControlButton,
 } from "@yamada-ui/react"
-import { useState, type FC, type MutableRefObject } from "react"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
+import { useState } from "react"
 
-export type TabsProps = {
-  tab: string
+export interface TabsProps {
   hex: string
+  tab: string
   onSelectRef: MutableRefObject<(tab: string, hex: string) => void>
 }
 
-export const Tabs: FC<TabsProps> = ({ tab: tabProp, hex, onSelectRef }) => {
+export const Tabs: FC<TabsProps> = ({ hex, tab: tabProp, onSelectRef }) => {
   const [tab, setTab] = useState<string>(tabProp)
   const { t } = useI18n()
 

@@ -1,48 +1,48 @@
-import { Palette, Plus } from "@yamada-ui/lucide"
 import type { IconButtonProps, PopoverProps } from "@yamada-ui/react"
+import type { FC, MutableRefObject, RefObject } from "react"
+import { Palette, Plus } from "@yamada-ui/lucide"
 import {
-  Popover,
-  forwardRef,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  IconButton,
-  PopoverCloseButton,
+  assignRef,
+  Box,
   Button,
-  Text,
+  Center,
+  forwardRef,
   Grid,
   GridItem,
-  Box,
-  VStack,
-  useDisclosure,
   handlerAll,
+  IconButton,
   Input,
-  assignRef,
-  noop,
-  Center,
   Motion,
+  noop,
+  Popover,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
   PopoverFooter,
+  PopoverHeader,
+  PopoverTrigger,
+  Text,
   Tooltip,
+  useDisclosure,
+  VStack,
 } from "@yamada-ui/react"
-import type { FC, MutableRefObject, RefObject } from "react"
-import { memo, useCallback, useRef, useState } from "react"
 import { RemoveScroll } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { memo, useCallback, useRef, useState } from "react"
 
-export type PaletteMenuProps = PopoverProps & {
-  hex: string
+export interface PaletteMenuProps extends PopoverProps {
   name: string
+  hex: string
   isRemoveScroll?: boolean
   buttonProps?: IconButtonProps
 }
 
 export const PaletteMenu = memo(
   forwardRef<PaletteMenuProps, "button">(
-    ({ hex, name, buttonProps, isRemoveScroll = true, ...rest }, ref) => {
+    ({ name, hex, isRemoveScroll = true, buttonProps, ...rest }, ref) => {
       const onCloseRef = useRef<() => void>(noop)
-      const { isOpen, onOpen, onClose } = useDisclosure({
+      const { isOpen, onClose, onOpen } = useDisclosure({
         onClose: () => onCloseRef.current(),
       })
       const { t } = useI18n()
@@ -52,7 +52,7 @@ export const PaletteMenu = memo(
       const onSelect = useCallback(
         ({ colors, ...rest }: ColorPalette) => {
           changePalette({
-            colors: [...colors, { hex: [hex, hex], name }],
+            colors: [...colors, { name, hex: [hex, hex] }],
             ...rest,
           })
 
@@ -63,9 +63,9 @@ export const PaletteMenu = memo(
 
       return (
         <Popover
-          restoreFocus={false}
-          placement="bottom-end"
           isOpen={isOpen}
+          placement="bottom-end"
+          restoreFocus={false}
           onClose={onClose}
           {...rest}
         >
@@ -78,11 +78,11 @@ export const PaletteMenu = memo(
               >
                 <IconButton
                   ref={ref}
-                  color="muted"
-                  icon={<Palette fontSize="1.5rem" />}
+                  colorScheme="neutral"
                   bg={["blackAlpha.100", "whiteAlpha.100"]}
                   borderColor="transparent"
-                  colorScheme="neutral"
+                  color="muted"
+                  icon={<Palette fontSize="1.5rem" />}
                   isRounded
                   {...buttonProps}
                   onClick={handlerAll(buttonProps?.onClick, onOpen)}
@@ -91,7 +91,7 @@ export const PaletteMenu = memo(
             </Box>
           </PopoverTrigger>
 
-          <PopoverContent w="sm" maxW="sm">
+          <PopoverContent maxW="sm" w="sm">
             <PopoverCloseButton rounded="full" />
 
             <PopoverHeader>{t("component.palette-menu.title")}</PopoverHeader>
@@ -119,7 +119,7 @@ export const PaletteMenu = memo(
 
 PaletteMenu.displayName = "PaletteMenu"
 
-type PaletteButtonsProps = {
+interface PaletteButtonsProps {
   firstRef: RefObject<HTMLButtonElement>
   onSelect: (palette: ColorPalette) => void
 }
@@ -131,7 +131,7 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
 
     return palettes.length ? (
       palettes.map((palette, index) => {
-        const { uuid, name, colors } = palette
+        const { name, colors, uuid } = palette
         const isFirst = !index
 
         return (
@@ -139,19 +139,19 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
             key={uuid}
             ref={isFirst ? firstRef : undefined}
             as="button"
-            w="full"
+            alignItems="center"
+            display="grid"
+            outline={0}
             px="sm"
             py="sm"
-            display="grid"
             templateColumns={{ base: "auto 1fr" }}
-            alignItems="center"
-            outline={0}
-            transitionProperty="common"
             transitionDuration="slower"
-            _hover={{
+            transitionProperty="common"
+            w="full"
+            _focusVisible={{
               bg: ["blackAlpha.50", "whiteAlpha.50"],
             }}
-            _focusVisible={{
+            _hover={{
               bg: ["blackAlpha.50", "whiteAlpha.50"],
             }}
             onClick={() => onSelect(palette)}
@@ -159,8 +159,8 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
             {colors.length ? (
               <Grid
                 boxSize="10"
-                rounded="md"
                 overflow="hidden"
+                rounded="md"
                 templateColumns={`repeat(${colors.length < 3 ? 1 : 2}, 1fr)`}
               >
                 {colors.map(({ hex }, index) => (
@@ -173,16 +173,16 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
                 ))}
               </Grid>
             ) : (
-              <Box boxSize="10" rounded="md" bg={["#eeeeee", "#262626"]} />
+              <Box bg={["#eeeeee", "#262626"]} boxSize="10" rounded="md" />
             )}
 
-            <VStack minW="0" gap="0" ps="sm">
+            <VStack gap="0" minW="0" ps="sm">
               <Text
                 as="span"
-                fontWeight="semibold"
-                lineHeight="6"
-                lineClamp={1}
                 fontSize={{ base: "md", sm: "sm" }}
+                fontWeight="semibold"
+                lineClamp={1}
+                lineHeight="6"
               >
                 {name}
               </Text>
@@ -191,8 +191,8 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
                 as="span"
                 color="muted"
                 fontSize="xs"
-                lineHeight="4"
                 lineClamp={1}
+                lineHeight="4"
               >
                 {colors.length} colors
               </Text>
@@ -201,7 +201,7 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
         )
       })
     ) : (
-      <Center h="full" color="muted">
+      <Center color="muted" h="full">
         {t("component.palette-menu.not-found")}
       </Center>
     )
@@ -210,23 +210,23 @@ const PaletteButtons: FC<PaletteButtonsProps> = memo(
 
 PaletteButtons.displayName = "PaletteButtons"
 
-type CreatePaletteProps = {
+interface CreatePaletteProps {
   firstRef: RefObject<HTMLButtonElement>
   onCloseRef: MutableRefObject<() => void>
 }
 
 const CreatePalette: FC<CreatePaletteProps> = memo(
   ({ firstRef, onCloseRef }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure({
-      onOpen: () => {
-        inputRef.current?.focus()
-      },
+    const { isOpen, onClose, onOpen } = useDisclosure({
       onClose: () => {
         setValue("")
 
         setTimeout(() => {
           firstRef.current?.focus()
         })
+      },
+      onOpen: () => {
+        inputRef.current?.focus()
       },
     })
     const [value, setValue] = useState<string>("")
@@ -236,7 +236,7 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
     const isComposition = useRef<boolean>(false)
     const { createPalette } = useApp()
 
-    const onCreate = async () => {
+    const onCreate = () => {
       onClose()
       createPalette(value)
     }
@@ -246,26 +246,26 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
     return (
       <VStack gap="0">
         <Motion
-          initial={{ height: "0px", opacity: 0 }}
           animate={isOpen ? { height: "auto", opacity: 1 } : {}}
+          initial={{ height: "0px", opacity: 0 }}
           overflow="hidden"
         >
           <Input
             ref={inputRef}
-            value={value}
-            onChange={(ev) => setValue(ev.target.value)}
-            tabIndex={isOpen ? 0 : -1}
             mb="sm"
+            tabIndex={isOpen ? 0 : -1}
+            value={value}
             _focusVisible={{
-              zIndex: "yamcha",
               borderColor: ["focus", "focus"],
               boxShadow: `inset 0 0 0 1px var(--ui-colors-focus)`,
+              zIndex: "yamcha",
+            }}
+            onChange={(ev) => setValue(ev.target.value)}
+            onCompositionEnd={() => {
+              isComposition.current = false
             }}
             onCompositionStart={() => {
               isComposition.current = true
-            }}
-            onCompositionEnd={() => {
-              isComposition.current = false
             }}
             onKeyDown={(ev) => {
               if (ev.key !== "Enter") return
@@ -282,14 +282,14 @@ const CreatePalette: FC<CreatePaletteProps> = memo(
 
         <Button
           ref={buttonRef}
-          w="full"
           colorScheme="neutral"
           bg={["blackAlpha.200", "whiteAlpha.100"]}
           borderColor="transparent"
+          disabled={isOpen ? !value.length : undefined}
           leftIcon={<Plus fontSize="1.125rem" />}
-          disabled={isOpen && !value.length}
-          onClick={!isOpen ? onOpen : onCreate}
+          w="full"
           _hover={{ _disabled: {} }}
+          onClick={!isOpen ? onOpen : onCreate}
         >
           {t("component.palette-menu.create")}
         </Button>

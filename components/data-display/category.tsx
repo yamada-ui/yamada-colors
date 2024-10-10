@@ -5,28 +5,28 @@ import type {
   StackProps,
   StringLiteral,
 } from "@yamada-ui/react"
+import type { FC, PropsWithChildren } from "react"
 import {
   Box,
   ChevronIcon,
   Flex,
+  forwardRef,
   Grid,
   GridItem,
-  HStack,
   Heading,
+  HStack,
   IconButton,
   Text,
   VStack,
-  forwardRef,
 } from "@yamada-ui/react"
-import type { FC, PropsWithChildren } from "react"
-import { memo, useRef } from "react"
-import { ColorCard } from "./color-card"
 import { NextLink } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
+import { memo, useRef } from "react"
 import { toCamelCase } from "utils/string"
+import { ColorCard } from "./color-card"
 
-type CategoryType = "grid" | "carousel"
-type CategorySize = "sm" | "md"
+type CategoryType = "carousel" | "grid"
+type CategorySize = "md" | "sm"
 
 export const categories = [
   "gray",
@@ -52,7 +52,7 @@ export const categories = [
 
 export type Categories = (typeof categories)[number] | StringLiteral
 
-export type CategoryProps = StackProps & {
+export interface CategoryProps extends StackProps {
   category: Categories
   colors: Colors
   type?: CategoryType
@@ -61,11 +61,11 @@ export type CategoryProps = StackProps & {
 
 export const Category = memo(
   forwardRef<CategoryProps, "div">(
-    ({ category, colors, type = "grid", size = "md", ...rest }, ref) => {
+    ({ type = "grid", size = "md", category, colors, ...rest }, ref) => {
       const { t } = useI18n()
 
       return (
-        <VStack as="article" ref={ref} {...rest}>
+        <VStack ref={ref} as="article" {...rest}>
           <HStack as="header">
             <CategoryTitle>{toCamelCase(category)}</CategoryTitle>
 
@@ -92,7 +92,7 @@ export const Category = memo(
   ),
 )
 
-type CategoryTitleProps = PropsWithChildren<StackProps>
+interface CategoryTitleProps extends PropsWithChildren<StackProps> {}
 
 const CategoryTitle: FC<CategoryTitleProps> = memo(({ children, ...rest }) => {
   const { t } = useI18n()
@@ -112,9 +112,9 @@ const CategoryTitle: FC<CategoryTitleProps> = memo(({ children, ...rest }) => {
 
 CategoryTitle.displayName = "CategoryTitle"
 
-type CategoryGridProps = GridProps & {
-  size?: CategorySize
+interface CategoryGridProps extends GridProps {
   colors: Colors
+  size?: CategorySize
 }
 
 const CategoryGrid: FC<CategoryGridProps> = memo(
@@ -123,13 +123,13 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
       return (
         <Grid
           as="ul"
+          gap="md"
           templateColumns={{
             base: "repeat(4, 1fr)",
-            xl: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
             md: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)",
+            xl: "repeat(2, 1fr)",
           }}
-          gap="md"
           {...rest}
         >
           {colors.map(({ name, hex }, index) => (
@@ -138,11 +138,11 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
               as="li"
               display={{
                 base: index < 8 ? "block" : "none",
-                lg: index < 6 ? "block" : "none",
                 md: index < 8 ? "block" : "none",
+                lg: index < 6 ? "block" : "none",
               }}
             >
-              <ColorCard hex={hex} name={name} />
+              <ColorCard name={name} hex={hex} />
             </GridItem>
           ))}
         </Grid>
@@ -151,8 +151,8 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
       return (
         <Grid
           as="ul"
-          templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
           gap="md"
+          templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(2, 1fr)" }}
           {...rest}
         >
           {colors.map(({ name, hex }, index) => (
@@ -164,7 +164,7 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
                 md: "block",
               }}
             >
-              <ColorCard size="md" hex={hex} name={name} />
+              <ColorCard name={name} size="md" hex={hex} />
             </GridItem>
           ))}
         </Grid>
@@ -178,9 +178,9 @@ CategoryGrid.displayName = "CategoryGrid"
 const getSlideSize = (count: number) =>
   `calc(100% / ${count} - (var(--ui-slide-gap) * ${count - 1}) / ${count})`
 
-type CategoryCarouselProps = FlexProps & {
-  size?: CategorySize
+interface CategoryCarouselProps extends FlexProps {
   colors: Colors
+  size?: CategorySize
 }
 
 const CategoryCarousel: FC<CategoryCarouselProps> = memo(
@@ -195,13 +195,13 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
 
       if (direction === "left") {
         ref.current.scrollTo({
-          left: scrollLeft - ref.current.scrollWidth / length,
           behavior: "smooth",
+          left: scrollLeft - ref.current.scrollWidth / length,
         })
       } else {
         ref.current.scrollTo({
-          left: scrollLeft + ref.current.scrollWidth / length,
           behavior: "smooth",
+          left: scrollLeft + ref.current.scrollWidth / length,
         })
       }
     }
@@ -209,7 +209,6 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
     return (
       <Box
         position="relative"
-        w="full"
         vars={[
           {
             name: "slide-gap",
@@ -220,41 +219,42 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
             name: "slide-size",
             value: {
               base: size === "md" ? getSlideSize(3) : getSlideSize(4),
-              md: size === "md" ? getSlideSize(2) : getSlideSize(3),
               sm: size === "md" ? getSlideSize(1) : getSlideSize(2),
+              md: size === "md" ? getSlideSize(2) : getSlideSize(3),
             },
           },
         ]}
+        w="full"
       >
         <Flex
           ref={ref}
           as="ul"
-          w="full"
+          sx={{
+            "&::-webkit-scrollbar": { display: "none" },
+            scrollbarWidth: "none",
+            _scrollbar: { display: "none" },
+          }}
           gap="var(--ui-slide-gap)"
           overflowX="auto"
           overflowY="hidden"
           scrollSnapType="x mandatory"
+          w="full"
           whiteSpace="nowrap"
-          sx={{
-            scrollbarWidth: "none",
-            _scrollbar: { display: "none" },
-            "&::-webkit-scrollbar": { display: "none" },
-          }}
           {...rest}
         >
           {colors.map(({ name, hex }, index) => (
             <Box
               key={`${hex}-${index}`}
               as="li"
-              listStyle="none"
-              flexShrink={0}
-              flexGrow={0}
               flexBasis="var(--ui-slide-size)"
+              flexGrow={0}
+              flexShrink={0}
+              listStyle="none"
               scrollSnapAlign="start"
             >
               <ColorCard
-                hex={hex}
                 name={size === "md" ? name : undefined}
+                hex={hex}
                 menuProps={{ strategy: "fixed" }}
               />
             </Box>
@@ -262,14 +262,14 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
         </Flex>
 
         <CategoryCarouselButton
-          placement="left"
           size={size}
+          placement="left"
           onClick={() => onScrollMove("left")}
         />
 
         <CategoryCarouselButton
-          placement="right"
           size={size}
+          placement="right"
           onClick={() => onScrollMove("right")}
         />
       </Box>
@@ -279,35 +279,35 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
 
 CategoryCarousel.displayName = "CategoryCarousel"
 
-type CategoryCarouselButtonProps = Omit<IconButtonProps, "size"> & {
+interface CategoryCarouselButtonProps extends Omit<IconButtonProps, "size"> {
   placement: "left" | "right"
   size?: CategorySize
 }
 
 const CategoryCarouselButton: FC<CategoryCarouselButtonProps> = memo(
-  ({ placement, size, ...rest }) => {
+  ({ size, placement, ...rest }) => {
     return (
       <IconButton
-        w={size === "md" ? "10" : "8"}
+        bg={["whiteAlpha.400", "blackAlpha.500"]}
         h={size === "md" ? "10" : "8"}
-        minW="auto"
-        lineHeight="1"
         icon={
           <ChevronIcon
-            fontSize={size === "md" ? "2xl" : "lg"}
             color={["blackAlpha.700", "whiteAlpha.800"]}
+            fontSize={size === "md" ? "2xl" : "lg"}
             transform={
               placement === "left" ? "rotate(90deg)" : "rotate(-90deg)"
             }
           />
         }
         isRounded
-        position="absolute"
-        top="50%"
         left={placement === "left" ? "var(--ui-slide-gap)" : undefined}
+        lineHeight="1"
+        minW="auto"
+        position="absolute"
         right={placement === "right" ? "var(--ui-slide-gap)" : undefined}
+        top="50%"
         transform="translateY(-50%)"
-        bg={["whiteAlpha.400", "blackAlpha.500"]}
+        w={size === "md" ? "10" : "8"}
         _hover={{ bg: ["whiteAlpha.500", "blackAlpha.600"] }}
         {...rest}
       />

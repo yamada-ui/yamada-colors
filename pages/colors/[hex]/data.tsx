@@ -1,31 +1,31 @@
 import type { StackProps } from "@yamada-ui/react"
+import type { FC } from "react"
+import type { ColorData } from "./index.page"
 import {
   Box,
   Center,
   Divider,
   HStack,
+  isString,
   ScrollArea,
   Text,
   VStack,
-  isString,
 } from "@yamada-ui/react"
-import type { FC } from "react"
-import type { ColorData } from "./index.page"
 import { ScrollShadow } from "components/data-display"
 import { useApp } from "contexts/app-context"
 import { f, isLight } from "utils/color"
 
-export type DataProps = ColorData & {}
+export interface DataProps extends ColorData {}
 
 export const Data: FC<DataProps> = ({
   name,
-  hex,
-  rgb,
-  hsl,
-  hsv,
-  cmyk,
   cielab,
   cielch,
+  cmyk,
+  hex,
+  hsl,
+  hsv,
+  rgb,
 }) => {
   const { format } = useApp()
 
@@ -54,27 +54,27 @@ export const Data: FC<DataProps> = ({
 
       <Center
         as="section"
-        w="full"
-        h={{ base: "xs", sm: "2xs" }}
-        rounded="2xl"
+        bg={hex}
         flexDirection="column"
         gap={{ base: "xs", sm: "0" }}
-        bg={hex}
+        h={{ base: "xs", sm: "2xs" }}
         p="md"
+        rounded="2xl"
         textAlign="center"
+        w="full"
       >
         <Text
+          color={isLight(hex) ? "black" : "white"}
           fontSize={{ base: "2xl", sm: "xl" }}
           fontWeight="semibold"
-          color={isLight(hex) ? "black" : "white"}
           lineClamp={1}
         >
           {name}
         </Text>
 
         <Text
-          fontSize={{ base: "lg", sm: "md" }}
           color={isLight(hex) ? "blackAlpha.700" : "whiteAlpha.700"}
+          fontSize={{ base: "lg", sm: "md" }}
           lineClamp={1}
         >
           {f(hex, format)}
@@ -84,25 +84,25 @@ export const Data: FC<DataProps> = ({
   )
 }
 
-type StackItemProps = StackProps & {
+interface StackItemProps extends StackProps {
   label: string
-  value: string | [number, number, number] | [number, number, number, number]
+  value: [number, number, number, number] | [number, number, number] | string
 }
 
 const StackItem: FC<StackItemProps> = ({ label, value }) => {
   return (
     <VStack
       as="li"
-      w="auto"
       alignItems="center"
-      px="md"
       gap={{ base: "xs", sm: "0" }}
+      px="md"
+      w="auto"
     >
-      <Text fontSize="xs" color="muted" textTransform="uppercase">
+      <Text color="muted" fontSize="xs" textTransform="uppercase">
         {label}
       </Text>
 
-      <Text whiteSpace="nowrap" color={["blackAlpha.800", "whiteAlpha.800"]}>
+      <Text color={["blackAlpha.800", "whiteAlpha.800"]} whiteSpace="nowrap">
         {isString(value) ? value : value.join(", ")}
       </Text>
     </VStack>

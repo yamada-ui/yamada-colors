@@ -1,13 +1,17 @@
+import type { FC } from "react"
 import { Box, ChevronIcon, HStack, Spacer, Tooltip } from "@yamada-ui/react"
-import { useRouter } from "next/router"
-import { useState, type FC } from "react"
 import { SearchColor } from "components/forms"
 import { NextLinkIconButton } from "components/navigation"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { useRouter } from "next/router"
+import { useState } from "react"
 import { f } from "utils/color"
 
-export type HeaderProps = { hex: string; tab: string }
+export interface HeaderProps {
+  hex: string
+  tab: string
+}
 
 export const Header: FC<HeaderProps> = ({ hex, tab }) => {
   const { t } = useI18n()
@@ -21,8 +25,9 @@ export const Header: FC<HeaderProps> = ({ hex, tab }) => {
         <Box>
           <NextLinkIconButton
             href={`/colors/${hex.replace("#", "")}`}
-            bg={["blackAlpha.100", "whiteAlpha.100"]}
             colorScheme="neutral"
+            bg={["blackAlpha.100", "whiteAlpha.100"]}
+            borderColor="transparent"
             icon={
               <ChevronIcon
                 color="muted"
@@ -30,7 +35,6 @@ export const Header: FC<HeaderProps> = ({ hex, tab }) => {
                 transform="rotate(90deg)"
               />
             }
-            borderColor="transparent"
             isRounded
           />
         </Box>

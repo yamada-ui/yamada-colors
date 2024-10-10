@@ -1,39 +1,42 @@
 import type { StackProps } from "@yamada-ui/react"
+import type { SeoProps } from "components/media-and-icons"
+import type { FC, PropsWithChildren } from "react"
 import { Center, HStack, VStack } from "@yamada-ui/react"
-import { type FC, type PropsWithChildren } from "react"
 import { Footer, Header, Sidebar } from "components/layouts"
-import type { SEOProps } from "components/media-and-icons"
-import { SEO } from "components/media-and-icons"
+import { Seo } from "components/media-and-icons"
 import { AppProvider } from "contexts/app-context"
 
-type AppLayoutOptions = SEOProps & {
-  hex?: string | [string, string]
-  palettes?: ColorPalettes
+interface AppLayoutOptions extends SeoProps {
   format?: ColorFormat
   hasSidebar?: boolean
+  hex?: [string, string] | string
+  palettes?: ColorPalettes
 }
 
-export type AppLayoutProps = PropsWithChildren & StackProps & AppLayoutOptions
+export interface AppLayoutProps
+  extends AppLayoutOptions,
+    PropsWithChildren,
+    StackProps {}
 
 export const AppLayout: FC<AppLayoutProps> = ({
-  title,
-  description,
-  noindex,
-  nofollow,
-  hex,
-  format,
-  palettes,
-  hasSidebar = true,
   children,
+  description,
+  format,
+  hasSidebar = true,
+  hex,
+  nofollow,
+  noindex,
+  palettes,
+  title,
   ...rest
 }) => {
   return (
-    <AppProvider {...{ hex, format, palettes }}>
-      <SEO
-        title={title}
+    <AppProvider {...{ format, hex, palettes }}>
+      <Seo
         description={description}
-        noindex={noindex}
         nofollow={nofollow}
+        noindex={noindex}
+        title={title}
       />
 
       <Header />
@@ -41,11 +44,11 @@ export const AppLayout: FC<AppLayoutProps> = ({
       <Center>
         <HStack
           alignItems="flex-start"
-          w="full"
-          maxW="9xl"
           gap="0"
-          py={{ base: "lg", sm: "normal" }}
+          maxW="9xl"
           px={{ base: "lg", md: "md" }}
+          py={{ base: "lg", sm: "normal" }}
+          w="full"
         >
           {hasSidebar ? (
             <Sidebar display={{ base: "flex", lg: "none" }} />
@@ -54,8 +57,8 @@ export const AppLayout: FC<AppLayoutProps> = ({
           <VStack
             as="main"
             flex="1"
-            minW="0"
             gap="0"
+            minW="0"
             ps={hasSidebar ? { base: "lg", lg: "0" } : undefined}
             {...rest}
           >

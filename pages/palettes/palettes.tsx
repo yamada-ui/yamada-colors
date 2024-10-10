@@ -1,5 +1,8 @@
+import type { GridItemProps, GridProps } from "@yamada-ui/react"
+import type { FC, MutableRefObject } from "react"
 import { Plus } from "@yamada-ui/lucide"
 import {
+  assignRef,
   Box,
   Button,
   Center,
@@ -7,29 +10,26 @@ import {
   GridItem,
   Motion,
   Text,
-  VStack,
-  assignRef,
   useUpdateEffect,
+  VStack,
 } from "@yamada-ui/react"
-import type { GridItemProps, GridProps } from "@yamada-ui/react"
-import { matchSorter } from "match-sorter"
-import Link from "next/link"
-import { memo, useRef, useState } from "react"
-import type { FC, MutableRefObject } from "react"
 import { PaletteCommandMenu } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { matchSorter } from "match-sorter"
+import Link from "next/link"
+import { memo, useRef, useState } from "react"
 import { setCookie } from "utils/storage"
 
-export type PalettesProps = GridProps & {
+export interface PalettesProps extends GridProps {
+  query: string
   onCreate: () => void
   onSearchRef: MutableRefObject<(query: string) => void>
-  query: string
 }
 
 export const Palettes: FC<PalettesProps> = memo(
-  ({ onCreate, onSearchRef, query, ...rest }) => {
+  ({ query, onCreate, onSearchRef, ...rest }) => {
     const { t } = useI18n()
     const { palettes: palettesProp } = useApp()
     const [palettes, setPalettes] = useState<ColorPalettes>(() => {
@@ -67,13 +67,13 @@ export const Palettes: FC<PalettesProps> = memo(
       <Box as="nav">
         <Grid
           as="ul"
+          gap="md"
           templateColumns={{
             base: "repeat(4, 1fr)",
-            xl: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
             md: "repeat(2, 1fr)",
+            lg: "repeat(3, 1fr)",
+            xl: "repeat(2, 1fr)",
           }}
-          gap="md"
           {...rest}
         >
           {palettes.map((palette) => (
@@ -84,18 +84,18 @@ export const Palettes: FC<PalettesProps> = memo(
     ) : (
       <Center
         as="section"
-        py="3xl"
         flexDirection="column"
         gap={{ base: "lg", sm: "normal" }}
+        py="3xl"
       >
         <Text color="muted">{t("palettes.not-found.label")}</Text>
 
         <Button
+          colorScheme="neutral"
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
-          colorScheme="neutral"
-          leftIcon={<Plus fontSize="1.5rem" />}
           isRounded
+          leftIcon={<Plus fontSize="1.5rem" />}
           onClick={onCreate}
         >
           {t("palettes.not-found.create")}
@@ -107,13 +107,13 @@ export const Palettes: FC<PalettesProps> = memo(
 
 Palettes.displayName = "palettes"
 
-type PaletteProps = GridItemProps & {
+interface PaletteProps extends GridItemProps {
   palette: ColorPalette
   queryRef: MutableRefObject<string>
 }
 
 const Palette: FC<PaletteProps> = memo(({ palette, queryRef, ...rest }) => {
-  const { uuid, name, colors } = palette
+  const { name, colors, uuid } = palette
 
   return (
     <GridItem as="li" minW="0" {...rest}>
@@ -122,22 +122,22 @@ const Palette: FC<PaletteProps> = memo(({ palette, queryRef, ...rest }) => {
           <VStack
             as={Link}
             href={`/palettes/${uuid}`}
-            gap="0"
-            rounded="2xl"
-            overflow="hidden"
             boxShadow={[
               "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
               "0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 3px 6px rgba(0, 0, 0, 0.2), 0px -3px 6px rgba(0, 0, 0, 0.2)",
             ]}
+            gap="0"
             outline={0}
+            overflow="hidden"
+            rounded="2xl"
             _focusVisible={{ boxShadow: ["outline", "outline"] }}
             onClick={() => {
               setCookie(CONSTANT.STORAGE.PALETTE_QUERY, queryRef.current)
             }}
           >
             <Grid
-              templateColumns={`repeat(${colors.length > 4 ? 4 : colors.length}, 1fr)`}
               h={{ base: "4xs", sm: "5xs" }}
+              templateColumns={`repeat(${colors.length > 4 ? 4 : colors.length}, 1fr)`}
             >
               {colors.length ? (
                 colors.map(({ hex }, index) => (
@@ -148,28 +148,26 @@ const Palette: FC<PaletteProps> = memo(({ palette, queryRef, ...rest }) => {
                   />
                 ))
               ) : (
-                <>
-                  <GridItem bg={["blackAlpha.100", "whiteAlpha.100"]} />
-                </>
+                <GridItem bg={["blackAlpha.100", "whiteAlpha.100"]} />
               )}
             </Grid>
 
             <Grid
-              justifyContent="flex-start"
               alignItems="center"
-              px={{ base: "normal", sm: "md" }}
               gap={{ base: "xs", sm: "0" }}
               h={{ base: "4xs", sm: "5xs" }}
+              justifyContent="flex-start"
+              px={{ base: "normal", sm: "md" }}
             >
-              <Text fontWeight="medium" lineClamp={1} alignSelf="flex-end">
+              <Text alignSelf="flex-end" fontWeight="medium" lineClamp={1}>
                 {name}
               </Text>
 
               <Text
                 as="span"
-                fontSize="sm"
-                color="muted"
                 alignSelf="flex-start"
+                color="muted"
+                fontSize="sm"
               >
                 {colors.length} colors
               </Text>

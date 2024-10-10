@@ -8,12 +8,12 @@ import { SegmentedControl } from "./segmented-control"
 import { Tag } from "./tag"
 
 export const components = {
-  Link,
   Button,
   ColorSelector,
-  SegmentedControl,
-  Popover,
-  Modal,
   Dialog,
+  Link,
+  Modal,
+  Popover,
+  SegmentedControl,
   Tag,
 }

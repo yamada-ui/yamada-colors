@@ -7,9 +7,9 @@ import { globalStyle } from "./styles"
 import { tokens } from "./tokens"
 
 export const customTheme: UsageTheme = {
-  styles: { globalStyle },
-  semantics,
   components,
+  semantics,
+  styles: { globalStyle },
   ...tokens,
 }
 

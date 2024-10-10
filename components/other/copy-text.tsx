@@ -1,24 +1,24 @@
+import type { IconProps, TextProps } from "@yamada-ui/react"
+import type { MouseEvent } from "react"
 import { Check, Clipboard } from "@yamada-ui/lucide"
 import {
-  Text,
   forwardRef,
   handlerAll,
   isString,
+  Text,
   useClipboard,
   useNotice,
 } from "@yamada-ui/react"
-import type { IconProps, TextProps } from "@yamada-ui/react"
-import type { MouseEvent } from "react"
-import { memo } from "react"
 import { CopiedColorNotice } from "components/feedback"
 import { useI18n } from "contexts/i18n-context"
+import { memo } from "react"
 
-export type CopyTextProps = TextProps & {
+export interface CopyTextProps extends TextProps {
+  hiddenIcon?: boolean
   value?: string
-  iconProps?: IconProps
   checkIconProps?: IconProps
   copyIconProps?: IconProps
-  hiddenIcon?: boolean
+  iconProps?: IconProps
 }
 
 export const CopyText = memo(
@@ -26,26 +26,26 @@ export const CopyText = memo(
     (
       {
         children,
+        hiddenIcon,
         value: valueProp,
-        iconProps,
         checkIconProps,
         copyIconProps,
-        hiddenIcon,
+        iconProps,
         ...rest
       },
       ref,
     ) => {
       const { t } = useI18n()
       const notice = useNotice({
-        limit: 1,
-        placement: "bottom",
         component: () => (
           <CopiedColorNotice value={value}>
             {t("component.copied-color-notice.copied")}
           </CopiedColorNotice>
         ),
+        limit: 1,
+        placement: "bottom",
       })
-      const { onCopy, value, hasCopied } = useClipboard(
+      const { hasCopied, value, onCopy } = useClipboard(
         valueProp ?? (isString(children) ? children : ""),
         5000,
       )
@@ -53,12 +53,12 @@ export const CopyText = memo(
       return (
         <Text
           ref={ref}
-          display="inline-flex"
           alignItems="center"
-          gap="1"
           cursor="copy"
-          transitionProperty="common"
+          display="inline-flex"
+          gap="1"
           transitionDuration="slower"
+          transitionProperty="common"
           _hover={{ opacity: hasCopied ? 1 : 0.7 }}
           {...rest}
           onClick={handlerAll(
@@ -77,15 +77,15 @@ export const CopyText = memo(
           {!hiddenIcon ? (
             hasCopied ? (
               <Check
-                fontSize="1em"
                 color="success"
+                fontSize="1em"
                 {...iconProps}
                 {...checkIconProps}
               />
             ) : (
               <Clipboard
-                fontSize="1em"
                 color="muted"
+                fontSize="1em"
                 {...iconProps}
                 {...copyIconProps}
               />

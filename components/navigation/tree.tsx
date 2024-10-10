@@ -1,27 +1,27 @@
+import type { BoxProps, StackProps } from "@yamada-ui/react"
+import type { ReactNode } from "react"
 import {
-  Palette,
   Compass,
-  Paintbrush,
   Contrast,
   History,
+  Paintbrush,
+  Palette,
 } from "@yamada-ui/lucide"
-import type { BoxProps, StackProps } from "@yamada-ui/react"
 import {
   Box,
+  forwardRef,
   HStack,
+  isString,
   Text,
   VStack,
-  forwardRef,
-  isString,
 } from "@yamada-ui/react"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import type { ReactNode } from "react"
-import { memo } from "react"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { memo } from "react"
 
-export type TreeProps = BoxProps & {
+export interface TreeProps extends BoxProps {
   isAside?: boolean
 }
 
@@ -37,7 +37,7 @@ export const Tree = memo(
 
     return (
       <Box ref={ref} as="nav" w="full" {...rest}>
-        <VStack as="ul" w="full" gap="sm">
+        <VStack as="ul" gap="sm" w="full">
           <TreeItem
             href="/"
             icon={<Compass fontSize="1.5rem" />}
@@ -79,18 +79,18 @@ export const Tree = memo(
   }),
 )
 
-export type TreeItemProps = StackProps & {
-  icon?: ReactNode
+export interface TreeItemProps extends StackProps {
   href: string
+  icon?: ReactNode
   isAside?: boolean
 }
 
 export const TreeItem = memo(
   forwardRef<TreeItemProps, "a">(
-    ({ isAside, icon = null, href, children, ...rest }, ref) => {
+    ({ href, children, icon = null, isAside, ...rest }, ref) => {
       const router = useRouter()
       const { asPath } = router
-      const trulyHref = href.split("?")[0]
+      const trulyHref = href.split("?")[0] ?? ""
       const isSelected =
         trulyHref === "/" ? asPath === trulyHref : asPath.startsWith(trulyHref)
 
@@ -108,19 +108,19 @@ export const TreeItem = memo(
                 : undefined
             }
             color={!isSelected ? "muted" : undefined}
-            rounded="md"
-            w="full"
-            h="12"
-            px="md"
             gap="sm"
+            h="12"
             outline="none"
-            transitionProperty="common"
+            px="md"
+            rounded="md"
             transitionDuration="slower"
-            _hover={{
-              color: !isSelected ? ["black", "white"] : undefined,
-            }}
+            transitionProperty="common"
+            w="full"
             _focusVisible={{
               boxShadow: "outline",
+            }}
+            _hover={{
+              color: !isSelected ? ["black", "white"] : undefined,
             }}
             {...rest}
           >

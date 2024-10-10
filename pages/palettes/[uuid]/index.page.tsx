@@ -1,24 +1,25 @@
-import { runIfFunc, type ColorMode } from "@yamada-ui/react"
+import type { ColorMode } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
 import type { SetStateAction } from "react"
-import { useCallback, useMemo, useRef, useState } from "react"
-import { PaletteProvider } from "./context"
-import { Header } from "./header"
-import { Hexes } from "./hexes"
+import { runIfFunc } from "@yamada-ui/react"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
 import { AppLayout } from "layouts/app-layout"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { getServerSideCommonProps } from "utils/next"
 import { generateUUID, getCookie } from "utils/storage"
+import { PaletteProvider } from "./context"
+import { Header } from "./header"
+import { Hexes } from "./hexes"
 
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+export const getServerSideProps = (req: GetServerSidePropsContext) => {
   const {
     props: { cookies, format, hex, palettes },
-  } = await getServerSideCommonProps(req)
+  } = getServerSideCommonProps(req)
   const uuid = req.query.uuid as string
   let palette = getCookie<ColorPalette | null>(
     cookies,
@@ -41,12 +42,12 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
   palette.name = decodeURIComponent(palette.name)
 
   const props = {
+    colorMode,
     cookies,
     format,
     hex,
-    palettes,
     palette,
-    colorMode,
+    palettes,
     tab,
   }
 
@@ -56,12 +57,12 @@ export const getServerSideProps = async (req: GetServerSidePropsContext) => {
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Page: NextPage<PageProps> = ({
-  hex,
-  format,
-  palettes,
-  palette,
-  tab: tabProp,
   colorMode,
+  format,
+  hex,
+  palette,
+  palettes,
+  tab: tabProp,
 }) => {
   const { t } = useI18n()
   const [name, setName] = useState<string>(palette.name)
@@ -70,12 +71,12 @@ const Page: NextPage<PageProps> = ({
   )
 
   const [tab, setTab] = useState<string>(tabProp)
-  const { uuid, timestamp } = palette
+  const { timestamp, uuid } = palette
   const indexRef = useRef<number>(0)
   const colorsMapRef = useRef<ReorderColors[]>([colors])
 
   const changeColors = useCallback(
-    (valOrFunc: SetStateAction<ReorderColors>, isRollback: boolean = false) =>
+    (valOrFunc: SetStateAction<ReorderColors>, isRollback = false) =>
       setColors((prev) => {
         const next = runIfFunc(valOrFunc, prev)
 
@@ -97,29 +98,29 @@ const Page: NextPage<PageProps> = ({
 
   const value = useMemo(
     () => ({
-      tab,
-      colorMode,
-      uuid,
       name,
-      colors,
-      timestamp,
-      setTab,
-      setName,
       changeColors,
+      colorMode,
+      colors,
       colorsMapRef,
       indexRef,
+      setName,
+      setTab,
+      tab,
+      timestamp,
+      uuid,
     }),
     [tab, changeColors, colorMode, uuid, colors, name, timestamp],
   )
 
   return (
     <AppLayout
-      title={palette.name}
       description={t("palettes.description")}
-      hex={hex}
       format={format}
-      palettes={palettes}
       gap={{ base: "lg", sm: "normal" }}
+      hex={hex}
+      palettes={palettes}
+      title={palette.name}
     >
       <PaletteProvider value={value}>
         <Header />

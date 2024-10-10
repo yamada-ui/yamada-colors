@@ -1,45 +1,45 @@
 import type { ColorMode } from "@yamada-ui/react"
-import { createContext } from "@yamada-ui/react"
 import type { Dispatch, MutableRefObject, SetStateAction } from "react"
+import { createContext } from "@yamada-ui/react"
 
-type PaletteContext = {
-  tab: string
-  uuid: string
+export interface PaletteContext {
   name: string
-  colors: ReorderColors
-  colorMode: ColorMode
-  timestamp: number
-  setTab: Dispatch<SetStateAction<string>>
-  setName: Dispatch<SetStateAction<string>>
   changeColors: (
     valOrFunc: SetStateAction<ReorderColors>,
     isRollback?: boolean,
   ) => void
-  indexRef: MutableRefObject<number>
+  colorMode: ColorMode
+  colors: ReorderColors
   colorsMapRef: MutableRefObject<ReorderColors[]>
+  indexRef: MutableRefObject<number>
+  setName: Dispatch<SetStateAction<string>>
+  setTab: Dispatch<SetStateAction<string>>
+  tab: string
+  timestamp: number
+  uuid: string
 }
 
 export const [PaletteProvider, usePalette] = createContext<PaletteContext>({
-  strict: false,
   name: "PaletteContext",
+  strict: false,
 })
 
-type HexesContext = {
+interface HexesContext {
   colorMode: ColorMode
   toggleColorMode: () => void
   onClone: (color: ReorderColor) => void
-  onEdit: (color: ReorderColor) => void
   onDelete: (id: string) => void
+  onEdit: (color: ReorderColor) => void
 }
 
 export const [HexesProvider, useHexes] = createContext<HexesContext>({
-  strict: false,
   name: "HexesContext",
+  strict: false,
 })
 
-type HexContext = ReorderColor
+interface HexContext extends ReorderColor {}
 
 export const [HexProvider, useHex] = createContext<HexContext>({
-  strict: false,
   name: "HexContext",
+  strict: false,
 })

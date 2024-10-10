@@ -1,9 +1,10 @@
 import type { FC, ReactElement } from "react"
+import type { IRemoveScrollProps } from "react-remove-scroll/dist/es5/types"
 import { useEffect, useState } from "react"
 import { RemoveScroll as ReactRemoveScroll } from "react-remove-scroll"
-import type { IRemoveScrollProps } from "react-remove-scroll/dist/es5/types"
 
-export type RemoveScrollProps = Omit<IRemoveScrollProps, "children"> & {
+export interface RemoveScrollProps
+  extends Omit<IRemoveScrollProps, "children"> {
   children: ReactElement
 }
 

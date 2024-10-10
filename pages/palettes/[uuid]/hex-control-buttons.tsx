@@ -1,15 +1,23 @@
+import type {
+  CenterProps,
+  ColorMode,
+  StackProps,
+  UseDisclosureProps,
+} from "@yamada-ui/react"
+import type { FC, MutableRefObject } from "react"
 import {
-  Paintbrush,
-  Pencil,
   Clipboard,
   Contrast,
-  Trash2,
   Copy,
+  Paintbrush,
+  Pencil,
+  Trash2,
 } from "@yamada-ui/lucide"
 import {
   Button,
   Center,
   ColorSwatch,
+  forwardRef,
   HStack,
   Popover,
   PopoverBody,
@@ -17,36 +25,29 @@ import {
   PopoverFooter,
   PopoverTrigger,
   Text,
-  forwardRef,
   useClipboard,
   useDisclosure,
   useNotice,
   useUpdateEffect,
 } from "@yamada-ui/react"
-import type {
-  CenterProps,
-  ColorMode,
-  StackProps,
-  UseDisclosureProps,
-} from "@yamada-ui/react"
-import Link from "next/link"
-import { memo, useRef, useState } from "react"
-import type { FC, MutableRefObject } from "react"
-import { useHexes } from "./context"
 import { PaletteColorForm } from "components/forms"
 import { RemoveScroll } from "components/other"
 import { useI18n } from "contexts/i18n-context"
+import Link from "next/link"
+import { memo, useRef, useState } from "react"
 import { isLight } from "utils/color"
+import { useHexes } from "./context"
 
-export type HexControlButtonsProps = StackProps &
-  ReorderColor & {
-    colorMode: ColorMode
-    isEditRef: MutableRefObject<boolean>
-    onClose: () => void
-  }
+export interface HexControlButtonsProps
+  extends ReorderColor,
+    Omit<StackProps, "id"> {
+  colorMode: ColorMode
+  isEditRef: MutableRefObject<boolean>
+  onClose: () => void
+}
 
 export const HexControlButtons: FC<HexControlButtonsProps> = memo(
-  ({ id, name, hex, colorMode, isEditRef, onClose, ...rest }) => {
+  ({ id, name, colorMode, hex, isEditRef, onClose, ...rest }) => {
     const { onClone, onDelete } = useHexes()
     const resolvedHex = hex[colorMode === "light" ? 0 : 1]
     const [lightHex, darkHex] = hex
@@ -56,32 +57,32 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
         <EditButton
           id={id}
           name={name}
-          hex={hex}
           colorMode={colorMode}
-          onOpen={() => {
-            isEditRef.current = true
-          }}
+          hex={hex}
           onClose={() => {
             onClose()
 
             isEditRef.current = false
           }}
+          onOpen={() => {
+            isEditRef.current = true
+          }}
         />
 
         <HexControlButton
           as={Link}
-          hex={resolvedHex}
           href={`/generators?hex=${resolvedHex.replace("#", "")}&tab=tones`}
           display={{ base: "flex", sm: "none" }}
+          hex={resolvedHex}
         >
           <Paintbrush fontSize="1.125rem" />
         </HexControlButton>
 
         <HexControlButton
           as={Link}
-          hex={resolvedHex}
           href={`/contrast-checker?light.fg=${lightHex.replace("#", "")}&dark.fg=${darkHex.replace("#", "")}`}
           display={{ base: "flex", sm: "none" }}
+          hex={resolvedHex}
         >
           <Contrast fontSize="1.125rem" />
         </HexControlButton>
@@ -105,23 +106,23 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
 
 HexControlButtons.displayName = "HexControlButtons"
 
-type HexControlButtonProps = CenterProps & Pick<Color, "hex">
+interface HexControlButtonProps extends CenterProps, Pick<Color, "hex"> {}
 
 const HexControlButton = memo(
   forwardRef<HexControlButtonProps, "button">(({ hex, ...rest }, ref) => {
     return (
       <Center
         ref={ref}
-        p="1"
         as="button"
-        rounded="full"
+        color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
         cursor="pointer"
         outline={0}
-        color={isLight(hex) ? "blackAlpha.500" : "whiteAlpha.500"}
-        transitionProperty="common"
+        p="1"
+        rounded="full"
         transitionDuration="slower"
-        _hover={{ color: isLight(hex) ? "black" : "white" }}
+        transitionProperty="common"
         _focusVisible={{ boxShadow: "outline" }}
+        _hover={{ color: isLight(hex) ? "black" : "white" }}
         {...rest}
       />
     )
@@ -130,15 +131,16 @@ const HexControlButton = memo(
 
 HexControlButton.displayName = "HexControlButton"
 
-type EditButtonProps = ReorderColor &
-  UseDisclosureProps & { colorMode: ColorMode }
+interface EditButtonProps extends ReorderColor, UseDisclosureProps {
+  colorMode: ColorMode
+}
 
 const EditButton: FC<EditButtonProps> = memo(
-  ({ id, name: nameProp, hex, colorMode, ...rest }) => {
+  ({ id, name: nameProp, colorMode, hex, ...rest }) => {
     const [lightHex, darkHex] = hex
     const resolvedHex = colorMode === "light" ? lightHex : darkHex
     const isSubmitRef = useRef<boolean>(false)
-    const { isOpen, onOpen, onClose } = useDisclosure({
+    const { isOpen, onClose, onOpen } = useDisclosure({
       ...rest,
       onClose: () => {
         rest.onClose?.()
@@ -177,23 +179,23 @@ const EditButton: FC<EditButtonProps> = memo(
 
     return (
       <Popover
-        isOpen={isOpen}
-        onClose={onClose}
         closeOnButton={false}
-        restoreFocus={false}
+        isOpen={isOpen}
         modifiers={[
           {
             name: "preventOverflow",
             options: {
               padding: {
-                top: 16,
                 bottom: 16,
                 left: 16,
                 right: 16,
+                top: 16,
               },
             },
           },
         ]}
+        restoreFocus={false}
+        onClose={onClose}
       >
         <PopoverTrigger>
           <HexControlButton hex={resolvedHex} onClick={onOpen}>
@@ -206,9 +208,9 @@ const EditButton: FC<EditButtonProps> = memo(
             <RemoveScroll allowPinchZoom={false} enabled={isOpen}>
               <PaletteColorForm
                 name={name}
-                onChangeName={setName}
                 color={color}
                 onChangeColor={setColor}
+                onChangeName={setName}
                 onSubmit={onSubmit}
               />
             </RemoveScroll>
@@ -216,13 +218,13 @@ const EditButton: FC<EditButtonProps> = memo(
 
           <PopoverFooter>
             <Button
+              colorScheme="neutral"
+              bg={["blackAlpha.200", "whiteAlpha.100"]}
+              borderColor="transparent"
               isDisabled={!name.length}
               w="full"
-              colorScheme="neutral"
-              borderColor="transparent"
-              bg={["blackAlpha.200", "whiteAlpha.100"]}
-              onClick={onSubmit}
               _hover={{ _disabled: {} }}
+              onClick={onSubmit}
             >
               {t("palette.edit.submit")}
             </Button>
@@ -235,7 +237,7 @@ const EditButton: FC<EditButtonProps> = memo(
 
 EditButton.displayName = "EditButton"
 
-type CopyButtonProps = Pick<Color, "hex">
+interface CopyButtonProps extends Pick<Color, "hex"> {}
 
 const CopyButton: FC<CopyButtonProps> = memo(({ hex }) => {
   const notice = useNotice({ limit: 1, placement: "bottom" })
@@ -253,12 +255,12 @@ const CopyButton: FC<CopyButtonProps> = memo(({ hex }) => {
               <Center>
                 <HStack
                   bg={["white", "black"]}
-                  rounded="full"
-                  py="sm"
+                  boxShadow={["md", "dark-lg"]}
+                  gap="sm"
                   pl="sm"
                   pr="normal"
-                  gap="sm"
-                  boxShadow={["md", "dark-lg"]}
+                  py="sm"
+                  rounded="full"
                 >
                   <ColorSwatch color={hex} isRounded />
 

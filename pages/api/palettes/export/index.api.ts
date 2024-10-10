@@ -1,25 +1,25 @@
 import type { Dict } from "@yamada-ui/react"
-import { isArray } from "@yamada-ui/react"
 import type { NextApiRequest, NextApiResponse } from "next"
+import { isArray } from "@yamada-ui/react"
 import { prettier } from "libs/prettier"
 import { f, tone, tones } from "utils/color"
 
-const toCamelCase = (value: string & {}) =>
+const toCamelCase = (value: {} & string) =>
   value
     .replace(/[-\s](.)/g, (_, group1) => group1.toUpperCase())
     .replace(/^(.)/, (_, group1) => group1.toLowerCase())
 
-const toKebabCase = (value: string & {}) =>
+const toKebabCase = (value: {} & string) =>
   value
     .replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, "$1-$2")
     .toLowerCase()
     .replace(/^-/, "")
     .replace(/\s/, "")
 
-type RequestBody = {
+interface RequestBody {
   type?: ColorExport
-  format?: ColorFormat
   colors?: Colors | ReorderColors
+  format?: ColorFormat
 }
 
 type ResponseData = string
@@ -30,17 +30,20 @@ const handler = async (
 ) => {
   const {
     type = "json",
-    format = "hex",
     colors = [],
+    format = "hex",
   } = (body ?? {}) as RequestBody
   const [extension, isTones] = type.split(".")
   const isJson = extension === "json"
   const parser = isJson ? toCamelCase : toKebabCase
 
-  let json: string = ""
+  let json = ""
 
   if (extension === "css") {
-    const data = colors.reduce(
+    const data = colors.reduce<{
+      light: Dict<string | string[]>
+      dark: Dict<string | string[]>
+    }>(
       (prev, { name, hex }) => {
         name = generateName(prev.light, name, parser)
 
@@ -78,10 +81,7 @@ const handler = async (
 
         return prev
       },
-      { light: {}, dark: {} } as {
-        light: Dict<string | string[]>
-        dark: Dict<string | string[]>
-      },
+      { light: {}, dark: {} },
     )
 
     const lightJson = Object.values(data.light).flat().join("\n")
@@ -94,65 +94,64 @@ const handler = async (
       json += `\n\n@media (prefers-color-scheme: dark) {\n:root {\n${darkJson}\n}\n}`
     }
   } else {
-    const data = colors.reduce(
-      (prev, { name, hex }) => {
-        name = generateName(prev, name, parser)
+    const data = colors.reduce<
+      Dict<[string, string] | Dict<[string, string] | string> | string>
+    >((prev, { name, hex }) => {
+      name = generateName(prev, name, parser)
 
-        if (isTones) {
-          if (isArray(hex)) {
-            const [light, dark] = hex
+      if (isTones) {
+        if (isArray(hex)) {
+          const [light, dark] = hex
 
-            const lightTones = tone(light)
+          const lightTones = tone(light)
 
-            if (light === dark) {
-              prev[name] = lightTones.reduce(
-                (prev, hex, index) => {
-                  prev[tones[index]] = f(hex, format)
+          if (light === dark) {
+            prev[name] = lightTones.reduce<Dict<[string, string] | string>>(
+              (prev, hex, index) => {
+                prev[tones[index]!] = f(hex, format)
 
-                  return prev
-                },
-                {} as Dict<string | [string, string]>,
-              )
-            } else {
-              const darkTones = tone(dark)
-
-              prev[name] = lightTones.reduce(
-                (prev, hex, index) => {
-                  prev[tones[index]] = [
-                    f(hex, format),
-                    f(darkTones[index], format),
-                  ]
-
-                  return prev
-                },
-                {} as Dict<string | [string, string]>,
-              )
-            }
+                return prev
+              },
+              {},
+            )
           } else {
-            prev[name] = tone(hex).reduce((prev, hex, index) => {
-              prev[tones[index]] = f(hex, format)
+            const darkTones = tone(dark)
 
-              return prev
-            }, {} as Dict<string>)
+            prev[name] = lightTones.reduce<Dict<[string, string] | string>>(
+              (prev, hex, index) => {
+                prev[tones[index]!] = [
+                  f(hex, format),
+                  f(darkTones[index], format),
+                ]
+
+                return prev
+              },
+              {},
+            )
           }
         } else {
-          if (isArray(hex)) {
-            const [light, dark] = hex
+          prev[name] = tone(hex).reduce<Dict<string>>((prev, hex, index) => {
+            prev[tones[index]!] = f(hex, format)
 
-            if (light === dark) {
-              prev[name] = f(light, format)
-            } else {
-              prev[name] = [f(light, format), f(dark, format)]
-            }
-          } else {
-            prev[name] = f(hex, format)
-          }
+            return prev
+          }, {})
         }
+      } else {
+        if (isArray(hex)) {
+          const [light, dark] = hex
 
-        return prev
-      },
-      {} as Dict<string | [string, string] | Dict<string | [string, string]>>,
-    )
+          if (light === dark) {
+            prev[name] = f(light, format)
+          } else {
+            prev[name] = [f(light, format), f(dark, format)]
+          }
+        } else {
+          prev[name] = f(hex, format)
+        }
+      }
+
+      return prev
+    }, {})
 
     json = JSON.stringify(data)
   }
@@ -170,7 +169,7 @@ export default handler
 const generateName = (
   values: Dict,
   name: string,
-  parser?: (value: string & {}) => string,
+  parser?: (value: {} & string) => string,
 ) => {
   if (parser) name = parser(name)
 

@@ -1,4 +1,11 @@
+import type {
+  ContextMenuProps,
+  ContextMenuTriggerProps,
+} from "@yamada-ui/react"
+import type { PaletteContext } from "pages/palettes/[uuid]/context"
+import type { FC } from "react"
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   forwardRef,
@@ -6,36 +13,30 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
-  useClipboard,
-  useNotice,
-  Text,
-  useDisclosure,
   Modal,
   ModalBody,
-  Button,
   ModalFooter,
+  Text,
+  useClipboard,
+  useDisclosure,
+  useNotice,
 } from "@yamada-ui/react"
-import type {
-  ContextMenuProps,
-  ContextMenuTriggerProps,
-} from "@yamada-ui/react"
-import Link from "next/link"
-import type { FC } from "react"
-import { memo, useMemo, useRef, useState } from "react"
 import { CopiedColorNotice } from "components/feedback"
 import { PaletteColorForm } from "components/forms"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import { useHexes, usePalette, useHex } from "pages/palettes/[uuid]/context"
+import Link from "next/link"
+import { useHex, useHexes, usePalette } from "pages/palettes/[uuid]/context"
+import { memo, useMemo, useRef, useState } from "react"
 import { getColorName } from "utils/color-name-list"
 
-export type ColorCommandMenuProps = ContextMenuProps & {
-  name?: string
+export interface ColorCommandMenuProps extends ContextMenuProps {
   value: string
-  triggerProps?: ContextMenuTriggerProps
-  hiddenGenerators?: boolean
+  name?: string
   enabledEditPaletteColor?: boolean
+  hiddenGenerators?: boolean
+  triggerProps?: ContextMenuTriggerProps
 }
 
 export const ColorCommandMenu = memo(
@@ -45,15 +46,15 @@ export const ColorCommandMenu = memo(
         value,
         name = getColorName(value),
         children,
-        hiddenGenerators,
         enabledEditPaletteColor,
+        hiddenGenerators,
         triggerProps,
         ...rest
       },
       ref,
     ) => {
       const { palettes } = useApp()
-      const palette = usePalette()
+      const palette = usePalette() as PaletteContext | undefined
 
       const omittedPalettes = useMemo(
         () => palettes.filter(({ uuid }) => uuid !== palette?.uuid),
@@ -69,10 +70,10 @@ export const ColorCommandMenu = memo(
               name: "preventOverflow",
               options: {
                 padding: {
-                  top: 16,
                   bottom: 16,
                   left: 16,
                   right: 16,
+                  top: 16,
                 },
               },
             },
@@ -116,8 +117,8 @@ export const ColorCommandMenu = memo(
 
                 <ColorCommandMenuPalettes
                   name={name}
-                  value={value}
                   palettes={omittedPalettes}
+                  value={value}
                 />
               </>
             ) : null}
@@ -130,7 +131,7 @@ export const ColorCommandMenu = memo(
 
 ColorCommandMenu.displayName = "ColorCommandMenu"
 
-type ColorCommandMenuMainProps = {
+interface ColorCommandMenuMainProps {
   value: string
 }
 
@@ -139,13 +140,13 @@ const ColorCommandMenuMain: FC<ColorCommandMenuMainProps> = memo(
     const { t } = useI18n()
     const { onCopy } = useClipboard(value, 5000)
     const notice = useNotice({
-      limit: 1,
-      placement: "bottom",
       component: () => (
         <CopiedColorNotice value={value}>
           {t("component.copied-color-notice.copied")}
         </CopiedColorNotice>
       ),
+      limit: 1,
+      placement: "bottom",
     })
 
     return (
@@ -176,14 +177,14 @@ const ColorCommandMenuMain: FC<ColorCommandMenuMainProps> = memo(
 
 ColorCommandMenuMain.displayName = "ColorCommandMenuMain"
 
-type ColorCommandMenuPaletteColorProps = {}
+interface ColorCommandMenuPaletteColorProps {}
 
 const ColorCommandMenuPaletteColor: FC<ColorCommandMenuPaletteColorProps> =
   memo(() => {
     const { id, name: nameProp, hex } = useHex()
-    const { onEdit, onDelete, colorMode } = useHexes()
+    const { colorMode, onDelete, onEdit } = useHexes()
     const isSubmitRef = useRef<boolean>(false)
-    const { isOpen, onOpen, onClose } = useDisclosure({
+    const { isOpen, onClose, onOpen } = useDisclosure({
       onClose: () => {
         if (!isSubmitRef.current) {
           setName(nameProp)
@@ -224,26 +225,26 @@ const ColorCommandMenuPaletteColor: FC<ColorCommandMenuPaletteColorProps> =
           </MenuItem>
         </MenuGroup>
 
-        <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
+        <Modal isOpen={isOpen} withCloseButton={false} onClose={onClose}>
           <ModalBody>
             <PaletteColorForm
               name={name}
-              onChangeName={setName}
               color={color}
               onChangeColor={setColor}
+              onChangeName={setName}
               onSubmit={onSubmit}
             />
           </ModalBody>
 
           <ModalFooter>
             <Button
+              colorScheme="neutral"
+              bg={["blackAlpha.200", "whiteAlpha.100"]}
+              borderColor="transparent"
               isDisabled={!name.length}
               w="full"
-              colorScheme="neutral"
-              borderColor="transparent"
-              bg={["blackAlpha.200", "whiteAlpha.100"]}
-              onClick={onSubmit}
               _hover={{ _disabled: {} }}
+              onClick={onSubmit}
             >
               {t("palette.edit.submit")}
             </Button>
@@ -255,9 +256,9 @@ const ColorCommandMenuPaletteColor: FC<ColorCommandMenuPaletteColorProps> =
 
 ColorCommandMenuPaletteColor.displayName = "ColorCommandMenuPaletteColor"
 
-type ColorCommandMenuPaletteProps = {}
+interface ColorCommandMenuPaletteProps {}
 
-const ColorCommandMenuPalette: FC<ColorCommandMenuPaletteProps> = memo(({}) => {
+const ColorCommandMenuPalette: FC<ColorCommandMenuPaletteProps> = memo(() => {
   const { t } = useI18n()
   const { onClone } = useHexes()
   const paletteColor = useHex()
@@ -273,7 +274,7 @@ const ColorCommandMenuPalette: FC<ColorCommandMenuPaletteProps> = memo(({}) => {
 
 ColorCommandMenuPalette.displayName = "ColorCommandMenuPalette"
 
-type ColorCommandMenuGeneratorsProps = {
+interface ColorCommandMenuGeneratorsProps {
   value: string
 }
 
@@ -299,10 +300,10 @@ const ColorCommandMenuGenerators: FC<ColorCommandMenuGeneratorsProps> = memo(
 
 ColorCommandMenuGenerators.displayName = "ColorCommandMenuGenerators"
 
-type ColorCommandMenuPalettesProps = {
+interface ColorCommandMenuPalettesProps {
   name: string
-  value: string
   palettes: ColorPalettes
+  value: string
 }
 
 const ColorCommandMenuPalettes: FC<ColorCommandMenuPalettesProps> = memo(
@@ -312,14 +313,14 @@ const ColorCommandMenuPalettes: FC<ColorCommandMenuPalettesProps> = memo(
 
     return (
       <MenuGroup label={t("component.color-command-menu.palettes.label")}>
-        {palettes.map(({ uuid, name, colors, ...rest }) => (
+        {palettes.map(({ name, colors, uuid, ...rest }) => (
           <MenuItem
             key={uuid}
             onClick={() =>
               changePalette({
-                uuid,
                 name,
-                colors: [...colors, { hex: [value, value], name: colorName }],
+                colors: [...colors, { name: colorName, hex: [value, value] }],
+                uuid,
                 ...rest,
               })
             }

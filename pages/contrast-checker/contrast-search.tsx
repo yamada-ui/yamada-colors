@@ -1,32 +1,34 @@
 import type { FlexProps } from "@yamada-ui/react"
-import { VStack, Wrap, useUpdateEffect } from "@yamada-ui/react"
-import { memo, useState, type FC } from "react"
+import type { FC } from "react"
+import { useUpdateEffect, VStack, Wrap } from "@yamada-ui/react"
 import { SearchColor } from "components/forms"
 import { CopyText } from "components/other"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import { memo, useState } from "react"
 import { f } from "utils/color"
 
-export type ContrastSearchProps = Omit<FlexProps, "onChange"> &
-  ColorContrastSource & {
-    onChange: (ground: ColorContrastGround, value: string) => void
-  }
+export interface ContrastSearchProps
+  extends ColorContrastSource,
+    Omit<FlexProps, "bg" | "onChange"> {
+  onChange: (ground: ColorContrastGround, value: string) => void
+}
 
 export const ContrastSearch: FC<ContrastSearchProps> = memo(
-  ({ fg, bg, onChange, ...rest }) => {
+  ({ bg, fg, onChange, ...rest }) => {
     const { t } = useI18n()
 
     return (
       <Wrap gap="md" {...rest}>
         <ColorInput
-          label={t("contrast-checker.foreground")}
           ground="fg"
+          label={t("contrast-checker.foreground")}
           value={fg}
           onChange={onChange}
         />
         <ColorInput
-          label={t("contrast-checker.background")}
           ground="bg"
+          label={t("contrast-checker.background")}
           value={bg}
           onChange={onChange}
         />
@@ -37,16 +39,16 @@ export const ContrastSearch: FC<ContrastSearchProps> = memo(
 
 ContrastSearch.displayName = "ContrastSearch"
 
-type ColorInputProps = {
-  label: string
+interface ColorInputProps {
   ground: ColorContrastGround
+  label: string
   value: string
   onChange: (ground: ColorContrastGround, value: string) => void
 }
 
 const ColorInput: FC<ColorInputProps> = ({
-  label,
   ground,
+  label,
   value: valueProp,
   onChange,
 }) => {
@@ -58,13 +60,13 @@ const ColorInput: FC<ColorInputProps> = ({
   }, [valueProp])
 
   return (
-    <VStack minW="xs" w="auto" flex="1" gap="xs">
+    <VStack flex="1" gap="xs" minW="xs" w="auto">
       <CopyText
         as="span"
+        alignSelf="flex-start"
         color="muted"
         fontSize="sm"
         value={value}
-        alignSelf="flex-start"
       >
         {label}
       </CopyText>

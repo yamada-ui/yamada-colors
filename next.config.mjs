@@ -1,17 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  optimizeFonts: true,
-  reactStrictMode: false,
-  pageExtensions: ["page.jsx", "page.tsx", "api.js", "api.ts"],
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en", "ja"],
-    localeDetection: false,
-  },
-  productionBrowserSourceMaps: false,
   experimental: {
     optimizePackageImports: ["@yamada-ui/lucide"],
   },
+  i18n: {
+    defaultLocale: "en",
+    localeDetection: false,
+    locales: ["en", "ja"],
+  },
+  optimizeFonts: true,
+  pageExtensions: ["page.jsx", "page.tsx", "api.js", "api.ts"],
+  productionBrowserSourceMaps: false,
+  reactStrictMode: false,
 }
 
 export default nextConfig

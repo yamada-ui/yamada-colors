@@ -5,47 +5,46 @@ import type {
   Merge,
   MotionProps,
 } from "@yamada-ui/react"
+import type { ColorCommandMenuProps } from "components/overlay"
+import type { LinkProps } from "next/link"
 import {
   AspectRatio,
   Box,
+  forwardRef,
   Grid,
   Motion,
   Text,
   VStack,
-  forwardRef,
 } from "@yamada-ui/react"
-import type { LinkProps } from "next/link"
-import Link from "next/link"
-import { memo } from "react"
-import type { ColorCommandMenuProps } from "components/overlay"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
-
+import Link from "next/link"
+import { memo } from "react"
 import { f, isLight } from "utils/color"
 
-export type ColorCardProps = AspectRatioProps & {
-  size?: "md" | "lg"
+export interface ColorCardProps extends AspectRatioProps {
   hex: string
   name?: string
-  linkProps?: Merge<BoxProps, Omit<LinkProps, "as">>
-  motionProps?: MotionProps
-  gridProps?: GridProps
+  size?: "lg" | "md"
   boxProps?: BoxProps
+  gridProps?: GridProps
+  linkProps?: Merge<BoxProps, Omit<LinkProps, "as">>
   menuProps?: Omit<ColorCommandMenuProps, "value">
+  motionProps?: MotionProps
 }
 
 export const ColorCard = memo(
   forwardRef<ColorCardProps, "div">(
     (
       {
+        name,
         size = "lg",
         hex,
-        name,
-        linkProps,
-        motionProps,
-        gridProps,
         boxProps,
+        gridProps,
+        linkProps,
         menuProps,
+        motionProps,
         ...rest
       },
       ref,
@@ -64,32 +63,32 @@ export const ColorCard = memo(
                 _focusVisible={{
                   zIndex: 1,
                   _before: {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
                     bottom: 0,
                     boxShadow: "inline",
+                    content: '""',
+                    left: 0,
+                    position: "absolute",
+                    right: 0,
                     rounded: "2xl",
+                    top: 0,
                   },
                 }}
                 {...linkProps}
               >
                 <Motion
-                  boxSize="full"
                   bg={hex}
+                  boxSize="full"
                   color={isLight(hex) ? "black" : "white"}
-                  p={{ base: "normal", lg: "md", md: "normal", sm: "md" }}
+                  p={{ base: "normal", sm: "md", md: "normal", lg: "md" }}
                   rounded="2xl"
                   whileHover={{ scale: 0.95 }}
                   {...motionProps}
                 >
                   <VStack
-                    minW="0"
                     boxSize="full"
-                    justifyContent="flex-end"
                     gap={{ base: "xs", sm: "0" }}
+                    justifyContent="flex-end"
+                    minW="0"
                   >
                     {name ? (
                       <Text as="span" fontWeight="medium" lineClamp={1}>
@@ -123,24 +122,24 @@ export const ColorCard = memo(
               <Grid
                 as={Link}
                 href={`/colors/${hex.replace("#", "")}`}
-                templateColumns={{ base: "auto 1fr" }}
                 gap={{ base: "md", sm: "sm" }}
                 outline={0}
-                _focusVisible={{ boxShadow: "outline" }}
                 rounded="2xl"
+                templateColumns={{ base: "auto 1fr" }}
+                _focusVisible={{ boxShadow: "outline" }}
                 {...gridProps}
               >
                 <Box
-                  boxSize={{ base: "12" }}
                   bg={hex}
+                  boxSize={{ base: "12" }}
                   rounded="2xl"
                   {...boxProps}
                 />
 
                 <VStack
-                  minW="0"
                   gap={{ base: "xs", sm: "0" }}
                   justifyContent="center"
+                  minW="0"
                 >
                   {name ? (
                     <Text as="span" fontWeight="medium" lineClamp={1}>
@@ -148,7 +147,7 @@ export const ColorCard = memo(
                     </Text>
                   ) : null}
 
-                  <Text as="span" fontSize="sm" color="muted" lineClamp={1}>
+                  <Text as="span" color="muted" fontSize="sm" lineClamp={1}>
                     {f(hex, format)}
                   </Text>
                 </VStack>

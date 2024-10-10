@@ -1,24 +1,24 @@
 import type { CenterProps } from "@yamada-ui/react"
+import type { FC } from "react"
 import { Center, ColorSwatch, HStack, Text } from "@yamada-ui/react"
 import { memo } from "react"
-import type { FC } from "react"
 
-export type CopiedColorNoticeProps = CenterProps & {
+export interface CopiedColorNoticeProps extends CenterProps {
   value: string
 }
 
 export const CopiedColorNotice: FC<CopiedColorNoticeProps> = memo(
-  ({ value, children, ...rest }) => {
+  ({ children, value, ...rest }) => {
     return (
       <Center {...rest}>
         <HStack
           bg={["white", "black"]}
-          rounded="full"
-          py="sm"
+          boxShadow={["md", "dark-lg"]}
+          gap="sm"
           pl="sm"
           pr="normal"
-          gap="sm"
-          boxShadow={["md", "dark-lg"]}
+          py="sm"
+          rounded="full"
         >
           <ColorSwatch color={value} isRounded />
 

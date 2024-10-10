@@ -1,11 +1,3 @@
-import {
-  Menu as MenuIcon,
-  Moon,
-  Sun,
-  Languages,
-  Search as SearchIcon,
-  Box as BoxIcon,
-} from "@yamada-ui/lucide"
 import type {
   CenterProps,
   ColorMode,
@@ -14,6 +6,16 @@ import type {
   MenuProps,
   UseDisclosureReturn,
 } from "@yamada-ui/react"
+import type { FC } from "react"
+import type { Locale } from "utils/i18n"
+import {
+  Box as BoxIcon,
+  Languages,
+  Menu as MenuIcon,
+  Moon,
+  Search as SearchIcon,
+  Sun,
+} from "@yamada-ui/lucide"
 import {
   Box,
   Center,
@@ -22,19 +24,18 @@ import {
   Drawer,
   DrawerBody,
   DrawerHeader,
+  forwardRef,
   HStack,
   IconButton,
   Image,
+  isString,
   Menu,
   MenuButton,
   MenuList,
   MenuOptionGroup,
   MenuOptionItem,
-  Spacer,
-  VStack,
-  forwardRef,
-  isString,
   mergeRefs,
+  Spacer,
   useBreakpoint,
   useBreakpointValue,
   useColorMode,
@@ -42,21 +43,20 @@ import {
   useMotionValueEvent,
   useScroll,
   useUpdateEffect,
+  VStack,
 } from "@yamada-ui/react"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import type { FC } from "react"
-import { memo, useEffect, useRef, useState } from "react"
 import { SearchColor } from "components/forms"
 import { Discord, Github } from "components/media-and-icons"
 import { NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { memo, useEffect, useRef, useState } from "react"
 import { f } from "utils/color"
-import type { Locale } from "utils/i18n"
 
-export type HeaderProps = CenterProps
+export interface HeaderProps extends CenterProps {}
 
 export const Header = memo(
   forwardRef<HeaderProps, "div">(({ ...rest }, ref) => {
@@ -76,53 +76,53 @@ export const Header = memo(
         <Center
           ref={mergeRefs(ref, headerRef)}
           as="header"
-          w="full"
-          position="sticky"
-          top="0"
           left="0"
+          position="sticky"
           right="0"
+          top="0"
+          w="full"
           zIndex="jeice"
           {...rest}
         >
-          <Center w="full" maxW="9xl" px={{ base: "lg", lg: "0" }}>
+          <Center maxW="9xl" px={{ base: "lg", lg: "0" }} w="full">
             <VStack
-              w="full"
-              gap="0"
-              py="3"
-              px={{ base: "lg", lg: "md" }}
-              bg={["blackAlpha.50", "whiteAlpha.100"]}
+              backdropBlur="10px"
               backdropFilter="auto"
               backdropSaturate="180%"
-              backdropBlur="10px"
-              transitionProperty="common"
-              transitionDuration="slower"
+              bg={["blackAlpha.50", "whiteAlpha.100"]}
+              gap="0"
+              px={{ base: "lg", lg: "md" }}
+              py="3"
               roundedBottom="2xl"
               shadow={isScroll ? ["base", "dark-sm"] : undefined}
+              transitionDuration="slower"
+              transitionProperty="common"
+              w="full"
             >
               <HStack gap={{ base: "md", sm: "sm" }}>
                 <Center
                   as={Link}
                   href="/"
                   aria-label="Yamada UI"
-                  _hover={{ opacity: 0.7 }}
-                  transitionProperty="opacity"
+                  rounded="md"
                   transitionDuration="slower"
+                  transitionProperty="opacity"
                   _focus={{ outline: "none" }}
                   _focusVisible={{ boxShadow: "outline" }}
-                  rounded="md"
+                  _hover={{ opacity: 0.7 }}
                 >
                   <Image
                     src="/logo-black.png"
                     alt="Yamada Colors"
-                    w="auto"
                     h={{ base: "8", sm: "7" }}
+                    w="auto"
                     _dark={{ display: "none" }}
                   />
                   <Image
                     src="/logo-white.png"
                     alt="Yamada Colors"
-                    w="auto"
                     h={{ base: "8", sm: "7" }}
+                    w="auto"
                     _light={{ display: "none" }}
                   />
                 </Center>
@@ -134,12 +134,12 @@ export const Header = memo(
 
                   <IconButton
                     variant="ghost"
-                    isRounded
                     aria-label="Open navigation menu"
-                    display={{ base: "none", sm: "inline-flex" }}
                     color="muted"
-                    onClick={searchControls.onToggle}
+                    display={{ base: "none", sm: "inline-flex" }}
                     icon={<SearchIcon fontSize="1.5rem" />}
+                    isRounded
+                    onClick={searchControls.onToggle}
                   />
                 </>
 
@@ -148,7 +148,7 @@ export const Header = memo(
 
               <Collapse isOpen={searchControls.isOpen}>
                 <Box p="1">
-                  <Search isScroll={isScroll} isMobile />
+                  <Search isMobile isScroll={isScroll} />
                 </Box>
               </Collapse>
             </VStack>
@@ -164,15 +164,15 @@ export const Header = memo(
 const disableDefaultValue = (path: string) =>
   path === "/" || /^\/(history|categories|palettes)/.test(path)
 
-type SearchProps = {
+interface SearchProps {
   isScroll: boolean
   isMobile?: boolean
 }
 
-const Search: FC<SearchProps> = memo(({ isScroll, isMobile }) => {
+const Search: FC<SearchProps> = memo(({ isMobile, isScroll }) => {
   const padding = useBreakpointValue({ base: 32, md: 16 })
   const router = useRouter()
-  const { hex, format } = useApp()
+  const { format, hex } = useApp()
   const [value, setValue] = useState<string | undefined>(() => {
     if (disableDefaultValue(router.asPath)) {
       return undefined
@@ -189,94 +189,92 @@ const Search: FC<SearchProps> = memo(({ isScroll, isMobile }) => {
 
   return (
     <SearchColor
-      value={value}
-      onChange={setValue}
-      onSubmit={(value) => {
-        router.push(`/colors/${value.replace("#", "")}`)
-      }}
-      maxW={!isMobile ? { base: "sm", md: "xs" } : "full"}
+      backdropBlur="10px"
+      backdropFilter="auto"
+      backdropSaturate="180%"
+      bg={
+        isScroll
+          ? ["whiteAlpha.600", "blackAlpha.500"]
+          : ["whiteAlpha.900", "blackAlpha.600"]
+      }
+      borderColor="transparent"
+      isRemoveScroll={isMobile}
       matchWidth
+      maxW={!isMobile ? { base: "sm", md: "xs" } : "full"}
+      modifiers={[
+        {
+          name: "preventOverflow",
+          options: {
+            padding: {
+              bottom: padding,
+              left: padding,
+              right: padding,
+              top: padding,
+            },
+          },
+        },
+      ]}
+      strategy={isMobile ? "fixed" : "absolute"}
+      transitionDuration="slower"
+      transitionProperty="common"
+      value={value}
+      _hover={{}}
       containerProps={{
         display: !isMobile
           ? { base: "block", sm: "none" }
           : { base: "none", sm: "block" },
         mt: isMobile ? "3" : "0",
       }}
-      borderColor="transparent"
-      _hover={{}}
-      bg={
-        isScroll
-          ? ["whiteAlpha.600", "blackAlpha.500"]
-          : ["whiteAlpha.900", "blackAlpha.600"]
-      }
-      backdropFilter="auto"
-      backdropSaturate="180%"
-      backdropBlur="10px"
-      transitionProperty="common"
-      transitionDuration="slower"
-      modifiers={[
-        {
-          name: "preventOverflow",
-          options: {
-            padding: {
-              top: padding,
-              bottom: padding,
-              left: padding,
-              right: padding,
-            },
-          },
-        },
-      ]}
-      strategy={isMobile ? "fixed" : "absolute"}
-      isRemoveScroll={isMobile}
+      onChange={setValue}
+      onSubmit={(value) => {
+        router.push(`/colors/${value.replace("#", "")}`)
+      }}
     />
   )
 })
 
 Search.displayName = "Search"
 
-type ButtonGroupProps = Partial<UseDisclosureReturn> & {
+interface ButtonGroupProps extends Partial<UseDisclosureReturn> {
   isMobile?: boolean
 }
 
 const ButtonGroup: FC<ButtonGroupProps> = memo(
-  ({ isMobile, isOpen, onOpen, onClose }) => {
+  ({ isMobile, isOpen, onClose, onOpen }) => {
     return (
       <HStack gap="sm">
         <NextLinkIconButton
           href={CONSTANT.SNS.DISCORD}
+          variant="ghost"
+          aria-label="GitHub repository"
+          color="muted"
+          display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
+          icon={<Discord />}
           isExternal
           isRounded
-          aria-label="GitHub repository"
-          variant="ghost"
-          display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
-          color="muted"
-          icon={<Discord />}
           _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         />
 
         <NextLinkIconButton
           href={CONSTANT.SNS.GITHUB.YAMADA_COLORS}
+          variant="ghost"
+          aria-label="Discord server"
+          color="muted"
+          display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
+          icon={<Github />}
           isExternal
           isRounded
-          aria-label="Discord server"
-          variant="ghost"
-          display={{ base: "inline-flex", lg: !isMobile ? "none" : undefined }}
-          color="muted"
-          icon={<Github />}
           _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         />
 
         <FormatButton />
 
-        {CONSTANT.I18N.LOCALES.length > 1 ? (
-          <I18nButton
-            display={{
-              base: "inline-flex",
-              md: !isMobile ? "none" : undefined,
-            }}
-          />
-        ) : null}
+        <I18nButton
+          display={{
+            base: "inline-flex",
+            md: !isMobile ? "none" : undefined,
+          }}
+        />
 
         <ColorModeButton
           display={{ base: "inline-flex", sm: !isMobile ? "none" : undefined }}
@@ -285,23 +283,23 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
         {!isOpen ? (
           <IconButton
             variant="ghost"
-            isRounded
             aria-label="Open navigation menu"
-            display={{ base: "none", lg: "inline-flex" }}
             color="muted"
-            onClick={onOpen}
+            display={{ base: "none", lg: "inline-flex" }}
             icon={<MenuIcon fontSize="1.5rem" />}
+            isRounded
             _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
+            onClick={onOpen}
           />
         ) : (
           <CloseButton
             size="lg"
-            isRounded
             aria-label="Close navigation menu"
-            display={{ base: "none", lg: "inline-flex" }}
             color="muted"
-            onClick={onClose}
+            display={{ base: "none", lg: "inline-flex" }}
+            isRounded
             _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
+            onClick={onClose}
           />
         )}
       </HStack>
@@ -311,52 +309,52 @@ const ButtonGroup: FC<ButtonGroupProps> = memo(
 
 ButtonGroup.displayName = "ButtonGroup"
 
-type I18nButtonProps = IconButtonProps & {
+interface I18nButtonProps extends IconButtonProps {
   menuProps?: MenuProps
 }
 
 const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
   const padding = useBreakpointValue({ base: 32, md: 16 })
-  const { locale, changeLocale } = useI18n()
+  const { changeLocale, locale } = useI18n()
 
   return (
     <Menu
-      placement="bottom"
       modifiers={[
         {
           name: "preventOverflow",
           options: {
             padding: {
-              top: padding,
               bottom: padding,
               left: padding,
               right: padding,
+              top: padding,
             },
           },
         },
       ]}
+      placement="bottom"
       restoreFocus={false}
       {...menuProps}
     >
       <MenuButton
         as={IconButton}
-        aria-label="Open language switching menu"
-        isRounded
         variant="ghost"
+        aria-label="Open language switching menu"
         color="muted"
         icon={<Languages fontSize="1.5rem" />}
+        isRounded
         _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />
 
       <MenuList>
         <MenuOptionGroup<Locale>
+          type="radio"
           value={locale}
           onChange={changeLocale}
-          type="radio"
         >
           {CONSTANT.I18N.LOCALES.map(({ label, value }) => (
-            <MenuOptionItem key={value} value={value} closeOnSelect>
+            <MenuOptionItem key={value} closeOnSelect value={value}>
               {label}
             </MenuOptionItem>
           ))}
@@ -368,39 +366,38 @@ const I18nButton: FC<I18nButtonProps> = memo(({ menuProps, ...rest }) => {
 
 I18nButton.displayName = "I18nButton"
 
-type ColorModeButtonProps = IconButtonProps & {
+interface ColorModeButtonProps extends IconButtonProps {
   menuProps?: MenuProps
 }
 
 const ColorModeButton: FC<ColorModeButtonProps> = memo(
   ({ menuProps, ...rest }) => {
     const padding = useBreakpointValue({ base: 32, md: 16 })
-    const { colorMode, internalColorMode, changeColorMode } = useColorMode()
+    const { changeColorMode, colorMode, internalColorMode } = useColorMode()
 
     return (
       <Menu
-        placement="bottom"
         modifiers={[
           {
             name: "preventOverflow",
             options: {
               padding: {
-                top: padding,
                 bottom: padding,
                 left: padding,
                 right: padding,
+                top: padding,
               },
             },
           },
         ]}
+        placement="bottom"
         restoreFocus={false}
         {...menuProps}
       >
         <MenuButton
           as={IconButton}
-          aria-label="Open color mode switching menu"
-          isRounded
           variant="ghost"
+          aria-label="Open color mode switching menu"
           color="muted"
           icon={
             colorMode === "dark" ? (
@@ -409,23 +406,24 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
               <Moon fontSize="1.5rem" />
             )
           }
+          isRounded
           _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
           {...rest}
         />
 
         <MenuList>
-          <MenuOptionGroup<ColorMode | "system">
+          <MenuOptionGroup<"system" | ColorMode>
+            type="radio"
             value={internalColorMode}
             onChange={changeColorMode}
-            type="radio"
           >
-            <MenuOptionItem value="light" closeOnSelect>
+            <MenuOptionItem closeOnSelect value="light">
               Light
             </MenuOptionItem>
-            <MenuOptionItem value="dark" closeOnSelect>
+            <MenuOptionItem closeOnSelect value="dark">
               Dark
             </MenuOptionItem>
-            <MenuOptionItem value="system" closeOnSelect>
+            <MenuOptionItem closeOnSelect value="system">
               System
             </MenuOptionItem>
           </MenuOptionGroup>
@@ -437,57 +435,57 @@ const ColorModeButton: FC<ColorModeButtonProps> = memo(
 
 ColorModeButton.displayName = "ColorModeButton"
 
-type FormatButtonProps = IconButtonProps & {
+interface FormatButtonProps extends IconButtonProps {
   menuProps?: MenuProps
 }
 
 const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
-  const { format, changeFormat } = useApp()
+  const { changeFormat, format } = useApp()
   const padding = useBreakpointValue({ base: 32, md: 16 })
 
   return (
     <Menu
-      placement="bottom"
       modifiers={[
         {
           name: "preventOverflow",
           options: {
             padding: {
-              top: padding,
               bottom: padding,
               left: padding,
               right: padding,
+              top: padding,
             },
           },
         },
       ]}
+      placement="bottom"
       restoreFocus={false}
       {...menuProps}
     >
       <MenuButton
         as={IconButton}
-        aria-label="Open color mode switching menu"
-        isRounded
         variant="ghost"
+        aria-label="Open color mode switching menu"
         color="muted"
         icon={<BoxIcon fontSize="1.5rem" />}
+        isRounded
         _hover={{ bg: [`blackAlpha.100`, `whiteAlpha.50`] }}
         {...rest}
       />
 
       <MenuList>
         <MenuOptionGroup<ColorFormat>
+          type="radio"
           value={format}
           onChange={changeFormat}
-          type="radio"
         >
-          <MenuOptionItem value="hex" closeOnSelect>
+          <MenuOptionItem closeOnSelect value="hex">
             HEX
           </MenuOptionItem>
-          <MenuOptionItem value="rgb" closeOnSelect>
+          <MenuOptionItem closeOnSelect value="rgb">
             RGB
           </MenuOptionItem>
-          <MenuOptionItem value="hsl" closeOnSelect>
+          <MenuOptionItem closeOnSelect value="hsl">
             HSL
           </MenuOptionItem>
         </MenuOptionGroup>
@@ -498,10 +496,10 @@ const FormatButton: FC<FormatButtonProps> = memo(({ menuProps, ...rest }) => {
 
 FormatButton.displayName = "FormatButton"
 
-type MobileMenuProps = DrawerProps
+interface MobileMenuProps extends DrawerProps {}
 
 const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
-  const { hex, format } = useApp()
+  const { format, hex } = useApp()
   const { events } = useRouter()
   const breakpoint = useBreakpoint()
 
@@ -519,18 +517,18 @@ const MobileMenu: FC<MobileMenuProps> = memo(({ isOpen, onClose }) => {
 
   return (
     <Drawer
-      isOpen={isOpen}
-      onClose={onClose}
-      withCloseButton={false}
       isFullHeight
+      isOpen={isOpen}
       roundedLeft="xl"
       w="auto"
+      withCloseButton={false}
+      onClose={onClose}
     >
       <DrawerHeader
-        justifyContent="flex-end"
-        pt="sm"
         fontSize="md"
         fontWeight="normal"
+        justifyContent="flex-end"
+        pt="sm"
       >
         <ButtonGroup isMobile {...{ format, isOpen, onClose }} />
       </DrawerHeader>

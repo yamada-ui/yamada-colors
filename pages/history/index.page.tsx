@@ -1,9 +1,9 @@
-import { Grid, GridItem } from "@yamada-ui/react"
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from "next"
+import { Grid, GridItem } from "@yamada-ui/react"
 import { ColorCard } from "components/data-display"
 import { CONSTANT } from "constant"
 import { useI18n } from "contexts/i18n-context"
@@ -12,45 +12,45 @@ import { getColorName } from "utils/color-name-list"
 import { getServerSideCommonProps } from "utils/next"
 import { getCookie } from "utils/storage"
 
-export const getServerSideProps = async (req: GetServerSidePropsContext) => {
+export const getServerSideProps = (req: GetServerSidePropsContext) => {
   const {
-    props: { hex, cookies, format, palettes },
-  } = await getServerSideCommonProps(req)
+    props: { cookies, format, hex, palettes },
+  } = getServerSideCommonProps(req)
 
   const hexes = getCookie<string[]>(cookies, CONSTANT.STORAGE.HISTORY, "[]")
-  const history = hexes.map((hex) => ({ hex, name: getColorName(hex) }))
+  const history = hexes.map((hex) => ({ name: getColorName(hex), hex }))
 
-  const props = { cookies, hex, format, history, palettes }
+  const props = { cookies, format, hex, history, palettes }
 
   return { props }
 }
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const Page: NextPage<PageProps> = ({ hex, history, format, palettes }) => {
+const Page: NextPage<PageProps> = ({ format, hex, history, palettes }) => {
   const { t } = useI18n()
 
   return (
     <AppLayout
-      title={t("history.title")}
       description={t("history.description")}
-      hex={hex}
       format={format}
+      hex={hex}
       palettes={palettes}
+      title={t("history.title")}
     >
       <Grid
         as="ul"
+        gap="md"
         templateColumns={{
           base: "repeat(4, 1fr)",
-          xl: "repeat(2, 1fr)",
-          lg: "repeat(3, 1fr)",
           md: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
+          xl: "repeat(2, 1fr)",
         }}
-        gap="md"
       >
-        {history.map(({ hex, name }, index) => (
+        {history.map(({ name, hex }, index) => (
           <GridItem key={`${hex}-${index}`} as="li">
-            <ColorCard hex={hex} name={name} />
+            <ColorCard name={name} hex={hex} />
           </GridItem>
         ))}
       </Grid>

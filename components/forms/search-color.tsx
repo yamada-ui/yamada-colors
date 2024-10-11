@@ -69,7 +69,6 @@ export const SearchColor = memo(
               isOpen={isOpen}
               matchWidth
               placeholder={f("#ffffff", format)}
-              rounded="full"
               value={value}
               eyeDropperProps={{ fontSize: "1em", right: 9, rounded: "full" }}
               inputProps={{ pe: "4rem" }}
@@ -82,6 +81,10 @@ export const SearchColor = memo(
               }}
               onOpen={onOpen}
               {...rest}
+              fieldProps={{
+                rounded: "full",
+                ...rest.fieldProps,
+              }}
             >
               <Button
                 colorScheme="neutral"

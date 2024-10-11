@@ -2,7 +2,6 @@ import type {
   ContextMenuProps,
   ContextMenuTriggerProps,
 } from "@yamada-ui/react"
-import type { PaletteContext } from "pages/palettes/[uuid]/context"
 import type { FC } from "react"
 import {
   Button,
@@ -27,15 +26,15 @@ import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import Link from "next/link"
-import { useHex, useHexes, usePalette } from "pages/palettes/[uuid]/context"
+import { useHex, useHexes } from "pages/palettes/[uuid]/context"
 import { memo, useMemo, useRef, useState } from "react"
 import { getColorName } from "utils/color-name-list"
 
 export interface ColorCommandMenuProps extends ContextMenuProps {
   value: string
   name?: string
-  enabledEditPaletteColor?: boolean
   hiddenGenerators?: boolean
+  uuid?: string
   triggerProps?: ContextMenuTriggerProps
 }
 
@@ -46,19 +45,18 @@ export const ColorCommandMenu = memo(
         value,
         name = getColorName(value),
         children,
-        enabledEditPaletteColor,
         hiddenGenerators,
+        uuid,
         triggerProps,
         ...rest
       },
       ref,
     ) => {
       const { palettes } = useApp()
-      const palette = usePalette() as PaletteContext | undefined
 
       const omittedPalettes = useMemo(
-        () => palettes.filter(({ uuid }) => uuid !== palette?.uuid),
-        [palette, palettes],
+        () => palettes.filter((palette) => uuid !== palette.uuid),
+        [palettes, uuid],
       )
 
       const hasPalettes = !!omittedPalettes.length
@@ -87,7 +85,7 @@ export const ColorCommandMenu = memo(
           <MenuList maxW="sm">
             <ColorCommandMenuMain value={value} />
 
-            {enabledEditPaletteColor ? (
+            {!!uuid ? (
               <>
                 <MenuDivider />
 
@@ -103,7 +101,7 @@ export const ColorCommandMenu = memo(
               </>
             ) : null}
 
-            {palette ? (
+            {!!uuid ? (
               <>
                 <MenuDivider />
 

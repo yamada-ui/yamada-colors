@@ -189,15 +189,6 @@ const Search: FC<SearchProps> = memo(({ isMobile, isScroll }) => {
 
   return (
     <SearchColor
-      backdropBlur="10px"
-      backdropFilter="auto"
-      backdropSaturate="180%"
-      bg={
-        isScroll
-          ? ["whiteAlpha.600", "blackAlpha.500"]
-          : ["whiteAlpha.900", "blackAlpha.600"]
-      }
-      borderColor="transparent"
       isRemoveScroll={isMobile}
       matchWidth
       maxW={!isMobile ? { base: "sm", md: "xs" } : "full"}
@@ -224,6 +215,15 @@ const Search: FC<SearchProps> = memo(({ isMobile, isScroll }) => {
           ? { base: "block", sm: "none" }
           : { base: "none", sm: "block" },
         mt: isMobile ? "3" : "0",
+      }}
+      fieldProps={{
+        backdropBlur: "10px",
+        backdropFilter: "auto",
+        backdropSaturate: "180%",
+        bg: isScroll
+          ? ["whiteAlpha.600", "blackAlpha.500"]
+          : ["whiteAlpha.900", "blackAlpha.600"],
+        borderColor: "transparent",
       }}
       onChange={setValue}
       onSubmit={(value) => {

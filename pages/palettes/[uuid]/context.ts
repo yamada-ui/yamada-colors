@@ -21,10 +21,9 @@ export interface PaletteContext {
 
 export const [PaletteProvider, usePalette] = createContext<PaletteContext>({
   name: "PaletteContext",
-  strict: false,
 })
 
-interface HexesContext {
+export interface HexesContext {
   colorMode: ColorMode
   toggleColorMode: () => void
   onClone: (color: ReorderColor) => void
@@ -34,12 +33,10 @@ interface HexesContext {
 
 export const [HexesProvider, useHexes] = createContext<HexesContext>({
   name: "HexesContext",
-  strict: false,
 })
 
-interface HexContext extends ReorderColor {}
+export interface HexContext extends ReorderColor {}
 
 export const [HexProvider, useHex] = createContext<HexContext>({
   name: "HexContext",
-  strict: false,
 })

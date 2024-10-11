@@ -44,7 +44,7 @@ export const Hexes: FC<HexesProps> = memo(() => {
     name,
     changeColors,
     colorMode: colorModeProp,
-    colors = [],
+    colors,
     timestamp,
     uuid,
   } = usePalette()
@@ -244,7 +244,7 @@ HexHeader.displayName = "HexHeader"
 interface HexReorderProps {}
 
 const HexReorder: FC<HexReorderProps> = memo(() => {
-  const { name, changeColors, colors = [], timestamp, uuid } = usePalette()
+  const { name, changeColors, colors, timestamp, uuid } = usePalette()
   const { t } = useI18n()
   const { colorMode, onEdit } = useHexes()
   const { changePalette } = useApp()
@@ -421,13 +421,14 @@ interface HexControlProps extends Omit<HexContainerProps, "id">, ReorderColor {
 const HexControl: FC<HexControlProps> = memo(
   ({ id, name, colorMode, hex, ...rest }) => {
     const { format } = useApp()
+    const { uuid } = usePalette()
     const isEditRef = useRef<boolean>(false)
     const { isOpen, onClose, onOpen } = useDisclosure()
     const isMobile = useBreakpointValue({ base: false, sm: true })
     const resolvedHex = hex[colorMode === "light" ? 0 : 1]
 
     return (
-      <ColorCommandMenu name={name} enabledEditPaletteColor value={resolvedHex}>
+      <ColorCommandMenu name={name} uuid={uuid} value={resolvedHex}>
         <HexContainer
           alignItems="center"
           bg={resolvedHex}
@@ -530,7 +531,7 @@ const getHexes = (hex: string, tab: string) => {
 interface HexDataProps extends HexContainerProps, Pick<Color, "hex"> {}
 
 const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
-  const { tab } = usePalette()
+  const { tab, uuid } = usePalette()
   const [hexes, setHexes] = useState<string[]>(getHexes(hex, tab))
   const count = hexes.length
 
@@ -543,7 +544,7 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
       <Grid as="ul" h="full" templateColumns={`repeat(${count}, 1fr)`}>
         {hexes.map((hex, index) => (
           <GridItem key={`${hex}-${index}`} as="li" boxSize="full">
-            <ColorCommandMenu value={hex}>
+            <ColorCommandMenu uuid={uuid} value={hex}>
               <Center
                 as={Link}
                 href={`/colors/${hex.replace("#", "")}`}

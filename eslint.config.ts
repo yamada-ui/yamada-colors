@@ -23,6 +23,14 @@ const ignoresConfig: Linter.Config = {
   ignores: ["**/.next/**", "**/node_modules/**", "**/pnpm-lock.yaml"],
 }
 
+const noConsoleConfig: Linter.Config = {
+  name: "eslint/no-console",
+  files: ["middleware.api.ts"],
+  rules: {
+    "no-console": "off",
+  },
+}
+
 const tsConfigPath = resolve(
   dirname(fileURLToPath(import.meta.url)),
   "./tsconfig.json",
@@ -53,6 +61,7 @@ export default tseslint.config(
   ignoresConfig,
   languageOptionConfig,
   baseConfig,
+  noConsoleConfig,
   typescriptConfig,
   ...importConfigArray,
   cspellConfig,

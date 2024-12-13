@@ -13,6 +13,7 @@ node_modules
 *.pem
 .vscode
 .idea
+.node-version
 
 # debug
 logs

@@ -5,13 +5,14 @@ export const config = {
   matcher: ["/colors/:path*", "/generators/:path*", "/contrast-checker/:path*"],
 }
 
-export const middleware = ({ headers, ip }: NextRequest) => {
+export const middleware = ({ headers }: NextRequest) => {
   const blockedUserAgents = process.env.BLOCKED_USER_AGENTS?.split(",") ?? []
   const blockedIpAddresses = process.env.BLOCKED_IP_ADDRESSES?.split(",") ?? []
 
   const userAgent = headers.get("user-agent")
-  ip ??=
-    headers.get("x-real-ip") ?? headers.get("x-forwarded-for")?.split(",").at(0)
+  const xRealIp = headers.get("x-real-ip")
+  const xForwardedFor = headers.get("x-forwarded-for")
+  const ip = xRealIp ?? xForwardedFor?.split(",").at(0)
 
   if (userAgent) {
     const isBlockedUserAgent = (blockedUserAgent: string) =>
@@ -31,7 +32,6 @@ export const middleware = ({ headers, ip }: NextRequest) => {
     if (blockedIpAddresses.some(isBlockedIpAddress)) {
       return new NextResponse("Access Denied", { status: 403 })
     } else {
-      // eslint-disable-next-line no-console
       console.log(ip)
     }
   }

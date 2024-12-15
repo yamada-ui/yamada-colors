@@ -76,7 +76,7 @@ export const Hexes: FC<HexesProps> = ({ hexes: hexesProp, onSelectRef }) => {
                     isEnd={isEnd}
                     isStart={isStart}
                     minH="xs"
-                    whileHover={{ borderRadius: "16px", scale: 1.1 }}
+                    whileHover={{ borderRadius: "16px", scale: 1.1, zIndex: 1 }}
                   />
 
                   <LinkBox

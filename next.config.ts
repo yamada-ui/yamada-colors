@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next"
+
+const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@yamada-ui/lucide"],
   },
@@ -8,7 +9,6 @@ const nextConfig = {
     localeDetection: false,
     locales: ["en", "ja"],
   },
-  optimizeFonts: true,
   pageExtensions: ["page.jsx", "page.tsx", "api.js", "api.ts"],
   productionBrowserSourceMaps: false,
   reactStrictMode: false,

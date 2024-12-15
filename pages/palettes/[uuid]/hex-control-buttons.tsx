@@ -4,7 +4,7 @@ import type {
   StackProps,
   UseDisclosureProps,
 } from "@yamada-ui/react"
-import type { FC, MutableRefObject } from "react"
+import type { FC } from "react"
 import {
   Clipboard,
   Contrast,
@@ -42,12 +42,12 @@ export interface HexControlButtonsProps
   extends ReorderColor,
     Omit<StackProps, "id"> {
   colorMode: ColorMode
-  isEditRef: MutableRefObject<boolean>
-  onClose: () => void
+  onEditClose?: () => void
+  onEditOpen?: () => void
 }
 
 export const HexControlButtons: FC<HexControlButtonsProps> = memo(
-  ({ id, name, colorMode, hex, isEditRef, onClose, ...rest }) => {
+  ({ id, name, colorMode, hex, onEditClose, onEditOpen, ...rest }) => {
     const { onClone, onDelete } = useHexes()
     const resolvedHex = hex[colorMode === "light" ? 0 : 1]
     const [lightHex, darkHex] = hex
@@ -59,14 +59,8 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
           name={name}
           colorMode={colorMode}
           hex={hex}
-          onClose={() => {
-            onClose()
-
-            isEditRef.current = false
-          }}
-          onOpen={() => {
-            isEditRef.current = true
-          }}
+          onClose={onEditClose}
+          onOpen={onEditOpen}
         />
 
         <HexControlButton
@@ -143,8 +137,6 @@ const EditButton: FC<EditButtonProps> = memo(
     const { isOpen, onClose, onOpen } = useDisclosure({
       ...rest,
       onClose: () => {
-        rest.onClose?.()
-
         if (!isSubmitRef.current) {
           setName(nameProp)
           setColor(resolvedHex)
@@ -203,7 +195,11 @@ const EditButton: FC<EditButtonProps> = memo(
           </HexControlButton>
         </PopoverTrigger>
 
-        <PopoverContent>
+        <PopoverContent
+          onAnimationComplete={() => {
+            if (!isOpen) rest.onClose?.()
+          }}
+        >
           <PopoverBody>
             <RemoveScroll allowPinchZoom={false} enabled={isOpen}>
               <PaletteColorForm

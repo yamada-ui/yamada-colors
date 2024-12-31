@@ -18,7 +18,7 @@ dependencies:
     specifier: ^1.10.1
     version: 1.10.1(@types/react@18.3.16)(react-dom@18.3.1)(react@18.3.1)
   '@yamada-ui/react':
-    specifier: 1.7.2
+    specifier: ^1.7.2
     version: 1.7.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.3.16)(motion@11.13.5)(react-dom@18.3.1)(react@18.3.1)
   color-blind:
     specifier: ^0.1.3

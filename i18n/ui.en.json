@@ -4,7 +4,7 @@
     "description": "All-in-one color tool for creator and developer."
   },
   "palettes": {
-    "title": "My Paletters",
+    "title": "My Palettes",
     "description": "All-in-one color tool for creator and developer.",
     "search": "Search",
     "not-found": { "label": "No palettes", "create": "Create a palette" },
@@ -27,7 +27,7 @@
     }
   },
   "ai-palettes": {
-    "title": "AI Paletters",
+    "title": "AI Palettes",
     "description": "All-in-one color tool for creator and developer."
   },
   "ui-checker": {

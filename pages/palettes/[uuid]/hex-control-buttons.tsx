@@ -19,6 +19,7 @@ import {
   ColorSwatch,
   forwardRef,
   HStack,
+  noop,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -134,12 +135,14 @@ const EditButton: FC<EditButtonProps> = memo(
     const [lightHex, darkHex] = hex
     const resolvedHex = colorMode === "light" ? lightHex : darkHex
     const isSubmitRef = useRef<boolean>(false)
+    const resetRef = useRef<(value: string) => void>(noop)
     const { isOpen, onClose, onOpen } = useDisclosure({
       ...rest,
       onClose: () => {
         if (!isSubmitRef.current) {
           setName(nameProp)
           setColor(resolvedHex)
+          resetRef.current(resolvedHex)
         }
 
         isSubmitRef.current = false
@@ -205,6 +208,7 @@ const EditButton: FC<EditButtonProps> = memo(
               <PaletteColorForm
                 name={name}
                 color={color}
+                resetRef={resetRef}
                 onChangeColor={setColor}
                 onChangeName={setName}
                 onSubmit={onSubmit}

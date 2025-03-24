@@ -527,7 +527,7 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
   }, [hex, tab])
 
   return (
-    <Box as="nav" overflow="hidden" {...rest}>
+    <Box as="nav" h="20" overflow="hidden" {...rest}>
       <Grid as="ul" h="full" templateColumns={`repeat(${count}, 1fr)`}>
         {hexes.map((hex, index) => (
           <GridItem key={`${hex}-${index}`} as="li" boxSize="full">

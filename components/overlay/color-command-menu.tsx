@@ -15,6 +15,7 @@ import {
   Modal,
   ModalBody,
   ModalFooter,
+  noop,
   Text,
   useClipboard,
   useDisclosure,
@@ -182,11 +183,13 @@ const ColorCommandMenuPaletteColor: FC<ColorCommandMenuPaletteColorProps> =
     const { id, name: nameProp, hex } = useHex()
     const { colorMode, onDelete, onEdit } = useHexes()
     const isSubmitRef = useRef<boolean>(false)
+    const resetRef = useRef<(value: string) => void>(noop)
     const { isOpen, onClose, onOpen } = useDisclosure({
       onClose: () => {
         if (!isSubmitRef.current) {
           setName(nameProp)
           setColor(resolvedHex)
+          resetRef.current(resolvedHex)
         }
 
         isSubmitRef.current = false
@@ -228,6 +231,7 @@ const ColorCommandMenuPaletteColor: FC<ColorCommandMenuPaletteColorProps> =
             <PaletteColorForm
               name={name}
               color={color}
+              resetRef={resetRef}
               onChangeColor={setColor}
               onChangeName={setName}
               onSubmit={onSubmit}

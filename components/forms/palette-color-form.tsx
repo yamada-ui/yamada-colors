@@ -1,14 +1,20 @@
 import type { InputProps, StackProps } from "@yamada-ui/react"
-import type { ChangeEvent, Dispatch, FC, SetStateAction } from "react"
+import type {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  RefObject,
+  SetStateAction,
+} from "react"
 import { Pipette } from "@yamada-ui/lucide"
 import {
+  assignRef,
   Box,
   ColorSelector,
   ColorSwatch,
   forwardRef,
   Input,
   useEyeDropper,
-  useUpdateEffect,
   VStack,
 } from "@yamada-ui/react"
 import { useApp } from "contexts/app-context"
@@ -18,6 +24,7 @@ import { f } from "utils/color"
 export interface PaletteColorFormProps extends Omit<StackProps, "onSubmit"> {
   name: string
   color: string
+  resetRef: RefObject<(value: string) => void>
   onChangeColor: Dispatch<SetStateAction<string>>
   onChangeName: Dispatch<SetStateAction<string>>
   onSubmit?: () => void
@@ -25,7 +32,10 @@ export interface PaletteColorFormProps extends Omit<StackProps, "onSubmit"> {
 
 export const PaletteColorForm = memo(
   forwardRef<PaletteColorFormProps, "div">(
-    ({ name, color, onChangeColor, onChangeName, onSubmit, ...rest }, ref) => {
+    (
+      { name, color, resetRef, onChangeColor, onChangeName, onSubmit, ...rest },
+      ref,
+    ) => {
       return (
         <VStack ref={ref} gap="sm" {...rest}>
           <Input
@@ -35,6 +45,7 @@ export const PaletteColorForm = memo(
 
           <EditColorPicker
             color={color}
+            resetRef={resetRef}
             onChangeColor={onChangeColor}
             onKeyDown={(ev) => {
               if (ev.key !== "Enter") return
@@ -52,10 +63,10 @@ PaletteColorForm.displayName = "PaletteColorForm"
 
 interface EditColorPickerProps
   extends Omit<InputProps, "color">,
-    Pick<PaletteColorFormProps, "color" | "onChangeColor"> {}
+    Pick<PaletteColorFormProps, "color" | "onChangeColor" | "resetRef"> {}
 
 const EditColorPicker: FC<EditColorPickerProps> = memo(
-  ({ color, onChangeColor, ...rest }) => {
+  ({ color, resetRef, onChangeColor, ...rest }) => {
     const { format } = useApp()
     const [inputValue, setInputValue] = useState<string>(f(color, format))
     const { supported: eyeDropperSupported, onOpen: onEyeDropperOpen } =
@@ -88,9 +99,7 @@ const EditColorPicker: FC<EditColorPickerProps> = memo(
       } catch {}
     }
 
-    useUpdateEffect(() => {
-      setInputValue(f(color, format))
-    }, [color, format])
+    assignRef(resetRef, setInputValue)
 
     return (
       <>

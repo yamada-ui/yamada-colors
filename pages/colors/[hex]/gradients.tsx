@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react"
 import { Box, Grid, GridItem, Heading, Text, VStack } from "@yamada-ui/react"
 import { ColorCard } from "components/data-display"
-import { NextLink } from "components/navigation"
+import { Link } from "components/navigation"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { f } from "utils/color"
@@ -93,15 +93,16 @@ const List: FC<ListProps> = ({ href, colors, description, more, title }) => {
       </Box>
 
       {more && href ? (
-        <NextLink
+        <Link
           href={href}
           variant="muted"
           alignSelf="flex-start"
           fontSize="sm"
+          prefetch
           whiteSpace="nowrap"
         >
           {more}
-        </NextLink>
+        </Link>
       ) : null}
     </GridItem>
   )

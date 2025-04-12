@@ -18,11 +18,11 @@ import {
   useUpdateEffect,
   VStack,
 } from "@yamada-ui/react"
+import { NextLink } from "components/navigation"
 import { ColorCommandMenu } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import Link from "next/link"
 import { memo, useCallback, useMemo, useRef, useState } from "react"
 import { blindness, darken, f, isLight, lighten, tone } from "utils/color"
 import { generateUUID, setCookie } from "utils/storage"
@@ -442,12 +442,13 @@ const HexControl: FC<HexControlProps> = memo(
           </ReorderTrigger>
 
           <VStack
-            as={Link}
+            as={NextLink}
             href={`/colors/${resolvedHex.replace("#", "")}`}
             color={isLight(resolvedHex) ? "blackAlpha.500" : "whiteAlpha.500"}
             gap="0"
             minW="0"
             outline={0}
+            prefetch
             rounded="md"
             transitionDuration="slower"
             transitionProperty="common"
@@ -533,7 +534,7 @@ const HexData: FC<HexDataProps> = memo(({ hex, ...rest }) => {
           <GridItem key={`${hex}-${index}`} as="li" boxSize="full">
             <ColorCommandMenu uuid={uuid} value={hex}>
               <Center
-                as={Link}
+                as={NextLink}
                 href={`/colors/${hex.replace("#", "")}`}
                 bg={hex}
                 boxSize="full"

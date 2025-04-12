@@ -17,9 +17,9 @@ import {
 } from "@yamada-ui/react"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import { memo } from "react"
+import { NextLink } from "./next-link"
 
 export interface TreeProps extends BoxProps {
   isAside?: boolean
@@ -98,7 +98,7 @@ export const TreeItem = memo(
         <Box as="li" w="full">
           <HStack
             ref={ref}
-            as={Link}
+            as={NextLink}
             href={href}
             bg={
               isSelected
@@ -111,6 +111,7 @@ export const TreeItem = memo(
             gap="sm"
             h="12"
             outline="none"
+            prefetch
             px="md"
             rounded="md"
             transitionDuration="slower"

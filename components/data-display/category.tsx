@@ -1,5 +1,5 @@
 import type {
-  FlexProps,
+  GridItemProps,
   GridProps,
   IconButtonProps,
   StackProps,
@@ -9,7 +9,6 @@ import type { FC, PropsWithChildren } from "react"
 import {
   Box,
   ChevronIcon,
-  Flex,
   forwardRef,
   Grid,
   GridItem,
@@ -19,7 +18,7 @@ import {
   Text,
   VStack,
 } from "@yamada-ui/react"
-import { NextLink } from "components/navigation"
+import { Link } from "components/navigation"
 import { useI18n } from "contexts/i18n-context"
 import { memo, useRef } from "react"
 import { toCamelCase } from "utils/string"
@@ -69,14 +68,15 @@ export const Category = memo(
           <HStack as="header">
             <CategoryTitle>{toCamelCase(category)}</CategoryTitle>
 
-            <NextLink
+            <Link
               href={`/categories/${category}`}
               variant="muted"
               fontSize="sm"
+              prefetch
               whiteSpace="nowrap"
             >
               {t("component.category.more")}
-            </NextLink>
+            </Link>
           </HStack>
 
           <Box as="nav">
@@ -176,9 +176,9 @@ const CategoryGrid: FC<CategoryGridProps> = memo(
 CategoryGrid.displayName = "CategoryGrid"
 
 const getSlideSize = (count: number) =>
-  `calc(100% / ${count} - (var(--ui-slide-gap) * ${count - 1}) / ${count})`
+  `calc(100% / ${count} - ($slideGap * ${count - 1}) / ${count})`
 
-interface CategoryCarouselProps extends FlexProps {
+interface CategoryCarouselProps extends GridItemProps {
   colors: Colors
   size?: CategorySize
 }
@@ -207,16 +207,17 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
     }
 
     return (
-      <Box
-        position="relative"
+      <Grid
+        alignItems="center"
+        gridTemplateColumns="auto 1fr auto"
         vars={[
           {
-            name: "slide-gap",
+            name: "slideGap",
             token: "spaces",
             value: "md",
           },
           {
-            name: "slide-size",
+            name: "slideSize",
             value: {
               base: size === "md" ? getSlideSize(3) : getSlideSize(4),
               sm: size === "md" ? getSlideSize(1) : getSlideSize(2),
@@ -226,7 +227,7 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
         ]}
         w="full"
       >
-        <Flex
+        <GridItem
           ref={ref}
           as="ul"
           sx={{
@@ -234,7 +235,10 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
             scrollbarWidth: "none",
             _scrollbar: { display: "none" },
           }}
-          gap="var(--ui-slide-gap)"
+          display="flex"
+          gap="$slideGap"
+          gridColumn="1 / -1"
+          gridRow="1"
           overflowX="auto"
           overflowY="hidden"
           scrollSnapType="x mandatory"
@@ -246,33 +250,45 @@ const CategoryCarousel: FC<CategoryCarouselProps> = memo(
             <Box
               key={`${hex}-${index}`}
               as="li"
-              flexBasis="var(--ui-slide-size)"
+              flexBasis="$slideSize"
               flexGrow={0}
               flexShrink={0}
               listStyle="none"
               scrollSnapAlign="start"
             >
-              <ColorCard
-                name={size === "md" ? name : undefined}
-                hex={hex}
-                menuProps={{ strategy: "fixed" }}
-              />
+              <ColorCard name={size === "md" ? name : undefined} hex={hex} />
             </Box>
           ))}
-        </Flex>
+        </GridItem>
 
-        <CategoryCarouselButton
-          size={size}
-          placement="left"
-          onClick={() => onScrollMove("left")}
-        />
+        <GridItem
+          alignSelf="center"
+          gridColumn="1"
+          gridRow="1"
+          ps="$slideGap"
+          zIndex="1"
+        >
+          <CategoryCarouselButton
+            size={size}
+            placement="left"
+            onClick={() => onScrollMove("left")}
+          />
+        </GridItem>
 
-        <CategoryCarouselButton
-          size={size}
-          placement="right"
-          onClick={() => onScrollMove("right")}
-        />
-      </Box>
+        <GridItem
+          alignSelf="center"
+          gridColumn="3"
+          gridRow="1"
+          pe="$slideGap"
+          zIndex="1"
+        >
+          <CategoryCarouselButton
+            size={size}
+            placement="right"
+            onClick={() => onScrollMove("right")}
+          />
+        </GridItem>
+      </Grid>
     )
   },
 )
@@ -300,13 +316,8 @@ const CategoryCarouselButton: FC<CategoryCarouselButtonProps> = memo(
           />
         }
         isRounded
-        left={placement === "left" ? "var(--ui-slide-gap)" : undefined}
         lineHeight="1"
         minW="auto"
-        position="absolute"
-        right={placement === "right" ? "var(--ui-slide-gap)" : undefined}
-        top="50%"
-        transform="translateY(-50%)"
         w={size === "md" ? "10" : "8"}
         _hover={{ bg: ["whiteAlpha.500", "blackAlpha.600"] }}
         {...rest}

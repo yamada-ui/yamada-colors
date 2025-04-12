@@ -4,18 +4,28 @@ import type {
   Merge,
   LinkProps as UILinkProps,
 } from "@yamada-ui/react"
-import type { LinkProps } from "next/link"
-import type { FC } from "react"
+import type { LinkProps as OriginalNextLinkProps } from "next/link"
+import type { FC, PropsWithChildren } from "react"
 import { Button, IconButton, Link as UILink } from "@yamada-ui/react"
-import Link from "next/link"
+import OriginalNextLink from "next/link"
 
-export interface NextLinkProps extends UILinkProps {}
-
-export const NextLink: FC<NextLinkProps> = ({ ...rest }) => {
-  return <UILink as={Link} {...rest} />
+export interface NextLinkProps
+  extends Omit<OriginalNextLinkProps, "as">,
+    PropsWithChildren {
+  href: string
 }
 
-export interface NextLinkButtonProps extends Merge<LinkProps, ButtonProps> {
+export const NextLink: FC<NextLinkProps> = ({ prefetch = false, ...rest }) => {
+  return <OriginalNextLink prefetch={prefetch} {...rest} />
+}
+
+export interface LinkProps extends Merge<NextLinkProps, UILinkProps> {}
+
+export const Link: FC<LinkProps> = ({ ...rest }) => {
+  return <UILink as={NextLink} {...rest} />
+}
+
+export interface NextLinkButtonProps extends Merge<NextLinkProps, ButtonProps> {
   isExternal?: boolean
 }
 
@@ -25,7 +35,7 @@ export const NextLinkButton: FC<NextLinkButtonProps> = ({
 }) => {
   return (
     <Button
-      as={Link}
+      as={NextLink}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener" : undefined}
       {...rest}
@@ -34,7 +44,7 @@ export const NextLinkButton: FC<NextLinkButtonProps> = ({
 }
 
 export interface NextLinkIconButtonProps
-  extends Merge<LinkProps, IconButtonProps> {
+  extends Merge<NextLinkProps, IconButtonProps> {
   isExternal?: boolean
 }
 
@@ -44,7 +54,7 @@ export const NextLinkIconButton: FC<NextLinkIconButtonProps> = ({
 }) => {
   return (
     <IconButton
-      as={Link}
+      as={NextLink}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener" : undefined}
       {...rest}

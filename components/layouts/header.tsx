@@ -47,11 +47,10 @@ import {
 } from "@yamada-ui/react"
 import { SearchColor } from "components/forms"
 import { Discord, Github } from "components/media-and-icons"
-import { NextLinkIconButton, Tree } from "components/navigation"
+import { NextLink, NextLinkIconButton, Tree } from "components/navigation"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import { memo, useEffect, useRef, useState } from "react"
 import { f } from "utils/color"
@@ -101,7 +100,7 @@ export const Header = memo(
             >
               <HStack gap={{ base: "md", sm: "sm" }}>
                 <Center
-                  as={Link}
+                  as={NextLink}
                   href="/"
                   aria-label="Yamada UI"
                   rounded="md"

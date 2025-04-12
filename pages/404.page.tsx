@@ -41,6 +41,7 @@ const Page: NextPage = () => {
           size="lg"
           bg={["blackAlpha.100", "whiteAlpha.100"]}
           borderColor="transparent"
+          prefetch
         >
           {tc("not-found.back-to-app")}
         </NextLinkButton>

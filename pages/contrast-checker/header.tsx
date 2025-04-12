@@ -44,6 +44,7 @@ export const Header: FC<HeaderProps> = ({ hexes, level, setLevelRef }) => {
               />
             }
             isRounded
+            prefetch
           />
         </Box>
       </Tooltip>

@@ -9,11 +9,10 @@ import {
   VStack,
   Wrap,
 } from "@yamada-ui/react"
-import { NextLink } from "components/navigation"
+import { Link, NextLink } from "components/navigation"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import Link from "next/link"
 import { f } from "utils/color"
 
 export interface OthersProps {
@@ -106,7 +105,7 @@ const List: FC<ListProps> = ({ href, colors, description, more, title }) => {
             <ColorCommandMenu key={`${hex}-${index}`} value={hex}>
               <Motion as="li" whileHover={{ scale: 0.95 }}>
                 <Box
-                  as={Link}
+                  as={NextLink}
                   href={`/colors/${hex.replace("#", "")}`}
                   bg={hex}
                   boxSize={{ base: "8" }}
@@ -121,15 +120,16 @@ const List: FC<ListProps> = ({ href, colors, description, more, title }) => {
       </Box>
 
       {more && href ? (
-        <NextLink
+        <Link
           href={href}
           variant="muted"
           alignSelf="flex-start"
           fontSize="sm"
+          prefetch
           whiteSpace="nowrap"
         >
           {more}
-        </NextLink>
+        </Link>
       ) : null}
     </GridItem>
   )

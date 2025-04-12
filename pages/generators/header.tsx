@@ -36,6 +36,7 @@ export const Header: FC<HeaderProps> = ({ hex, tab }) => {
               />
             }
             isRounded
+            prefetch
           />
         </Box>
       </Tooltip>

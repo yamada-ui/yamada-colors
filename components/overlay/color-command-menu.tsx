@@ -26,7 +26,7 @@ import { PaletteColorForm } from "components/forms"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
-import Link from "next/link"
+import { useRouter } from "next/router"
 import { useHex, useHexes } from "pages/palettes/[uuid]/context"
 import { memo, useMemo, useRef, useState } from "react"
 import { getColorName } from "utils/color-name-list"
@@ -147,16 +147,24 @@ const ColorCommandMenuMain: FC<ColorCommandMenuMainProps> = memo(
       limit: 1,
       placement: "bottom",
     })
+    const router = useRouter()
 
     return (
       <>
-        <MenuItem as={Link} href={`/colors/${value.replace("#", "")}`}>
+        <MenuItem
+          onClick={() => {
+            router.push(`/colors/${value.replace("#", "")}`)
+          }}
+        >
           {t("component.color-command-menu.see")}
         </MenuItem>
 
         <MenuItem
-          as={Link}
-          href={`/contrast-checker?light.fg=${value.replace("#", "")}&dark.fg=${value.replace("#", "")}`}
+          onClick={() => {
+            router.push(
+              `/contrast-checker?light.fg=${value.replace("#", "")}&dark.fg=${value.replace("#", "")}`,
+            )
+          }}
         >
           {t("component.color-command-menu.check")}
         </MenuItem>
@@ -283,14 +291,18 @@ interface ColorCommandMenuGeneratorsProps {
 const ColorCommandMenuGenerators: FC<ColorCommandMenuGeneratorsProps> = memo(
   ({ value }) => {
     const { t } = useI18n()
+    const router = useRouter()
 
     return (
       <MenuGroup label={t("component.color-command-menu.generators.label")}>
         {CONSTANT.ENUM.GENERATORS.map((tab) => (
           <MenuItem
             key={tab}
-            as={Link}
-            href={`/generators?hex=${value.replace("#", "")}&tab=${tab}`}
+            onClick={() => {
+              router.push(
+                `/generators?hex=${value.replace("#", "")}&tab=${tab}`,
+              )
+            }}
           >
             {t(`component.color-command-menu.generators.${tab}`)}
           </MenuItem>

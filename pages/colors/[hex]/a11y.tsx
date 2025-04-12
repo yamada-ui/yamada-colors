@@ -13,7 +13,7 @@ import {
   VStack,
   Wrap,
 } from "@yamada-ui/react"
-import { NextLink } from "components/navigation"
+import { Link } from "components/navigation"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
@@ -59,15 +59,16 @@ export const A11y: FC<A11yProps> = ({ blind, contrast, hex }) => {
           <Contrast data={contrast.dark} hex={hex} mode="dark" />
         </Grid>
 
-        <NextLink
+        <Link
           href={`/contrast-checker?light.fg=${hex.replace("#", "")}&dark.fg=${hex.replace("#", "")}`}
           variant="muted"
           alignSelf="flex-start"
           fontSize="sm"
+          prefetch
           whiteSpace="nowrap"
         >
           {t("colors.contrast.more")}
-        </NextLink>
+        </Link>
       </VStack>
 
       <VStack as="section">

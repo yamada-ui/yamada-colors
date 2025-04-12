@@ -32,9 +32,9 @@ import {
   useUpdateEffect,
 } from "@yamada-ui/react"
 import { PaletteColorForm } from "components/forms"
+import { NextLink } from "components/navigation"
 import { RemoveScroll } from "components/other"
 import { useI18n } from "contexts/i18n-context"
-import Link from "next/link"
 import { memo, useRef, useState } from "react"
 import { isLight } from "utils/color"
 import { useHexes } from "./context"
@@ -65,7 +65,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
         />
 
         <HexControlButton
-          as={Link}
+          as={NextLink}
           href={`/generators?hex=${resolvedHex.replace("#", "")}&tab=tones`}
           display={{ base: "flex", sm: "none" }}
           hex={resolvedHex}
@@ -74,7 +74,7 @@ export const HexControlButtons: FC<HexControlButtonsProps> = memo(
         </HexControlButton>
 
         <HexControlButton
-          as={Link}
+          as={NextLink}
           href={`/contrast-checker?light.fg=${lightHex.replace("#", "")}&dark.fg=${darkHex.replace("#", "")}`}
           display={{ base: "flex", sm: "none" }}
           hex={resolvedHex}

@@ -5,8 +5,8 @@ import type {
   Merge,
   MotionProps,
 } from "@yamada-ui/react"
+import type { NextLinkProps } from "components/navigation"
 import type { ColorCommandMenuProps } from "components/overlay"
-import type { LinkProps } from "next/link"
 import {
   AspectRatio,
   Box,
@@ -16,9 +16,9 @@ import {
   Text,
   VStack,
 } from "@yamada-ui/react"
+import { NextLink } from "components/navigation"
 import { ColorCommandMenu } from "components/overlay"
 import { useApp } from "contexts/app-context"
-import Link from "next/link"
 import { memo } from "react"
 import { f, isLight } from "utils/color"
 
@@ -28,7 +28,7 @@ export interface ColorCardProps extends AspectRatioProps {
   size?: "lg" | "md"
   boxProps?: BoxProps
   gridProps?: GridProps
-  linkProps?: Merge<BoxProps, Omit<LinkProps, "as">>
+  linkProps?: Merge<NextLinkProps, BoxProps>
   menuProps?: Omit<ColorCommandMenuProps, "value">
   motionProps?: MotionProps
 }
@@ -56,7 +56,7 @@ export const ColorCard = memo(
           <ColorCommandMenu name={name} value={hex} {...menuProps}>
             <AspectRatio ref={ref} {...rest}>
               <Box
-                as={Link}
+                as={NextLink}
                 href={`/colors/${hex.replace("#", "")}`}
                 outline={0}
                 position="relative"
@@ -120,7 +120,7 @@ export const ColorCard = memo(
               {...motionProps}
             >
               <Grid
-                as={Link}
+                as={NextLink}
                 href={`/colors/${hex.replace("#", "")}`}
                 gap={{ base: "md", sm: "sm" }}
                 outline={0}

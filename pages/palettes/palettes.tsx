@@ -13,12 +13,12 @@ import {
   useUpdateEffect,
   VStack,
 } from "@yamada-ui/react"
+import { NextLink } from "components/navigation"
 import { PaletteCommandMenu } from "components/overlay"
 import { CONSTANT } from "constant"
 import { useApp } from "contexts/app-context"
 import { useI18n } from "contexts/i18n-context"
 import { matchSorter } from "match-sorter"
-import Link from "next/link"
 import { memo, useRef, useState } from "react"
 import { setCookie } from "utils/storage"
 
@@ -120,7 +120,7 @@ const Palette: FC<PaletteProps> = memo(({ palette, queryRef, ...rest }) => {
       <PaletteCommandMenu palette={palette}>
         <Motion whileHover={{ scale: 0.95 }}>
           <VStack
-            as={Link}
+            as={NextLink}
             href={`/palettes/${uuid}`}
             boxShadow={[
               "0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 -2px 4px 1px rgba(0, 0, 0, 0.06)",
@@ -129,6 +129,7 @@ const Palette: FC<PaletteProps> = memo(({ palette, queryRef, ...rest }) => {
             gap="0"
             outline={0}
             overflow="hidden"
+            prefetch
             rounded="2xl"
             _focusVisible={{ boxShadow: ["outline", "outline"] }}
             onClick={() => {

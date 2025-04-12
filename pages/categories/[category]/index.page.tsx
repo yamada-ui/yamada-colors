@@ -79,6 +79,7 @@ const Page: NextPage<PageProps> = ({
                   colorScheme={category}
                   variant={isCurrent ? "solid" : "outline"}
                   isRounded
+                  prefetch
                 >
                   {toCamelCase(category)}
                 </NextLinkButton>
